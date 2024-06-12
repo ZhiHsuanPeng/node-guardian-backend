@@ -12,7 +12,8 @@ exports.insertNewLogs = async (req, res) => {
   const ch = await conn.createChannel();
   await ch.assertQueue(queue);
 
-  ch.sendToQueue(queue, Buffer.from(req.body));
+  const requestBody = JSON.stringify(req.body);
+  ch.sendToQueue(queue, Buffer.from(requestBody));
 
   return res.status(200).json({ message: 'OK' });
 };

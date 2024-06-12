@@ -7,6 +7,8 @@ const amqpUser = process.env.AMQP_USER || 'jeremy';
 const amqpPassword = process.env.AMQP_PASSWORD || 'jeremy';
 const serverIp = process.env.AMQP_SERVERIP;
 
+console.log(serverIp);
+
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
 (async () => {
