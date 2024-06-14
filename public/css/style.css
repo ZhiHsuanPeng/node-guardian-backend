@@ -4,3 +4,13 @@
   justify-content: center;
   text-align: center;
 }
+
+.errCount {
+  margin: 0 20px 0 40px;
+}
+
+.errorTitle {
+  text-align: left;
+  margin-right: auto;
+  margin-left: 200px;
+}

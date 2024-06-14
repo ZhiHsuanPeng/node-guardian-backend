@@ -15,5 +15,6 @@ exports.renderBasicProjectPage = async (req, res) => {
     count: errorMessageAndCount[err],
     timeStamp,
   }));
+  console.log(errObj);
   return res.status(200).render('projectBase', { errObj, errorMessageArr });
 };

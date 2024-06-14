@@ -29,6 +29,13 @@ errorTitle.split(',').forEach((title, index) => {
     y: occurrences,
     type: 'bar',
     hovertemplate: 'Occurrences: %{y}',
+    marker: {
+      color: 'gray',
+      line: {
+        color: 'blue',
+        width: 0,
+      },
+    },
   };
 
   const layout = {

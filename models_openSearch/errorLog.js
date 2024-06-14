@@ -42,6 +42,7 @@ exports.getErrorTimeStampFilteredByTime = async (accessToken, errorMessage, hour
   const response = await openSearchClient.search({
     index: accessToken,
     body: {
+      size: 100,
       query: {
         bool: {
           must: [
