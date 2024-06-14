@@ -65,7 +65,7 @@ exports.getErrorTimeStampFilteredByTime = async (accessToken, errorMessage, hour
   });
   const timeStamp = [];
   response.body.hits.hits.forEach((doc) => {
-    timeStamp.push(Math.round((Date.now() - doc._source.timestamp) / (1000 * 60 * 60)));
+    timeStamp.push(doc._source.timestamp);
   });
   return timeStamp;
 };
