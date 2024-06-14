@@ -1,8 +1,8 @@
 const amqplib = require('amqplib');
 
 exports.insertNewLogs = async (req, res) => {
-  const amqpUser = process.env.AMQP_USER || 'jeremy';
-  const amqpPassword = process.env.AMQP_PASSWORD || 'jeremy';
+  const amqpUser = process.env.AMQP_USER;
+  const amqpPassword = process.env.AMQP_PASSWORD;
   const serverIp = process.env.AMQP_SERVERIP;
 
   const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;

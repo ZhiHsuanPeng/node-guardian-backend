@@ -1,13 +1,42 @@
 const amqplib = require('amqplib');
 const dotenv = require('dotenv');
+const { Client } = require('@opensearch-project/opensearch');
 
 dotenv.config();
 
-const amqpUser = process.env.AMQP_USER || 'jeremy';
-const amqpPassword = process.env.AMQP_PASSWORD || 'jeremy';
-const serverIp = process.env.AMQP_SERVERIP;
+const openSearchClient = new Client({
+  node: 'https://search-errorlog-sjbarfvt6la3sff7iuqqkov6x4.ap-southeast-2.es.amazonaws.com',
+  auth: {
+    username: process.env.OPENSEARCH_USER,
+    password: process.env.OPENSEARCH_PASS,
+  },
+});
 
+const amqpUser = process.env.AMQP_USER;
+const amqpPassword = process.env.AMQP_PASSWORD;
+const serverIp = process.env.AMQP_SERVERIP;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
+
+const checkIndexAndStoreData = async (payLoad) => {
+  const indexResponse = await openSearchClient.indices.exists({
+    index: payLoad.accessToken,
+  });
+  if (indexResponse.body) {
+    await openSearchClient.index({
+      index: payLoad.accessToken,
+      body: payLoad,
+    });
+    return;
+  }
+
+  await openSearchClient.indices.create({
+    index: payLoad.accessToken,
+  });
+  await openSearchClient.index({
+    index: payLoad.accessToken,
+    body: payLoad,
+  });
+};
 
 (async () => {
   const queue = 'job';
@@ -23,6 +52,7 @@ const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
         headersObj[payLoad.filteredReqObj.headers[i]] = payLoad.filteredReqObj.headers[i + 1];
       }
       payLoad.filteredReqObj.headers = headersObj;
+      checkIndexAndStoreData(payLoad);
       ch.ack(msg);
     } else {
       console.log('Consumer cancelled by server');
