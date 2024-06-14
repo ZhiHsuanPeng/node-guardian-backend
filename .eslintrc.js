@@ -11,5 +11,7 @@ module.exports = {
   rules: {
     'linebreak-style': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'prefer-destructuring': 'off',
+    'no-underscore-dangle': 'off',
   },
 };

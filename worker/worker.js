@@ -53,6 +53,7 @@ const checkIndexAndStoreData = async (payLoad) => {
       }
       payLoad.filteredReqObj.headers = headersObj;
       checkIndexAndStoreData(payLoad);
+      console.log('Worker just process one log');
       ch.ack(msg);
     } else {
       console.log('Consumer cancelled by server');
