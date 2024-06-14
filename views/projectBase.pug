@@ -2,3 +2,10 @@ extends base
 
 block content
     main.main This is a project base page
+        .errTitle(data-error= `${errorMessageArr}`)
+        each error in errObj
+            .errorContainer
+                .timeStampStat(data-time = `${error.timeStamp}`)
+                .errorTitle #{error.err}
+                .errCount Count: #{error.count}
+                div(id=`${error.err}`)

@@ -10,5 +10,10 @@ exports.renderBasicProjectPage = async (req, res) => {
     return { err, timeStamp };
   });
   const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
-  res.status(200).render('projectBase', { errorMessageAndCount, errorsTimeStampArray });
+  const errObj = errorsTimeStampArray.map(({ err, timeStamp }) => ({
+    err,
+    count: errorMessageAndCount[err],
+    timeStamp,
+  }));
+  return res.status(200).render('projectBase', { errObj, errorMessageArr });
 };
