@@ -10,11 +10,30 @@ exports.renderBasicProjectPage = async (req, res) => {
     return { err, timeStamp };
   });
   const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
-  const errObj = errorsTimeStampArray.map(({ err, timeStamp }) => ({
+  const recentTime = errorsTimeStampArray.map((ts) => {
+    const recentTs = new Date(ts.timeStamp.sort((a, b) => a - b)[ts.timeStamp.length - 1]);
+    const now = Date.now();
+    const timestampDifference = now - recentTs;
+    console.log(timestampDifference);
+    let formattedTimeDifference = '';
+    if (timestampDifference < 3600 * 1000) {
+      const minutes = Math.floor(timestampDifference / 60000);
+      formattedTimeDifference = `${minutes} minutes`;
+    } else if (timestampDifference < 86400 * 1000) {
+      const hours = Math.floor(timestampDifference / 3600000);
+      formattedTimeDifference = `${hours} hours`;
+    } else {
+      const days = Math.floor(timestampDifference / 86400000);
+      formattedTimeDifference = `${days} days`;
+    }
+    return formattedTimeDifference;
+  });
+  console.log(recentTime);
+  const errObj = errorsTimeStampArray.map(({ err, timeStamp }, index) => ({
     err,
     count: errorMessageAndCount[err],
     timeStamp,
-    recentTime: new Date(timeStamp.sort((a, b) => a - b)[timeStamp.length - 1] + 8 * 60 * 60 * 1000),
+    recentTime: recentTime[index],
   }));
   console.log(errObj);
   return res.status(200).render('projectBase', { errObj, errorMessageArr });
