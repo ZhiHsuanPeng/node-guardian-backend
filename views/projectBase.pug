@@ -2,12 +2,19 @@ extends base
 
 block content
     main.main This is a project base page
+       
         .errTitle(data-error= `${errorMessageArr}`)
-        each error in errObj
-            .errorContainer
-                .timeStampStat(data-time = `${error.timeStamp}`)
-                .errorTitle #{error.err}
-                .errCount Count: #{error.count}
-                .errRecent #{error.recentTime}
-                div(id=`${error.err}`)
+        .errorLogsContainer
+            .containerBar
+                .title Error Message 
+                .count Total 
+                .last Last
+                .1daytrends 24 Hours Trends
+            each error in errObj
+                .errorContainer
+                    .timeStampStat(data-time = `${error.timeStamp}`)
+                    .errorTitle #{error.err}
+                    .errCount Count: #{error.count}
+                    .errRecent #{error.recentTime}
+                    div(id=`${error.err}`)
         

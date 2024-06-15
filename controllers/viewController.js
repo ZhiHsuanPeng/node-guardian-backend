@@ -14,7 +14,6 @@ exports.renderBasicProjectPage = async (req, res) => {
     const recentTs = new Date(ts.timeStamp.sort((a, b) => a - b)[ts.timeStamp.length - 1]);
     const now = Date.now();
     const timestampDifference = now - recentTs;
-    console.log(timestampDifference);
     let formattedTimeDifference = '';
     if (timestampDifference < 3600 * 1000) {
       const minutes = Math.floor(timestampDifference / 60000);
@@ -28,13 +27,11 @@ exports.renderBasicProjectPage = async (req, res) => {
     }
     return formattedTimeDifference;
   });
-  console.log(recentTime);
   const errObj = errorsTimeStampArray.map(({ err, timeStamp }, index) => ({
     err,
     count: errorMessageAndCount[err],
     timeStamp,
     recentTime: recentTime[index],
   }));
-  console.log(errObj);
   return res.status(200).render('projectBase', { errObj, errorMessageArr });
 };

@@ -1,16 +1,29 @@
+main {
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.containerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+}
 .errorContainer {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   text-align: center;
 }
 
-.errCount {
-  margin: 0 20px 0 40px;
+.errorLogsContainer {
+  display: column;
+  align-items: center;
+  justify-content: center;
+  width: 800px;
+  margin: 60px auto;
 }
 
-.errorTitle {
-  text-align: left;
-  margin-right: auto;
-  margin-left: 200px;
+.containerBar .title {
+  margin-right: 40px;
 }

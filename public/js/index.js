@@ -63,9 +63,15 @@ errorTitle.split(',').forEach((title, index) => {
       showgrid: false,
     },
     hovermode: 'x',
-    autosize: false,
-    width: 300,
-    height: 200,
+    autosize: true,
+    width: 150,
+    height: 100,
+    margin: {
+      l: 20,
+      r: 20,
+      b: 20,
+      t: 20,
+    },
   };
 
   const config = {
