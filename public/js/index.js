@@ -2,52 +2,62 @@ const timeStamp = [];
 document.querySelectorAll('.timeStampStat').forEach((element) => {
   timeStamp.push(element.dataset.time);
 });
-console.log(timeStamp);
 
 const errorTitle = document.querySelector('.errTitle').dataset.error;
-console.log(errorTitle.split(','));
 
 errorTitle.split(',').forEach((title, index) => {
+  const now = new Date();
+  const currentHourGMT = now.getUTCHours();
+  const currentHourGMT8 = (currentHourGMT + 8) % 24;
   const occurrences = Array(24).fill(0);
+
   const maxOccurrences = Math.max(...occurrences);
   const yaxisRange = maxOccurrences <= 5 ? [0, 5] : [0, maxOccurrences];
 
-  timeStamp[index]
-    .split(',')
-    .map(Number)
-    .forEach((timestamp) => {
-      const gmtTimestamp = new Date(timestamp); // Assuming timestamps are in GMT
-      const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000); // Convert to GMT+8
-      const hour = gmtPlus8Timestamp.getUTCHours();
-      occurrences[hour]++;
-    });
+  const hours = Array.from({ length: 24 }, (_, i) => {
+    const hour = (currentHourGMT8 - 23 + i + 24) % 24;
+    return hour.toString().padStart(2, '0') + ':00';
+  });
 
-  const hours = Array.from({ length: 24 }, (_, i) => i.toString());
+  timeStamp[index].split(',').forEach((timestamp) => {
+    console.log(timestamp);
+    const ts = Number(timestamp);
+    const gmtTimestamp = new Date(ts);
+    const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+    const hour = gmtPlus8Timestamp.getUTCHours();
+
+    const index = hours.findIndex((h) => h.startsWith(hour.toString().padStart(2, '0')));
+    if (index !== -1) {
+      occurrences[index]++;
+    }
+  });
 
   const trace = {
     x: hours,
     y: occurrences,
     type: 'bar',
-    hovertemplate: 'Occurrences: %{y}',
+    hovertemplate: '<b>Hour:</b> %{x}<br><b>Occurrences:</b> %{y}<extra></extra>',
     marker: {
-      color: 'gray',
+      color: 'rgba(26, 118, 186, 0.8)', // Adjust the color and transparency
       line: {
-        color: 'blue',
-        width: 0,
+        color: 'rgba(31, 119, 180, 1)', // Adjust the color of the border
+        width: 1, // Adjust the border width
       },
     },
   };
 
   const layout = {
     xaxis: {
-      tickvals: Array.from({ length: 24 }, (_, i) => i), // Set tick values for each hour
-      ticktext: Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, '0')}:00`),
+      tickvals: hours.map((_, i) => i),
+      ticktext: hours,
       hoverformat: '%H:00',
       showticklabels: false,
+      showgrid: false,
     },
     yaxis: {
       showticklabels: false,
       range: yaxisRange,
+      showgrid: false,
     },
     hovermode: 'x',
     autosize: false,
@@ -56,7 +66,7 @@ errorTitle.split(',').forEach((title, index) => {
   };
 
   const config = {
-    displayModeBar: false, // Disable the mode bar
+    displayModeBar: false,
   };
 
   Plotly.newPlot(`${title}`, [trace], layout, config);
