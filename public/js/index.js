@@ -2,7 +2,7 @@ const timeStamp = [];
 document.querySelectorAll('.timeStampStat').forEach((element) => {
   timeStamp.push(element.dataset.time);
 });
-
+console.log(timeStamp);
 const errorTitle = document.querySelector('.errTitle').dataset.error;
 
 errorTitle.split(',').forEach((title, index) => {
@@ -11,24 +11,24 @@ errorTitle.split(',').forEach((title, index) => {
   const currentHourGMT8 = (currentHourGMT + 8) % 24;
   const occurrences = Array(24).fill(0);
 
-  const maxOccurrences = Math.max(...occurrences);
-  const yaxisRange = maxOccurrences <= 5 ? [0, 5] : [0, maxOccurrences];
-
   const hours = Array.from({ length: 24 }, (_, i) => {
     const hour = (currentHourGMT8 - 23 + i + 24) % 24;
     return hour.toString().padStart(2, '0') + ':00';
   });
 
   timeStamp[index].split(',').forEach((timestamp) => {
-    console.log(timestamp);
-    const ts = Number(timestamp);
-    const gmtTimestamp = new Date(ts);
-    const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
-    const hour = gmtPlus8Timestamp.getUTCHours();
+    if (timestamp.trim() !== '') {
+      const ts = Number(timestamp);
+      if (!isNaN(ts)) {
+        const gmtTimestamp = new Date(ts);
+        const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+        const hour = gmtPlus8Timestamp.getUTCHours();
 
-    const index = hours.findIndex((h) => h.startsWith(hour.toString().padStart(2, '0')));
-    if (index !== -1) {
-      occurrences[index]++;
+        const index = hours.findIndex((h) => h.startsWith(hour.toString().padStart(2, '0')));
+        if (index !== -1) {
+          occurrences[index]++;
+        }
+      }
     }
   });
 
@@ -36,15 +36,18 @@ errorTitle.split(',').forEach((title, index) => {
     x: hours,
     y: occurrences,
     type: 'bar',
-    hovertemplate: '<b>Hour:</b> %{x}<br><b>Occurrences:</b> %{y}<extra></extra>',
+    hovertemplate: '%{y}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)', // Adjust the color and transparency
+      color: 'rgba(26, 118, 186, 0.8)',
       line: {
-        color: 'rgba(31, 119, 180, 1)', // Adjust the color of the border
-        width: 1, // Adjust the border width
+        color: 'rgba(31, 119, 180, 1)',
+        width: 1,
       },
     },
   };
+
+  const maxOccurrences = Math.max(...occurrences);
+  const yaxisRange = maxOccurrences <= 5 ? [0, 5] : [0, maxOccurrences];
 
   const layout = {
     xaxis: {

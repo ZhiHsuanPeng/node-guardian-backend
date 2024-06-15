@@ -14,6 +14,7 @@ exports.renderBasicProjectPage = async (req, res) => {
     err,
     count: errorMessageAndCount[err],
     timeStamp,
+    recentTime: new Date(timeStamp.sort((a, b) => a - b)[timeStamp.length - 1] + 8 * 60 * 60 * 1000),
   }));
   console.log(errObj);
   return res.status(200).render('projectBase', { errObj, errorMessageArr });
