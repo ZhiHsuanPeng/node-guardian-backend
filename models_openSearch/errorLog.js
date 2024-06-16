@@ -92,7 +92,7 @@ exports.getAllErrors = async (accessToken, err) => {
   });
   const result = response.body.hits.hits;
   const errorDetail = { latest: '', first: '', errTitle: err, all: [], timeStamp: [], latestErr: '' };
-  errorDetail.latestErr = result[result.length - 1]._source;
+  errorDetail.latestErr = result[0]._source;
   errorDetail.latest = result[0]._source.timestamp;
   errorDetail.first = result[result.length - 1]._source.timestamp;
   result.forEach((error) => {

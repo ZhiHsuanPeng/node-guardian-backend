@@ -10,6 +10,8 @@ html
 
     body
         main.main This is an error detail page
+            .timeStampStat(data-time = `${timeStamp}`)
+            .requestInfo(data-request= `${latestErr.filteredReqObj}`)
             .errDetail_container
                 .errDetail_errorTitle #{errTitle}
                 .errDetail_errorTime 
@@ -30,6 +32,8 @@ html
                             button(onclick="toggleFrames()") Show/Hide Non-Project Frames
                             each line in otherStack 
                                 .non-project-frame #{line}
+                    .errorParams Params 
+                        .req_h_userAgent #{latestErr}
         script.
             function toggleFrames() {
                 var frames = document.getElementsByClassName('non-project-frame');
