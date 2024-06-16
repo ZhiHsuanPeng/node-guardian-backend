@@ -39,3 +39,7 @@ main {
 .errTrends_container {
   display: flex;
 }
+
+.graph_container {
+  display: column;
+}

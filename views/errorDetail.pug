@@ -13,11 +13,17 @@ html
             .timeStampStat(data-time = `${timeStamp}`)
             .requestInfo(data-request= `${latestErr.filteredReqObj}`)
             .errTrends_container 
-                .past1dgraph Last day
+                .graph_container
+                    .past1hGraph Last hour
+                    .past1hSum
+                    #past1hour 
+                .graph_container
+                    .past1dGraph Last day
+                    .past1dSum
                     #past1day
-                .past1hgraph Last hour
-                    #past1hour  
-                .past1wgraph Last week 
+                .graph_container
+                    .past1wGraph Last week 
+                    .past1wSum
                     #past1week
             .errDetail_container
                 .errDetail_errorTitle #{errTitle}

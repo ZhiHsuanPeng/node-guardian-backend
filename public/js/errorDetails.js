@@ -8,6 +8,7 @@ const past1d = () => {
   const currentHourGMT = now.getUTCHours();
   const currentHourGMT8 = (currentHourGMT + 8) % 24;
   const occurrences = Array(24).fill(0);
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
   const hours = Array.from({ length: 24 }, (_, i) => {
     const hour = (currentHourGMT8 - 23 + i + 24) % 24;
@@ -18,17 +19,25 @@ const past1d = () => {
     if (timestamp.trim() !== '') {
       const ts = Number(timestamp);
       if (!isNaN(ts)) {
-        const gmtTimestamp = new Date(ts);
-        const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
-        const hour = gmtPlus8Timestamp.getUTCHours();
+        if (ts >= yesterday.getTime()) {
+          const gmtTimestamp = new Date(ts);
+          const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+          const hour = gmtPlus8Timestamp.getUTCHours();
 
-        const index = hours.findIndex((h) => h.startsWith(hour.toString().padStart(2, '0')));
-        if (index !== -1) {
-          occurrences[index]++;
+          const index = hours.findIndex((h) => h.startsWith(hour.toString().padStart(2, '0')));
+          if (index !== -1) {
+            occurrences[index]++;
+          }
         }
       }
     }
   });
+
+  const sum = occurrences.reduce((acc, val) => acc + val, 0);
+  const sumInPug = document.querySelector('.past1dSum');
+  if (sumInPug) {
+    sumInPug.textContent = `Total: ${sum}`;
+  }
 
   const trace = {
     x: hours,
@@ -93,7 +102,6 @@ const past1h = () => {
 
     return hourAdjusted.toString().padStart(2, '0') + ':' + minuteAdjusted.toString().padStart(2, '0');
   });
-  console.log(minutes);
 
   timeStamp[0].split(',').forEach((timestamp) => {
     if (timestamp.trim() !== '') {
@@ -111,6 +119,12 @@ const past1h = () => {
       }
     }
   });
+
+  const sum = occurrences.reduce((acc, val) => acc + val, 0);
+  const sumInPug = document.querySelector('.past1hSum');
+  if (sumInPug) {
+    sumInPug.textContent = `Total: ${sum}`;
+  }
 
   const trace = {
     x: minutes,
@@ -172,16 +186,10 @@ const past1w = () => {
   });
 
   timeStamp[0].split(',').forEach((timestamp) => {
-    if (timestamp.trim() !== '') {
-      const ts = Number(timestamp);
-      if (!isNaN(ts)) {
-        const gmtTimestamp = new Date(ts);
-        const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
-        const dayDiff = Math.floor((now - gmtPlus8Timestamp) / (24 * 60 * 60 * 1000));
-        if (dayDiff >= 0 && dayDiff < 7) {
-          occurrences[6 - dayDiff]++;
-        }
-      }
+    const ts = Number(timestamp);
+    const dayDiff = Math.floor((now - ts) / (24 * 60 * 60 * 1000));
+    if (dayDiff >= 0 && dayDiff < 7) {
+      occurrences[6 - dayDiff]++;
     }
   });
 
@@ -198,7 +206,12 @@ const past1w = () => {
       },
     },
   };
-  console.log(days);
+
+  const sum = occurrences.reduce((acc, val) => acc + val, 0);
+  const sumInPug = document.querySelector('.past1wSum');
+  if (sumInPug) {
+    sumInPug.textContent = `Total: ${sum}`;
+  }
 
   const maxOccurrences = Math.max(...occurrences);
   const yaxisRange = maxOccurrences <= 5 ? [0, 5] : [0, maxOccurrences];
