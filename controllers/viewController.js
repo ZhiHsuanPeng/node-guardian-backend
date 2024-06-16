@@ -81,8 +81,8 @@ exports.renderErrorDetailPage = async (req, res) => {
   const latestDate = transformUNIXtoDate(latest);
   const firstDate = transformUNIXtoDate(first);
   const firstStack = extractPathFromStackTrace(latestErr.err.split('\n')[1]).slice(1);
+  const otherStack = latestErr.err.split('\n').slice(2);
   const errCode = formatString(latestErr.code);
-  console.log(errCode);
   return res.status(200).render('errorDetail', {
     latest,
     latestToTimeDiff,
@@ -91,6 +91,7 @@ exports.renderErrorDetailPage = async (req, res) => {
     firstDate,
     all,
     firstStack,
+    otherStack,
     latestErr,
     errCode,
     errTitle,

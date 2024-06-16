@@ -26,3 +26,8 @@ main {
 .containerBar .title {
   margin-right: 40px;
 }
+
+.errDetail_container {
+  margin: 0 auto;
+  width: 600px;
+}
