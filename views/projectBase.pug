@@ -1,20 +1,29 @@
-extends base
-
-block content
-    main.main This is a project base page
-       
-        .errTitle(data-error= `${errorMessageArr}`)
-        .errorLogsContainer
-            .containerBar
-                .title Error Message 
-                .count Total 
-                .last Last
-                .1daytrends 24 Hours Trends
-            each error in errObj
-                .errorContainer
-                    .timeStampStat(data-time = `${error.timeStamp}`)
-                    .errorTitle #{error.err}
-                    .errCount Count: #{error.count}
-                    .errRecent #{error.recentTime}
-                    div(id=`${error.err}`)
+doctype html 
+html 
+    head    
         
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title My product
+        link(rel='stylesheet' href='/css/style.css')
+        script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
+
+    body
+        main.main This is a project base page
+        
+            .errTitle(data-error= `${errorMessageArr}`)
+            .errorLogsContainer
+                .containerBar
+                    .title Error Message 
+                    .count Total 
+                    .last Last
+                    .1daytrends 24 Hours Trends
+                each error in errObj
+                    .errorContainer
+                        .timeStampStat(data-time = `${error.timeStamp}`)
+                        a.errorTitle(href=`/a/${accountName}/prj/${prjName}/err/${error.err}`) #{error.err}
+                        .errCount Count: #{error.count}
+                        .errRecent #{error.recentTime}
+                        div(id=`${error.err}`)
+        script(src='/js/projectPage.js' type="module")
+            

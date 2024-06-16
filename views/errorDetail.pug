@@ -1,0 +1,29 @@
+doctype html 
+html 
+    head    
+        
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title My product
+        link(rel='stylesheet' href='/css/style.css')
+        script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
+
+    body
+        main.main This is an error detail page
+            .errDetail_container
+                .errDetail_errorTitle #{errTitle}
+                .errDetail_errorTime 
+                    .firstError First: #{firstToTimeDiff} ago, Date: #{firstDate}
+                    .latestError Latest: #{latestToTimeDiff} ago, Date: #{latestDate}
+                    .errorTotal Total: #{all.length}
+                .errDetail_stackTrace 
+                    .stackTraceTitle Stack Trace
+                    .stackTitle #{errTitle}
+                    .stackTrace Most Recent Call 
+                        .firstTrace at (#{firstStack})
+                        pre
+                            each line in errCode
+                                | #{line}
+                                br
+
+        script(src='/js/errorDetails.js' type="module")

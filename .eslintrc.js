@@ -13,5 +13,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'prefer-destructuring': 'off',
     'no-underscore-dangle': 'off',
+    'object-curly-newline': 'off',
   },
 };
