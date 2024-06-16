@@ -31,3 +31,11 @@ main {
   margin: 0 auto;
   width: 600px;
 }
+
+.req_h {
+  margin: 20px 0 10px 0;
+}
+
+.errTrends_container {
+  display: flex;
+}

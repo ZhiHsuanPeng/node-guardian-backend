@@ -12,6 +12,13 @@ html
         main.main This is an error detail page
             .timeStampStat(data-time = `${timeStamp}`)
             .requestInfo(data-request= `${latestErr.filteredReqObj}`)
+            .errTrends_container 
+                .past1dgraph Last day
+                    #past1day
+                .past1hgraph Last hour
+                    #past1hour  
+                .past1wgraph Last week 
+                    #past1week
             .errDetail_container
                 .errDetail_errorTitle #{errTitle}
                 .errDetail_errorTime 
@@ -31,9 +38,34 @@ html
                             .dropdown
                             button(onclick="toggleFrames()") Show/Hide Non-Project Frames
                             each line in otherStack 
-                                .non-project-frame #{line}
-                    .errorParams Params 
-                        .req_h_userAgent #{latestErr}
+                                .non-project-frame(style= "display: none;") #{line}
+                    .errorParamsContainer 
+                        .errorParamsTitle Params 
+                            .req_h_container
+                                .req_h request.headers.user-agent 
+                                | #{latestErr.filteredReqObj.userAgent}
+                                .req_h request.headers.accept 
+                                | #{latestErr.filteredReqObj.accept}
+                                .req_h request.headers.accept-encoding
+                                | #{latestErr.filteredReqObj.headers['Accept-Encoding']}
+                                .req_h request.headers.accept-language 
+                                | #{latestErr.filteredReqObj.headers['Accept-Language']}
+                                .req_h request.headers.connection 
+                                | #{latestErr.filteredReqObj.headers.Connection}
+                                .req_h request.headers.host 
+                                | #{latestErr.filteredReqObj.headers.Host}
+                                .req_h request.method 
+                                | #{latestErr.filteredReqObj.method}
+                                .req_h request.url 
+                                | #{latestErr.filteredReqObj.fullUrl}
+                                .req_h request.userIp 
+                                | #{latestErr.filteredReqObj.requestIp}
+                            .server_params_container
+                                .server server.argv 
+                                each line in latestErr.processArgs
+                                    | #{line.replace(/\\\\/g, '\\')}
+                                    br
+
         script.
             function toggleFrames() {
                 var frames = document.getElementsByClassName('non-project-frame');
