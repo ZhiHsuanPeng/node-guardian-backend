@@ -12,6 +12,19 @@ html
         main.main This is an error detail page
             .timeStampStat(data-time = `${timeStamp}`)
             .requestInfo(data-request= `${latestErr.filteredReqObj}`)
+            .errTitle_container    
+                .errIndex_container
+                    a(href=`/a/${accountName}/prj/${prjName}`)
+                        .err_projectName= `> ${prjName} `
+                    .errDetail_errorTitle #{errTitle}
+                    .errDetail_errorTime 
+                        .firstError
+                            | First: #{firstToTimeDiff} ago
+                            .firstDate #{firstDate}
+                        .latestError
+                            | Latest: #{latestToTimeDiff} ago
+                            .latestDate #{latestDate}
+                        .errorTotal Total: #{all.length}
             .errTrends_container 
                 .graph_container
                     .past1hGraph Last hour
@@ -26,51 +39,49 @@ html
                     .past1wSum
                     #past1week
             .errDetail_container
-                .errDetail_errorTitle #{errTitle}
-                .errDetail_errorTime 
-                    .firstError First: #{firstToTimeDiff} ago, Date: #{firstDate}
-                    .latestError Latest: #{latestToTimeDiff} ago, Date: #{latestDate}
-                    .errorTotal Total: #{all.length}
-                .errDetail_stackTrace 
-                    .stackTraceTitle Stack Trace
-                    .stackTitle #{errTitle}
-                    .stackTrace Most Recent Call 
-                        .firstTrace at (#{firstStack})
-                        pre
-                            each line in errCode
-                                | #{line}
-                                br
-                        .otherTrace #{otherStack.length} non-project frames
-                            .dropdown
-                            button(onclick="toggleFrames()") Show/Hide Non-Project Frames
-                            each line in otherStack 
-                                .non-project-frame(style= "display: none;") #{line}
-                    .errorParamsContainer 
-                        .errorParamsTitle Params 
-                            .req_h_container
-                                .req_h request.headers.user-agent 
-                                | #{latestErr.filteredReqObj.userAgent}
-                                .req_h request.headers.accept 
-                                | #{latestErr.filteredReqObj.accept}
-                                .req_h request.headers.accept-encoding
-                                | #{latestErr.filteredReqObj.headers['Accept-Encoding']}
-                                .req_h request.headers.accept-language 
-                                | #{latestErr.filteredReqObj.headers['Accept-Language']}
-                                .req_h request.headers.connection 
-                                | #{latestErr.filteredReqObj.headers.Connection}
-                                .req_h request.headers.host 
-                                | #{latestErr.filteredReqObj.headers.Host}
-                                .req_h request.method 
-                                | #{latestErr.filteredReqObj.method}
-                                .req_h request.url 
-                                | #{latestErr.filteredReqObj.fullUrl}
-                                .req_h request.userIp 
-                                | #{latestErr.filteredReqObj.requestIp}
-                            .server_params_container
-                                .server server.argv 
+                .errStackTrace_container
+                    .errDetail_stackTrace 
+                        .stackTraceTitle Stack Trace
+                        .stackTitle #{errTitle}
+                        .stackTrace Most Recent Call 
+                            .firstTrace at (#{firstStack})
+                            pre
+                                each line in errCode
+                                    | #{line}
+                                    br
+                            .otherTrace #{otherStack.length} non-project frames
+                                .dropdown
+                                button(onclick="toggleFrames()") Show/Hide Non-Project Frames
+                                each line in otherStack 
+                                    .non-project-frame(style= "display: none;") #{line}
+                .errorParamsContainer 
+                    .errorParamsTitle Params 
+                        .req_h_container
+                            .req_h request.headers.user-agent 
+                            | #{latestErr.filteredReqObj.userAgent}
+                            .req_h request.headers.accept 
+                            | #{latestErr.filteredReqObj.accept}
+                            .req_h request.headers.accept-encoding
+                            | #{latestErr.filteredReqObj.headers['Accept-Encoding']}
+                            .req_h request.headers.accept-language 
+                            | #{latestErr.filteredReqObj.headers['Accept-Language']}
+                            .req_h request.headers.connection 
+                            | #{latestErr.filteredReqObj.headers.Connection}
+                            .req_h request.headers.host 
+                            | #{latestErr.filteredReqObj.headers.Host}
+                            .req_h request.method 
+                            | #{latestErr.filteredReqObj.method}
+                            .req_h request.url 
+                            | #{latestErr.filteredReqObj.fullUrl}
+                            .req_h request.userIp 
+                            | #{latestErr.filteredReqObj.requestIp}
+                        .server_params_container
+                            .server_argv server.argv 
                                 each line in latestErr.processArgs
                                     | #{line.replace(/\\\\/g, '\\')}
                                     br
+                            .server_pid server.pid 
+                            | #{latestErr.processPid}
 
         script.
             function toggleFrames() {

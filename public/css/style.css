@@ -1,5 +1,11 @@
-main {
+html {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial,
+    Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   box-sizing: border-box;
+}
+.main {
+  width: 900px;
+  margin: 0 auto;
 }
 
 .containerBar {
@@ -42,4 +48,68 @@ main {
 
 .graph_container {
   display: column;
+}
+
+.errTrends_container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  background-color: #dbe3f3;
+}
+
+.graph_container {
+  margin: 20px 15px;
+  padding: 10px;
+  border: 2px solid rgb(181, 195, 241);
+  border-radius: 8px;
+  background-color: white;
+}
+
+.errDetail_errorTime {
+  display: flex;
+  position: relative;
+}
+
+.errIndex_container {
+  height: 100px;
+  background-color: #dbe3f3;
+  padding: 30px;
+  margin: 0 auto;
+}
+
+.errDetail_errorTitle {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.firstError,
+.latestError,
+.errorTotal {
+  margin: 10px 10px;
+}
+
+.firstDate,
+.latestDate {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  border: 1px solid black;
+  padding: 5px;
+  z-index: 1;
+}
+
+.firstError:hover .firstDate,
+.latestError:hover .latestDate {
+  display: block;
+}
+
+.errDetail_container {
+  background-color: #dbe3f3;
+  padding: 30px;
+  margin: 40px auto;
+  width: 900px;
+  border-radius: 8px;
+  box-sizing: border-box;
 }

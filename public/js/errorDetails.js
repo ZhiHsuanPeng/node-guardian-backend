@@ -72,8 +72,8 @@ const past1d = () => {
     },
     hovermode: 'x',
     autosize: true,
-    width: 400,
-    height: 250,
+    width: 200,
+    height: 150,
     margin: {
       l: 30,
       r: 30,
@@ -159,8 +159,8 @@ const past1h = () => {
     },
     hovermode: 'x',
     autosize: true,
-    width: 400,
-    height: 250,
+    width: 200,
+    height: 150,
     margin: {
       l: 30,
       r: 30,
@@ -181,8 +181,11 @@ const past1w = () => {
   const occurrences = Array(7).fill(0);
 
   const days = Array.from({ length: 7 }, (_, i) => {
-    const date = new Date(now.getTime() - (6 - i) * 24 * 60 * 60 * 1000);
-    return date.toISOString().slice(0, 10);
+    const ts = new Date(now.getTime() - (6 - i) * 24 * 60 * 60 * 1000);
+    const newDate = new Date(ts);
+    const month = newDate.getMonth() + 1;
+    const day = newDate.getDate();
+    return `${month}/${day}`;
   });
 
   timeStamp[0].split(',').forEach((timestamp) => {
@@ -197,6 +200,7 @@ const past1w = () => {
     x: days,
     y: occurrences,
     type: 'bar',
+    width: 0.5,
     hovertemplate: '%{y}<extra></extra>',
     marker: {
       color: 'rgba(26, 118, 186, 0.8)',
@@ -231,8 +235,8 @@ const past1w = () => {
     },
     hovermode: 'x',
     autosize: true,
-    width: 400,
-    height: 250,
+    width: 200,
+    height: 150,
     margin: {
       l: 30,
       r: 30,
