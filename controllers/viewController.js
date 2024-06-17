@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable comma-dangle */
 const errorLog = require('../models_openSearch/errorLog');
@@ -43,9 +44,45 @@ const formatString = (str) => {
   const formattedString = str.replace(/\r?\n|\r/g, '\n');
 
   const lines = formattedString.split('\n');
-  const indentedLines = lines.map((line) => '  ' + line);
+  const indentedLines = lines.map((line) => `  ${line}`);
 
   return indentedLines;
+};
+
+const countIpPercent = (docs) => {
+  const ipCount = {};
+  const totalDocs = docs.length;
+
+  for (const doc of docs) {
+    const ip = doc.filteredReqObj.requestIp;
+    if (ipCount[ip]) {
+      ipCount[ip] += 1;
+    } else {
+      ipCount[ip] = 1;
+    }
+  }
+
+  const ipPercent = {};
+  for (const [ip, count] of Object.entries(ipCount)) {
+    ipPercent[ip] = (count / totalDocs) * 100;
+  }
+
+  return ipPercent;
+};
+
+const extractIpTimeStamp = (docs) => {
+  const ipTimeStamp = {};
+
+  for (const doc of docs) {
+    const ip = doc.filteredReqObj.requestIp;
+    if (ipTimeStamp[ip]) {
+      ipTimeStamp[ip].push(doc.timestamp);
+    } else {
+      ipTimeStamp[ip] = [doc.timestamp];
+    }
+  }
+
+  return ipTimeStamp;
 };
 
 exports.renderBasicProjectPage = async (req, res) => {
@@ -71,29 +108,8 @@ exports.renderBasicProjectPage = async (req, res) => {
   return res.status(200).render('projectBase', { errObj, errorMessageArr, accountName, prjName });
 };
 
-const countIpPercent = (docs) => {
-  const ipCount = {};
-  const totalDocs = docs.length;
-
-  for (const doc of docs) {
-    const ip = doc.filteredReqObj.requestIp;
-    if (ipCount[ip]) {
-      ipCount[ip] += 1;
-    } else {
-      ipCount[ip] = 1;
-    }
-  }
-
-  const ipPercent = {};
-  for (const [ip, count] of Object.entries(ipCount)) {
-    ipPercent[ip] = (count / totalDocs) * 100;
-  }
-
-  return ipPercent;
-};
-
 exports.renderErrorDetailPage = async (req, res) => {
-  const { err, accountName, prjName } = req.params;
+  const { accountName, prjName } = req.params;
   const { latest, first, errTitle, all, timeStamp, latestErr } = await errorLog.getAllErrors(
     '123',
     'Error: HAHA! Another error!'
@@ -106,6 +122,8 @@ exports.renderErrorDetailPage = async (req, res) => {
   const firstStack = extractPathFromStackTrace(latestErr.err.split('\n')[1]).slice(1);
   const otherStack = latestErr.err.split('\n').slice(2);
   const ipPercentage = countIpPercent(all);
+  const ipTimeStamp = Object.values(extractIpTimeStamp(all));
+  console.log(ipTimeStamp);
   const errCode = formatString(latestErr.code);
   return res.status(200).render('errorDetail', {
     accountName,
@@ -123,5 +141,6 @@ exports.renderErrorDetailPage = async (req, res) => {
     errTitle,
     timeStamp,
     ipPercentage,
+    ipTimeStamp,
   });
 };

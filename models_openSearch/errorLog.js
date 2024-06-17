@@ -1,4 +1,4 @@
-const openSearchClient = require('./openSearch');
+// const openSearchClient = require('./openSearch');
 const elasticSearchClient = require('./elastiSearch');
 
 exports.countErrorByErrorMessage = async (accessToken) => {
@@ -103,18 +103,18 @@ exports.getAllErrors = async (accessToken, err) => {
   return errorDetail;
 };
 
-async function deleteAllDocuments(index) {
-  try {
-    const response = await elasticSearchClient.deleteByQuery({
-      index,
-      body: {
-        query: {
-          match_all: {},
-        },
-      },
-    });
-    console.log(response);
-  } catch (error) {
-    console.error('Error deleting documents:', error);
-  }
-}
+// async function deleteAllDocuments(index) {
+//   try {
+//     const response = await elasticSearchClient.deleteByQuery({
+//       index,
+//       body: {
+//         query: {
+//           match_all: {},
+//         },
+//       },
+//     });
+//     console.log(response);
+//   } catch (error) {
+//     console.error('Error deleting documents:', error);
+//   }
+// }

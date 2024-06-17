@@ -123,3 +123,12 @@ html {
   word-wrap: break-word;
   padding: 0 40px 0 0;
 }
+
+.errorParamsTitle {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.errTrends_container {
+  font-weight: 600;
+}

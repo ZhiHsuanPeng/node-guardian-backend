@@ -3,6 +3,11 @@ document.querySelectorAll('.timeStampStat').forEach((element) => {
   timeStamp.push(element.dataset.time);
 });
 
+const ipTimeStamp = [];
+document.querySelectorAll('.iPtimeStamp').forEach((element) => {
+  ipTimeStamp.push([element.dataset.iptime]);
+});
+
 const past1d = () => {
   const now = new Date();
   const currentHourGMT = now.getUTCHours();
@@ -72,7 +77,7 @@ const past1d = () => {
     },
     hovermode: 'x',
     autosize: true,
-    width: 200,
+    width: 270,
     height: 150,
     margin: {
       l: 30,
@@ -159,7 +164,7 @@ const past1h = () => {
     },
     hovermode: 'x',
     autosize: true,
-    width: 200,
+    width: 270,
     height: 150,
     margin: {
       l: 30,
@@ -200,7 +205,7 @@ const past1w = () => {
     x: days,
     y: occurrences,
     type: 'bar',
-    width: 0.5,
+    width: 0.3,
     hovertemplate: '%{y}<extra></extra>',
     marker: {
       color: 'rgba(26, 118, 186, 0.8)',
@@ -235,7 +240,7 @@ const past1w = () => {
     },
     hovermode: 'x',
     autosize: true,
-    width: 200,
+    width: 270,
     height: 150,
     margin: {
       l: 30,
@@ -252,6 +257,97 @@ const past1w = () => {
   Plotly.newPlot('past1week', [trace], layout, config);
 };
 
+const past1hIpCount = () => {
+  const now = new Date();
+  const currentMinuteGMT = now.getUTCMinutes();
+  const currentHourGMT = now.getUTCHours();
+  const occurrences = Array(60).fill(0);
+
+  const minutes = Array.from({ length: 60 }, (_, i) => {
+    const totalMinutes = currentMinuteGMT - 59 + i;
+    const minuteAdjusted = (totalMinutes + 60) % 60;
+    const hourAdjusted = (currentHourGMT + 8 + Math.floor(totalMinutes / 60)) % 24;
+
+    return hourAdjusted.toString().padStart(2, '0') + ':' + minuteAdjusted.toString().padStart(2, '0');
+  });
+  ipTimeStamp.forEach((timestamps) => {
+    const uniqueMinutes = new Set();
+    timestamps[0].split(',').forEach((timestamp) => {
+      const ts = Number(timestamp);
+      const gmtTimestamp = new Date(timestamp * 1);
+      const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+      const minute = gmtPlus8Timestamp.getUTCMinutes();
+
+      if (!uniqueMinutes.has(minute)) {
+        uniqueMinutes.add(minute);
+
+        if (new Date() - ts <= 60 * 60 * 1000) {
+          const index = minutes.findIndex((m) => m.endsWith(minute.toString().padStart(2, '0')));
+          if (index !== -1) {
+            occurrences[index]++;
+          }
+        }
+      }
+    });
+  });
+
+  const sum = occurrences.reduce((acc, val) => acc + val, 0);
+  const sumInPug = document.querySelector('.past1hSum');
+  if (sumInPug) {
+    sumInPug.textContent = `Total: ${sum}`;
+  }
+
+  const trace = {
+    x: minutes,
+    y: occurrences,
+    type: 'bar',
+    hovertemplate: '%{y}<extra></extra>',
+    marker: {
+      color: 'rgba(26, 118, 186, 0.8)',
+      line: {
+        color: 'rgba(31, 119, 180, 1)',
+        width: 1,
+      },
+    },
+  };
+
+  const maxOccurrences = Math.max(...occurrences);
+  const yaxisRange = maxOccurrences <= 5 ? [0, 5] : [0, maxOccurrences];
+
+  const layout = {
+    xaxis: {
+      tickvals: [0, Math.floor(minutes.length / 2), minutes.length - 1],
+      ticktext: [minutes[0], minutes[Math.floor(minutes.length / 2)], minutes[minutes.length - 1]],
+      hoverformat: '%M:00',
+      showgrid: false,
+      tickangle: 0,
+    },
+    yaxis: {
+      range: yaxisRange,
+      showline: true,
+      linecolor: 'black',
+      linewidth: 1,
+    },
+    hovermode: 'x',
+    autosize: true,
+    width: 270,
+    height: 150,
+    margin: {
+      l: 30,
+      r: 30,
+      b: 30,
+      t: 30,
+    },
+  };
+
+  const config = {
+    displayModeBar: false,
+  };
+
+  Plotly.newPlot('past1hourIpCount', [trace], layout, config);
+};
+
 past1d();
 past1h();
 past1w();
+past1hIpCount();

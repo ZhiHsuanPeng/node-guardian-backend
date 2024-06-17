@@ -4,13 +4,14 @@ html
         
         meta(charset='UTF-8')
         meta(name='viewport' content='width=device-width, initial-scale=1.0')
-        title My product
+        title #{errTitle}
         link(rel='stylesheet' href='/css/style.css')
         script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
 
     body
         main.main This is an error detail page
             .timeStampStat(data-time = `${timeStamp}`)
+            .iPtimeStamp(data-iptime=`${ipTimeStamp}`)
             .requestInfo(data-request= `${latestErr.filteredReqObj}`)
             .errTitle_container    
                 .errIndex_container
@@ -25,7 +26,7 @@ html
                             | Latest: #{latestToTimeDiff} ago
                             .latestDate #{latestDate}
                         .errorTotal Total: #{all.length}
-            .errTrends_container 
+            .errTrends_container Occurrences 
                 .graph_container
                     .past1hGraph Last hour
                     .past1hSum
@@ -38,6 +39,14 @@ html
                     .past1wGraph Last week 
                     .past1wSum
                     #past1week
+            .errTrends_container Affected IPs  
+                .graph_container 
+                    .past1hIpGraph Last hour
+                    .past1hIpSum 
+                    #past1hourIpCount
+                .graph_container 
+                .graph_container 
+
             .errDetail_container
                 .errStackTrace_container
                     .errDetail_stackTrace 
@@ -55,42 +64,56 @@ html
                                 each line in otherStack 
                                     .non-project-frame(style= "display: none;") #{line}
                 .errorParamsContainer 
-                    .errorParamsTitle Params 
-                        .params_container
-                            .params_pair_container
-                                .req_h request.headers.user-agent 
-                                .req_value #{latestErr.filteredReqObj.userAgent}
-                            .params_pair_container
-                                .req_h request.headers.accept 
-                                .req_value #{latestErr.filteredReqObj.accept}
-                            .params_pair_container
-                                .req_h request.headers.accept-encoding
-                                .req_value #{latestErr.filteredReqObj.headers['Accept-Encoding']}
-                            .params_pair_container
-                                .req_h request.headers.accept-language 
-                                .req_value #{latestErr.filteredReqObj.headers['Accept-Language']}
-                            .params_pair_container
-                                .req_h request.headers.connection 
-                                .req_value #{latestErr.filteredReqObj.headers.Connection}
-                            .params_pair_container
-                                .req_h request.headers.host 
-                                .req_value #{latestErr.filteredReqObj.headers.Host}
-                            .params_pair_container
-                                .req_h request.method 
-                                .req_value #{latestErr.filteredReqObj.method}
-                            .params_pair_container
-                                .req_h request.url 
-                                .req_value #{latestErr.filteredReqObj.fullUrl}
-                            .params_pair_container
-                                .req_h request.userIp 
-                                .req_value #{latestErr.filteredReqObj.requestIp}
-                            .params_pair_container
-                                .req_h server.argv 
-                                .req_value= `[${latestErr.processArgs}]`
-                                    
-                            .params_pair_container
-                                .req_h server.pid 
-                                .req_value #{latestErr.processPid}
+                    .errorParamsTitle Latest Request Params
+                    .params_container
+                        .params_pair_container
+                            .req_h request.browser
+                            .req_value #{latestErr.deviceInfo.browser.name}
+                        .params_pair_container
+                            .req_h request.os
+                            .req_value= `${latestErr.deviceInfo.os.name} ${latestErr.deviceInfo.os.version}`
+                        .params_pair_container
+                            .req_h request.device
+                            .req_value= `${latestErr.deviceInfo.device.model || 'undefined'}`
+                        .params_pair_container
+                            .req_h request.headers.user-agent 
+                            .req_value #{latestErr.filteredReqObj.userAgent}
+                        .params_pair_container
+                            .req_h request.headers.accept 
+                            .req_value #{latestErr.filteredReqObj.accept}
+                        .params_pair_container
+                            .req_h request.headers.accept-encoding
+                            .req_value #{latestErr.filteredReqObj.headers['Accept-Encoding']}
+                        .params_pair_container
+                            .req_h request.headers.accept-language 
+                            .req_value #{latestErr.filteredReqObj.headers['Accept-Language']}
+                        .params_pair_container
+                            .req_h request.headers.connection 
+                            .req_value #{latestErr.filteredReqObj.headers.Connection}
+                        .params_pair_container
+                            .req_h request.headers.host 
+                            .req_value #{latestErr.filteredReqObj.headers.Host}
+                        .params_pair_container
+                            .req_h request.method 
+                            .req_value #{latestErr.filteredReqObj.method}
+                        .params_pair_container
+                            .req_h request.url 
+                            .req_value #{latestErr.filteredReqObj.fullUrl}
+                        .params_pair_container
+                            .req_h request.userIp 
+                            .req_value #{latestErr.filteredReqObj.requestIp}
+                        .params_pair_container
+                            .req_h server.argv 
+                            .req_value= `[${latestErr.processArgs}]`
+                                
+                        .params_pair_container
+                            .req_h server.pid 
+                            .req_value #{latestErr.processPid}
+                .summary_container 
+                    .errorParamsTitle Summary
+                    .params_container 
+                        .req_h server.argv 
+                        .req_value= `[${latestErr.processArgs}]`
 
         script.
             function toggleFrames() {

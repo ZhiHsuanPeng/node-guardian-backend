@@ -20,7 +20,8 @@ const checkIndexAndStoreData = async (payLoad) => {
   const indexResponse = await client.indices.exists({
     index: payLoad.accessToken,
   });
-  if (indexResponse.body) {
+
+  if (indexResponse) {
     await client.index({
       index: payLoad.accessToken,
       body: payLoad,
