@@ -292,7 +292,7 @@ const past1hIpCount = () => {
   });
 
   const sum = occurrences.reduce((acc, val) => acc + val, 0);
-  const sumInPug = document.querySelector('.past1hSum');
+  const sumInPug = document.querySelector('.past1hIpSum');
   if (sumInPug) {
     sumInPug.textContent = `Total: ${sum}`;
   }
@@ -381,7 +381,7 @@ const past1dIpCount = () => {
   });
 
   const sum = occurrences.reduce((acc, val) => acc + val, 0);
-  const sumInPug = document.querySelector('.past1dSum');
+  const sumInPug = document.querySelector('.past1dIpSum');
   if (sumInPug) {
     sumInPug.textContent = `Total: ${sum}`;
   }
@@ -482,7 +482,7 @@ const past1wIpCount = () => {
   };
 
   const sum = occurrences.reduce((acc, val) => acc + val, 0);
-  const sumInPug = document.querySelector('.past1wSum');
+  const sumInPug = document.querySelector('.past1wIpSum');
   if (sumInPug) {
     sumInPug.textContent = `Total: ${sum}`;
   }
