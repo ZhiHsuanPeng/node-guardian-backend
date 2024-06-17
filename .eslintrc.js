@@ -14,5 +14,6 @@ module.exports = {
     'prefer-destructuring': 'off',
     'no-underscore-dangle': 'off',
     'object-curly-newline': 'off',
+    quotes: 'off',
   },
 };
