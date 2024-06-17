@@ -372,7 +372,6 @@ const past1dIpCount = () => {
 
         if (new Date() - ts <= 24 * 60 * 60 * 1000) {
           const index = hours.findIndex((m) => m.startsWith(hour.toString().padStart(2, '0')));
-          console.log(index);
           if (index !== -1) {
             occurrences[index]++;
           }
@@ -437,8 +436,95 @@ const past1dIpCount = () => {
   Plotly.newPlot('past1dIpCount', [trace], layout, config);
 };
 
+const past1wIpCount = () => {
+  const now = new Date();
+  const occurrences = Array(7).fill(0);
+
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const ts = new Date(now.getTime() - (6 - i) * 24 * 60 * 60 * 1000);
+    const newDate = new Date(ts);
+    const month = newDate.getMonth() + 1;
+    const day = newDate.getDate();
+    return `${month}/${day}`;
+  });
+
+  ipTimeStamp.forEach((timestamps) => {
+    const uniqueDays = new Set();
+    timestamps[0].split(',').forEach((timestamp) => {
+      const ts = Number(timestamp);
+      const gmtTimestamp = new Date(ts);
+      const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+      const day = gmtPlus8Timestamp.getUTCDate();
+
+      if (!uniqueDays.has(day)) {
+        uniqueDays.add(day);
+
+        const dayDiff = Math.floor((now - ts) / (24 * 60 * 60 * 1000));
+        if (dayDiff >= 0 && dayDiff < 7) {
+          occurrences[6 - dayDiff]++;
+        }
+      }
+    });
+  });
+  const trace = {
+    x: days,
+    y: occurrences,
+    type: 'bar',
+    width: 0.3,
+    hovertemplate: '%{y}<extra></extra>',
+    marker: {
+      color: 'rgba(26, 118, 186, 0.8)',
+      line: {
+        color: 'rgba(31, 119, 180, 1)',
+        width: 1,
+      },
+    },
+  };
+
+  const sum = occurrences.reduce((acc, val) => acc + val, 0);
+  const sumInPug = document.querySelector('.past1wSum');
+  if (sumInPug) {
+    sumInPug.textContent = `Total: ${sum}`;
+  }
+
+  const maxOccurrences = Math.max(...occurrences);
+  const yaxisRange = maxOccurrences <= 5 ? [0, 5] : [0, maxOccurrences];
+  const layout = {
+    xaxis: {
+      tickvals: [days[0], days[3], days[6]],
+      ticktext: [days[0], days[3], days[6]],
+      hoverformat: '%m/%d',
+      showgrid: false,
+      tickangle: 0,
+    },
+    yaxis: {
+      range: yaxisRange,
+      showline: true,
+      linecolor: 'black',
+      linewidth: 1,
+    },
+    hovermode: 'x',
+    autosize: true,
+    width: 270,
+    height: 150,
+    margin: {
+      l: 30,
+      r: 30,
+      b: 30,
+      t: 30,
+    },
+  };
+
+  const config = {
+    displayModeBar: false,
+  };
+
+  Plotly.newPlot('past1wIpCount', [trace], layout, config);
+};
+
 past1d();
 past1h();
 past1w();
 past1hIpCount();
 past1dIpCount();
+past1wIpCount();
