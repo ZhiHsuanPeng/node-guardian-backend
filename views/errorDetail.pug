@@ -46,24 +46,30 @@ html
                     #past1hourIpCount
                 .graph_container 
                     .past1dIpGraph Last day
-                    .past1dSum
+                    .past1dIpSum
                     #past1dIpCount
                 .graph_container 
                     .past1wIpGraph Last week
-                    .past1wSum
+                    .past1wIpSum
                     #past1wIpCount
 
             .errDetail_container
                 .errStackTrace_container
                     .errDetail_stackTrace 
                         .stackTraceTitle Stack Trace
-                        .stackTitle #{errTitle}
+                        .stackTitle= `${errTitle.split().join()}`
                         .stackTrace Most Recent Call 
+                        pre
                             .firstTrace at (#{firstStack})
-                            pre
-                                each line in errCode
-                                    | #{line}
-                                    br
+                            .codeContainer
+                                pre
+                                    each line, index in errCode
+                                        if index === 2
+                                            span.line(style='display: inline-block; background-color: yellow')= line
+                                            br(style='color: red; font-weight: bold;')
+                                        else
+                                            span.line(style='display: inline-block;')= line
+                                            br
                             .otherTrace #{otherStack.length} non-project frames
                                 .dropdown
                                 button(onclick="toggleFrames()") Show/Hide Non-Project Frames
@@ -74,13 +80,13 @@ html
                     .params_container
                         .params_pair_container
                             .req_h request.browser
-                            .req_value #{latestErr.deviceInfo.browser.name}
+                            .req_value= `${latestErr.deviceInfo.browser.name} ${latestErr.deviceInfo.browser.version}`
                         .params_pair_container
                             .req_h request.os
                             .req_value= `${latestErr.deviceInfo.os.name} ${latestErr.deviceInfo.os.version}`
                         .params_pair_container
                             .req_h request.device
-                            .req_value= `${latestErr.deviceInfo.device.model || 'undefined'}`
+                            .req_value= `${latestErr.deviceInfo.device.model || 'unknown'}`
                         .params_pair_container
                             .req_h request.headers.user-agent 
                             .req_value #{latestErr.filteredReqObj.userAgent}
@@ -117,9 +123,29 @@ html
                             .req_value #{latestErr.processPid}
                 .summary_container 
                     .errorParamsTitle Summary
-                    .params_container 
-                        .req_h server.argv 
-                        .req_value= `[${latestErr.processArgs}]`
+                    .params_pair_container
+                        .summary_title Request user IP
+                        .keyValue_container
+                            each pair in ipPercentage
+                                div
+                                    .key #{pair[0]} #{pair[1]}%
+                            
+                                    br
+                    .params_pair_container
+                        .summary_title Browser
+                        .keyValue_container
+                            each pair in browserPercentage
+                                div
+                                    .key #{pair[0]} #{pair[1]}%
+                                    br
+                    .params_pair_container
+                        .summary_title OS
+                        .keyValue_container
+                            each pair in osPercentage
+                                div
+                                    .key #{pair[0]} #{pair[1]}% 
+                                    br
+
 
         script.
             function toggleFrames() {

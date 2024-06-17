@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable comma-dangle */
@@ -85,6 +86,42 @@ const extractIpTimeStamp = (docs) => {
   return ipTimeStamp;
 };
 
+const countDevicePercentage = (docs) => {
+  const browserCounts = {};
+  const osCounts = {};
+
+  for (const doc of docs) {
+    const browser = doc.deviceInfo.browser.name;
+    const os = doc.deviceInfo.os.name;
+
+    if (browserCounts[browser]) {
+      browserCounts[browser].push(doc.timestamp);
+    } else {
+      browserCounts[browser] = [doc.timestamp];
+    }
+
+    if (osCounts[os]) {
+      osCounts[os].push(doc.timestamp);
+    } else {
+      osCounts[os] = [doc.timestamp];
+    }
+  }
+
+  const totalDocs = docs.length;
+  const browserPercentage = {};
+  const osPercentage = {};
+
+  for (const browser in browserCounts) {
+    browserPercentage[browser] = Math.round((browserCounts[browser].length / totalDocs) * 100);
+  }
+
+  for (const os in osCounts) {
+    osPercentage[os] = Math.round((osCounts[os].length / totalDocs) * 100);
+  }
+
+  return { browserPercentage, osPercentage };
+};
+
 exports.renderBasicProjectPage = async (req, res) => {
   const { accountName, prjName } = req.params;
   const errorMessageAndCount = await errorLog.countErrorByErrorMessage('123');
@@ -121,10 +158,11 @@ exports.renderErrorDetailPage = async (req, res) => {
   const firstDate = transformUNIXtoDate(first);
   const firstStack = extractPathFromStackTrace(latestErr.err.split('\n')[1]).slice(1);
   const otherStack = latestErr.err.split('\n').slice(2);
-  const ipPercentage = countIpPercent(all);
+  const ipPercentage = Object.entries(countIpPercent(all));
   const ipTimeStamp = Object.values(extractIpTimeStamp(all));
-  console.log(ipTimeStamp);
   const errCode = formatString(latestErr.code);
+  const browserPercentage = Object.entries(Object.values(countDevicePercentage(all))[0]);
+  const osPercentage = Object.entries(Object.values(countDevicePercentage(all))[1]);
   return res.status(200).render('errorDetail', {
     accountName,
     prjName,
@@ -142,5 +180,7 @@ exports.renderErrorDetailPage = async (req, res) => {
     timeStamp,
     ipPercentage,
     ipTimeStamp,
+    browserPercentage,
+    osPercentage,
   });
 };

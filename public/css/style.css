@@ -34,7 +34,7 @@ html {
 }
 
 .req_h {
-  margin: 20px 0 10px 0;
+  margin: 0 0 10px 0;
 }
 
 .errTrends_container {
@@ -101,7 +101,8 @@ html {
 }
 
 .errStackTrace_container,
-.errorParamsContainer {
+.errorParamsContainer,
+.summary_container {
   background-color: #dbe3f3;
   padding: 30px;
   margin: 40px auto;
@@ -111,12 +112,12 @@ html {
 
 .params_pair_container {
   display: flex;
-  align-items: center;
-
   justify-content: space-between;
+  margin: 25px 0;
 }
 
-.req_value {
+.req_value,
+.key {
   letter-spacing: 1px;
   font-size: 12px;
   width: 600px;
@@ -131,4 +132,31 @@ html {
 
 .errTrends_container {
   font-weight: 600;
+}
+
+.errorParamsTitle,
+.stackTraceTitle {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 40px 0;
+}
+
+.codeContainer {
+  width: 900px;
+  border-radius: 8px;
+  background-color: aliceblue;
+}
+.line {
+  width: 100%;
+  margin: 4px 0;
+}
+
+.keyValue_container {
+  display: column;
+  letter-spacing: 1px;
+}
+
+.key,
+.value {
+  margin: 0 5px;
 }
