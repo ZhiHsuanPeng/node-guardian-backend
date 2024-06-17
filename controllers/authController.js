@@ -21,6 +21,9 @@ exports.signUp = async (req, res) => {
     const userId = await userModel.createUser(name, email, password);
     return signTokenAndSendCookie(res, userId);
   } catch (err) {
+    if (err.sqlState === '23000') {
+      return res.status(400).json({ message: 'User email already exits!' });
+    }
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
     }
