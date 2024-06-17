@@ -347,7 +347,98 @@ const past1hIpCount = () => {
   Plotly.newPlot('past1hourIpCount', [trace], layout, config);
 };
 
+const past1dIpCount = () => {
+  const now = new Date();
+  const currentHourGMT = now.getUTCHours();
+  const currentHourGMT8 = (currentHourGMT + 8) % 24;
+  const occurrences = Array(24).fill(0);
+  const yesterday = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+  const hours = Array.from({ length: 24 }, (_, i) => {
+    const hour = (currentHourGMT8 - 23 + i + 24) % 24;
+    return hour.toString().padStart(2, '0') + ':00';
+  });
+
+  ipTimeStamp.forEach((timestamps) => {
+    const uniqueHours = new Set();
+    timestamps[0].split(',').forEach((timestamp) => {
+      const ts = Number(timestamp);
+      const gmtTimestamp = new Date(timestamp * 1);
+      const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+      const hour = gmtPlus8Timestamp.getUTCHours();
+
+      if (!uniqueHours.has(hour)) {
+        uniqueHours.add(hour);
+
+        if (new Date() - ts <= 24 * 60 * 60 * 1000) {
+          const index = hours.findIndex((m) => m.startsWith(hour.toString().padStart(2, '0')));
+          console.log(index);
+          if (index !== -1) {
+            occurrences[index]++;
+          }
+        }
+      }
+    });
+  });
+
+  const sum = occurrences.reduce((acc, val) => acc + val, 0);
+  const sumInPug = document.querySelector('.past1dSum');
+  if (sumInPug) {
+    sumInPug.textContent = `Total: ${sum}`;
+  }
+
+  const trace = {
+    x: hours,
+    y: occurrences,
+    type: 'bar',
+    hovertemplate: '%{y}<extra></extra>',
+    marker: {
+      color: 'rgba(26, 118, 186, 0.8)',
+      line: {
+        color: 'rgba(31, 119, 180, 1)',
+        width: 1,
+      },
+    },
+  };
+
+  const maxOccurrences = Math.max(...occurrences);
+  const yaxisRange = maxOccurrences <= 5 ? [0, 5] : [0, maxOccurrences];
+
+  const layout = {
+    xaxis: {
+      tickvals: [0, Math.floor(hours.length / 2), hours.length - 1],
+      ticktext: [hours[0], hours[Math.floor(hours.length / 2)], hours[hours.length - 1]],
+      hoverformat: '%H:00',
+      showgrid: false,
+      tickangle: 0,
+    },
+    yaxis: {
+      range: yaxisRange,
+      showline: true,
+      linecolor: 'black',
+      linewidth: 1,
+    },
+    hovermode: 'x',
+    autosize: true,
+    width: 270,
+    height: 150,
+    margin: {
+      l: 30,
+      r: 30,
+      b: 30,
+      t: 30,
+    },
+  };
+
+  const config = {
+    displayModeBar: false,
+  };
+
+  Plotly.newPlot('past1dIpCount', [trace], layout, config);
+};
+
 past1d();
 past1h();
 past1w();
 past1hIpCount();
+past1dIpCount();
