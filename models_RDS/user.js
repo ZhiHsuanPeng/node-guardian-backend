@@ -13,3 +13,8 @@ exports.createUser = async (name, email, password) => {
   }
   throw Error('create user failed');
 };
+
+exports.findUserByEmail = async (email) => {
+  const result = await pool.query(`SELECT * FROM users WHERE email = ?`, email);
+  return result[0][0];
+};

@@ -14,6 +14,13 @@ router
     validator.handleResult,
     authController.signUp,
   ]);
-router.route('/login').post(authController.login);
+router
+  .route('/signIn')
+  .post([
+    body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
+    body('password').notEmpty().withMessage('Password is required'),
+    validator.handleResult,
+    authController.signIn,
+  ]);
 
 module.exports = router;
