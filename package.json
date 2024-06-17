@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@elastic/elasticsearch": "^8.13.1",
     "@opensearch-project/opensearch": "^2.10.0",
     "amqplib": "^0.10.4",
     "dotenv": "^16.4.5",

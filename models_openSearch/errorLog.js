@@ -1,7 +1,8 @@
 const openSearchClient = require('./openSearch');
+const elasticSearchClient = require('./elastiSearch');
 
 exports.countErrorByErrorMessage = async (accessToken) => {
-  const response = await openSearchClient.search({
+  const response = await elasticSearchClient.search({
     index: accessToken,
     body: {
       size: 0,
@@ -27,7 +28,7 @@ exports.countErrorByErrorMessage = async (accessToken) => {
     },
   });
 
-  const buckets = response.body.aggregations.errorMessages.buckets;
+  const buckets = response.aggregations.errorMessages.buckets;
   const errorMessageAndCount = {};
   buckets.forEach((bucket) => {
     if (!errorMessageAndCount[bucket.key]) {
@@ -39,7 +40,7 @@ exports.countErrorByErrorMessage = async (accessToken) => {
 
 exports.getErrorTimeStampFilteredByTime = async (accessToken, errorMessage, hours) => {
   const hoursAgoTimeStamp = Date.now() - hours * 60 * 60 * 1000 + 60 * 60 * 1000;
-  const response = await openSearchClient.search({
+  const response = await elasticSearchClient.search({
     index: accessToken,
     body: {
       size: 100,
@@ -65,14 +66,14 @@ exports.getErrorTimeStampFilteredByTime = async (accessToken, errorMessage, hour
     },
   });
   const timeStamp = [];
-  response.body.hits.hits.forEach((doc) => {
+  response.hits.hits.forEach((doc) => {
     timeStamp.push(doc._source.timestamp);
   });
   return timeStamp;
 };
 
 exports.getAllErrors = async (accessToken, err) => {
-  const response = await openSearchClient.search({
+  const response = await elasticSearchClient.search({
     index: accessToken,
     body: {
       size: 100,
@@ -90,7 +91,7 @@ exports.getAllErrors = async (accessToken, err) => {
       sort: [{ timestamp: { order: 'desc' } }],
     },
   });
-  const result = response.body.hits.hits;
+  const result = response.hits.hits;
   const errorDetail = { latest: '', first: '', errTitle: err, all: [], timeStamp: [], latestErr: '' };
   errorDetail.latestErr = result[0]._source;
   errorDetail.latest = result[0]._source.timestamp;
@@ -104,7 +105,7 @@ exports.getAllErrors = async (accessToken, err) => {
 
 async function deleteAllDocuments(index) {
   try {
-    const response = await openSearchClient.deleteByQuery({
+    const response = await elasticSearchClient.deleteByQuery({
       index,
       body: {
         query: {

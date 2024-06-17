@@ -1,14 +1,13 @@
 const amqplib = require('amqplib');
 const dotenv = require('dotenv');
-const { Client } = require('@opensearch-project/opensearch');
+const { Client } = require('@elastic/elasticsearch');
 
 dotenv.config();
 
-const openSearchClient = new Client({
-  node: 'https://search-errorlog-sjbarfvt6la3sff7iuqqkov6x4.ap-southeast-2.es.amazonaws.com',
+const client = new Client({
+  node: process.env.ELASTICSEARCH_NODE,
   auth: {
-    username: process.env.OPENSEARCH_USER,
-    password: process.env.OPENSEARCH_PASS,
+    apiKey: process.env.ELASTICSEARCH_APIKEY,
   },
 });
 
@@ -18,21 +17,21 @@ const serverIp = process.env.AMQP_SERVERIP;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
 const checkIndexAndStoreData = async (payLoad) => {
-  const indexResponse = await openSearchClient.indices.exists({
+  const indexResponse = await client.indices.exists({
     index: payLoad.accessToken,
   });
   if (indexResponse.body) {
-    await openSearchClient.index({
+    await client.index({
       index: payLoad.accessToken,
       body: payLoad,
     });
     return;
   }
 
-  await openSearchClient.indices.create({
+  await client.indices.create({
     index: payLoad.accessToken,
   });
-  await openSearchClient.index({
+  await client.index({
     index: payLoad.accessToken,
     body: payLoad,
   });

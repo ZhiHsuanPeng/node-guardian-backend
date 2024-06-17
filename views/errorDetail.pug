@@ -56,32 +56,41 @@ html
                                     .non-project-frame(style= "display: none;") #{line}
                 .errorParamsContainer 
                     .errorParamsTitle Params 
-                        .req_h_container
-                            .req_h request.headers.user-agent 
-                            | #{latestErr.filteredReqObj.userAgent}
-                            .req_h request.headers.accept 
-                            | #{latestErr.filteredReqObj.accept}
-                            .req_h request.headers.accept-encoding
-                            | #{latestErr.filteredReqObj.headers['Accept-Encoding']}
-                            .req_h request.headers.accept-language 
-                            | #{latestErr.filteredReqObj.headers['Accept-Language']}
-                            .req_h request.headers.connection 
-                            | #{latestErr.filteredReqObj.headers.Connection}
-                            .req_h request.headers.host 
-                            | #{latestErr.filteredReqObj.headers.Host}
-                            .req_h request.method 
-                            | #{latestErr.filteredReqObj.method}
-                            .req_h request.url 
-                            | #{latestErr.filteredReqObj.fullUrl}
-                            .req_h request.userIp 
-                            | #{latestErr.filteredReqObj.requestIp}
-                        .server_params_container
-                            .server_argv server.argv 
-                                each line in latestErr.processArgs
-                                    | #{line.replace(/\\\\/g, '\\')}
-                                    br
-                            .server_pid server.pid 
-                            | #{latestErr.processPid}
+                        .params_container
+                            .params_pair_container
+                                .req_h request.headers.user-agent 
+                                .req_value #{latestErr.filteredReqObj.userAgent}
+                            .params_pair_container
+                                .req_h request.headers.accept 
+                                .req_value #{latestErr.filteredReqObj.accept}
+                            .params_pair_container
+                                .req_h request.headers.accept-encoding
+                                .req_value #{latestErr.filteredReqObj.headers['Accept-Encoding']}
+                            .params_pair_container
+                                .req_h request.headers.accept-language 
+                                .req_value #{latestErr.filteredReqObj.headers['Accept-Language']}
+                            .params_pair_container
+                                .req_h request.headers.connection 
+                                .req_value #{latestErr.filteredReqObj.headers.Connection}
+                            .params_pair_container
+                                .req_h request.headers.host 
+                                .req_value #{latestErr.filteredReqObj.headers.Host}
+                            .params_pair_container
+                                .req_h request.method 
+                                .req_value #{latestErr.filteredReqObj.method}
+                            .params_pair_container
+                                .req_h request.url 
+                                .req_value #{latestErr.filteredReqObj.fullUrl}
+                            .params_pair_container
+                                .req_h request.userIp 
+                                .req_value #{latestErr.filteredReqObj.requestIp}
+                            .params_pair_container
+                                .req_h server.argv 
+                                .req_value= `[${latestErr.processArgs}]`
+                                    
+                            .params_pair_container
+                                .req_h server.pid 
+                                .req_value #{latestErr.processPid}
 
         script.
             function toggleFrames() {

@@ -4,7 +4,7 @@ html {
   box-sizing: border-box;
 }
 .main {
-  width: 900px;
+  width: 1200px;
   margin: 0 auto;
 }
 
@@ -25,17 +25,12 @@ html {
   display: column;
   align-items: center;
   justify-content: center;
-  width: 800px;
+  width: 1200px;
   margin: 60px auto;
 }
 
 .containerBar .title {
   margin-right: 40px;
-}
-
-.errDetail_container {
-  margin: 0 auto;
-  width: 600px;
 }
 
 .req_h {
@@ -105,11 +100,26 @@ html {
   display: block;
 }
 
-.errDetail_container {
+.errStackTrace_container,
+.errorParamsContainer {
   background-color: #dbe3f3;
   padding: 30px;
   margin: 40px auto;
-  width: 900px;
   border-radius: 8px;
   box-sizing: border-box;
+}
+
+.params_pair_container {
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+.req_value {
+  letter-spacing: 1px;
+  font-size: 12px;
+  width: 600px;
+  word-wrap: break-word;
+  padding: 0 40px 0 0;
 }
