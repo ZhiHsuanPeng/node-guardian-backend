@@ -8,9 +8,9 @@ const router = express.Router();
 router
   .route('/signUp')
   .post([
-    body('email').isEmail().normalizeEmail(),
-    body('name').exists().notEmpty().trim(),
-    body('password').exists().notEmpty(),
+    body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
+    body('name').notEmpty().withMessage('Name is required').trim(),
+    body('password').notEmpty().withMessage('Password is required'),
     validator.handleResult,
     authController.signUp,
   ]);
