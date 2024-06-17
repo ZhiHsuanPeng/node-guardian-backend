@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const dotenv = require('dotenv');
+const cookieParser = require('cookie-parser');
 
 const logRouter = require('./routers/logRouter');
 const viewRouter = require('./routers/viewRouter');
@@ -15,6 +16,7 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
 
 app.use('/', viewRouter);
 app.use('/api/v1/logs', logRouter);
