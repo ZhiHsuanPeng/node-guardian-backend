@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 
 const logRouter = require('./routers/logRouter');
 const viewRouter = require('./routers/viewRouter');
+const userRouter = require('./routers/userRouter');
+const { errorHandler } = require('./utils/errorHandler');
 
 dotenv.config();
 
@@ -14,10 +16,11 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '10kb' }));
 
-console.log('request');
-
 app.use('/', viewRouter);
 app.use('/api/v1/logs', logRouter);
+app.use('/api/v1/users', userRouter);
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
 

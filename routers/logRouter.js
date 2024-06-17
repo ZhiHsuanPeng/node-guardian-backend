@@ -1,8 +1,8 @@
 const express = require('express');
-const logControllers = require('../controllers/logController');
+const logController = require('../controllers/logController');
 
 const router = express.Router();
 
-router.route('/newLogs').post(logControllers.insertNewLogs);
+router.route('/newLogs').post(logController.insertNewLogs);
 
 module.exports = router;
