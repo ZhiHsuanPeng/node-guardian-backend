@@ -2,7 +2,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable comma-dangle */
-const errorLog = require('../models_openSearch/errorLog');
+const errorLog = require('../models_Search/errorLog');
 
 const transformUNIXtoDiff = (unix) => {
   const timeStamp = new Date(unix);

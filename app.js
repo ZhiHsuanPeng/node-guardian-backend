@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logRouter = require('./routers/logRouter');
 const viewRouter = require('./routers/viewRouter');
 const userRouter = require('./routers/userRouter');
+const projectRouter = require('./routers/projectRouter');
 const { errorHandler } = require('./utils/errorHandler');
 
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use('/', viewRouter);
 app.use('/api/v1/logs', logRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/projects', projectRouter);
 
 app.use(errorHandler);
 

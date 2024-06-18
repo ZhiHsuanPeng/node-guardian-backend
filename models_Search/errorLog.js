@@ -1,5 +1,4 @@
-// const openSearchClient = require('./openSearch');
-const elasticSearchClient = require('./elastiSearch');
+const elasticSearchClient = require('./elasticSearch');
 
 exports.countErrorByErrorMessage = async (accessToken) => {
   const response = await elasticSearchClient.search({

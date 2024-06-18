@@ -14,6 +14,7 @@ router
     validator.handleResult,
     authController.signUp,
   ]);
+
 router
   .route('/signIn')
   .post([

@@ -24,7 +24,7 @@ exports.signIn = async (req, res) => {
     if (await argon2.verify(user.password, password)) {
       return signTokenAndSendCookie(res, user.id);
     }
-    throw new Error('incorrect password');
+    throw Error('incorrect password');
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
