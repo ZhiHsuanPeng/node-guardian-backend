@@ -4,6 +4,9 @@ exports.createProject = async (req, res) => {
   try {
     const { projectName, accessToken } = req.body;
     const userId = res.locals.userId;
+    if (await projectModel.isProjectNameExist(userId, projectName)) {
+      throw Error('project name already exists!');
+    }
     await projectModel.createProject(userId, projectName, accessToken);
     res.status(200).json({ message: `create project success` });
   } catch (err) {

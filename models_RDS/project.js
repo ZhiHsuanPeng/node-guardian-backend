@@ -18,6 +18,18 @@ exports.findProject = async (accessToken) => {
   return true;
 };
 
+exports.isProjectNameExist = async (userId, projectName) => {
+  const results = await pool.query(
+    `SELECT * FROM access AS a INNER JOIN projects AS p ON a.projectId = p.id WHERE p.name = ? and a.userId = ?`,
+    [projectName, userId]
+  );
+  console.log(results);
+  if (results[0].length > 0) {
+    return true;
+  }
+  return false;
+};
+
 exports.getAllProjectByUserId = async (userId) => {
   const results = await pool.query(
     `SELECT * FROM access AS a INNER JOIN projects AS p ON a.projectId = p.id WHERE userId = ? `,
