@@ -18,3 +18,11 @@ exports.findUserByEmail = async (email) => {
   const result = await pool.query(`SELECT * FROM users WHERE email = ?`, email);
   return result[0][0];
 };
+
+exports.isUserIdAndNameMatched = async (accountName, userId) => {
+  const result = await pool.query(`SELECT * FROM users WHERE name = ? AND id = ?`, [accountName, userId]);
+  if (result[0].length > 0) {
+    return true;
+  }
+  return false;
+};

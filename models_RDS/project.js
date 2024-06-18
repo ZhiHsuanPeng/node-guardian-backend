@@ -23,7 +23,6 @@ exports.isProjectNameExist = async (userId, projectName) => {
     `SELECT * FROM access AS a INNER JOIN projects AS p ON a.projectId = p.id WHERE p.name = ? and a.userId = ?`,
     [projectName, userId]
   );
-  console.log(results);
   if (results[0].length > 0) {
     return true;
   }

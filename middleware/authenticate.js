@@ -8,6 +8,9 @@ const authenticate = async (req, res, next) => {
   try {
     const tokenInHeaders = req.get('Authorization');
     const token = tokenInHeaders?.split(' ')[1] || req.cookies.jwt;
+    if (!token) {
+      throw Error('user not authenticated, please sign in to proceed');
+    }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRETS);
     res.locals.userId = decoded.id;

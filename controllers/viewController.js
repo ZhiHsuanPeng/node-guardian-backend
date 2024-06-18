@@ -4,6 +4,7 @@
 /* eslint-disable comma-dangle */
 const errorLog = require('../models_Search/errorLog');
 const projectModel = require('../models_RDS/project');
+const userModel = require('../models_RDS/user');
 
 const transformUNIXtoDiff = (unix) => {
   const timeStamp = new Date(unix);
@@ -124,71 +125,106 @@ const countDevicePercentage = (docs) => {
 };
 
 exports.renderOverViewPage = async (req, res) => {
-  const userId = res.locals.userId;
-  const projects = await projectModel.getAllProjectByUserId(userId);
+  try {
+    const { accountName } = req.params;
+    const userId = res.locals.userId;
+    if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
+      throw Error('page not found');
+    }
+    const projects = await projectModel.getAllProjectByUserId(userId);
 
-  res.render('overview', { projects });
+    return res.status(200).render('overview', { projects });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: 'something went wrong, please try again!' });
+  }
 };
 
 exports.renderBasicProjectPage = async (req, res) => {
-  const { accountName, prjName } = req.params;
-  const errorMessageAndCount = await errorLog.countErrorByErrorMessage('123');
+  try {
+    const { accountName, prjName } = req.params;
+    const userId = res.locals.userId;
 
-  const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
-  const errorsTimeStampPromises = errorMessageArr.map(async (err) => {
-    const timeStamp = await errorLog.getErrorTimeStampFilteredByTime('123', err, 24);
-    return { err, timeStamp };
-  });
-  const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
-  const recentTime = errorsTimeStampArray.map((ts) => {
-    const recentTs = new Date(ts.timeStamp.sort((a, b) => a - b)[ts.timeStamp.length - 1]);
-    return transformUNIXtoDiff(recentTs);
-  });
-  const errObj = errorsTimeStampArray.map(({ err, timeStamp }, index) => ({
-    err,
-    count: errorMessageAndCount[err],
-    timeStamp,
-    recentTime: recentTime[index],
-  }));
-  return res.status(200).render('projectBase', { errObj, errorMessageArr, accountName, prjName });
+    if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
+      throw Error('page not found');
+    }
+
+    const errorMessageAndCount = await errorLog.countErrorByErrorMessage('123');
+    const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
+    const errorsTimeStampPromises = errorMessageArr.map(async (err) => {
+      const timeStamp = await errorLog.getErrorTimeStampFilteredByTime('123', err, 24);
+      return { err, timeStamp };
+    });
+    const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
+    const recentTime = errorsTimeStampArray.map((ts) => {
+      const recentTs = new Date(ts.timeStamp.sort((a, b) => a - b)[ts.timeStamp.length - 1]);
+      return transformUNIXtoDiff(recentTs);
+    });
+    const errObj = errorsTimeStampArray.map(({ err, timeStamp }, index) => ({
+      err,
+      count: errorMessageAndCount[err],
+      timeStamp,
+      recentTime: recentTime[index],
+    }));
+    return res.status(200).render('projectBase', { errObj, errorMessageArr, accountName, prjName });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: 'something went wrong, please try again!' });
+  }
 };
 
 exports.renderErrorDetailPage = async (req, res) => {
-  const { accountName, prjName } = req.params;
-  const { latest, first, errTitle, all, timeStamp, latestErr } = await errorLog.getAllErrors(
-    '123',
-    'Error: HAHA! Another error!'
-  );
+  try {
+    const { accountName, prjName } = req.params;
+    const userId = res.locals.userId;
+    if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
+      throw Error('page not found');
+    }
 
-  const latestToTimeDiff = transformUNIXtoDiff(latest);
-  const firstToTimeDiff = transformUNIXtoDiff(first);
-  const latestDate = transformUNIXtoDate(latest);
-  const firstDate = transformUNIXtoDate(first);
-  const firstStack = extractPathFromStackTrace(latestErr.err.split('\n')[1]).slice(1);
-  const otherStack = latestErr.err.split('\n').slice(2);
-  const ipPercentage = Object.entries(countIpPercent(all));
-  const ipTimeStamp = Object.values(extractIpTimeStamp(all));
-  const errCode = formatString(latestErr.code);
-  const browserPercentage = Object.entries(Object.values(countDevicePercentage(all))[0]);
-  const osPercentage = Object.entries(Object.values(countDevicePercentage(all))[1]);
-  return res.status(200).render('errorDetail', {
-    accountName,
-    prjName,
-    latest,
-    latestToTimeDiff,
-    firstToTimeDiff,
-    latestDate,
-    firstDate,
-    all,
-    firstStack,
-    otherStack,
-    latestErr,
-    errCode,
-    errTitle,
-    timeStamp,
-    ipPercentage,
-    ipTimeStamp,
-    browserPercentage,
-    osPercentage,
-  });
+    const { latest, first, errTitle, all, timeStamp, latestErr } = await errorLog.getAllErrors(
+      '123',
+      'Error: HAHA! Another error!'
+    );
+
+    const latestToTimeDiff = transformUNIXtoDiff(latest);
+    const firstToTimeDiff = transformUNIXtoDiff(first);
+    const latestDate = transformUNIXtoDate(latest);
+    const firstDate = transformUNIXtoDate(first);
+    const firstStack = extractPathFromStackTrace(latestErr.err.split('\n')[1]).slice(1);
+    const otherStack = latestErr.err.split('\n').slice(2);
+    const ipPercentage = Object.entries(countIpPercent(all));
+    const ipTimeStamp = Object.values(extractIpTimeStamp(all));
+    const errCode = formatString(latestErr.code);
+    const browserPercentage = Object.entries(Object.values(countDevicePercentage(all))[0]);
+    const osPercentage = Object.entries(Object.values(countDevicePercentage(all))[1]);
+    return res.status(200).render('errorDetail', {
+      accountName,
+      prjName,
+      latest,
+      latestToTimeDiff,
+      firstToTimeDiff,
+      latestDate,
+      firstDate,
+      all,
+      firstStack,
+      otherStack,
+      latestErr,
+      errCode,
+      errTitle,
+      timeStamp,
+      ipPercentage,
+      ipTimeStamp,
+      browserPercentage,
+      osPercentage,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: 'something went wrong, please try again!' });
+  }
 };
