@@ -6,6 +6,7 @@ html {
 .main {
   width: 1200px;
   margin: 0 auto;
+  position: relative;
 }
 
 .containerBar {
@@ -102,7 +103,8 @@ html {
 
 .errStackTrace_container,
 .errorParamsContainer,
-.summary_container {
+.summary_container,
+.project_container {
   background-color: #dbe3f3;
   padding: 30px;
   margin: 40px auto;
@@ -161,11 +163,6 @@ html {
   margin: 0 5px;
 }
 
-html {
-  font-size: 62.5%;
-  box-sizing: border-box;
-}
-
 .header {
   padding: 0 5rem;
   height: 8rem;
@@ -201,28 +198,15 @@ html {
   padding: 0 2rem;
 }
 
-main {
-  height: 60vh;
-  display: flex;
-  font-size: 3rem;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-}
-
 .login-form,
 .signup-form {
-  margin: 20px;
-  font-size: 3rem;
+  margin: 20px auto;
+  font-size: 32px;
   max-width: 55rem;
   background-color: #fff;
   box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
   padding: 5rem 7rem;
   border-radius: 5px;
-}
-
-.signup-form {
-  width: 40rem;
 }
 
 .form__label {
@@ -317,4 +301,63 @@ main {
 
 .select {
   margin-bottom: 40px;
+}
+
+.project_container_header {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+}
+
+.project_name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.create-project-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  height: 80vh;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  opacity: 0;
+}
+
+.create-project-window.visible {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.create-project-window.hidden {
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+
+.create-project-form {
+  padding: 20px;
+  display: flex;
+}
+
+.close_btn {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 0 0 0 auto;
+}
+
+#create-project-btn {
+  margin-top: 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.value_contianer {
+  display: column;
 }

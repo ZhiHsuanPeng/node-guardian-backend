@@ -154,7 +154,9 @@ exports.renderOverViewPage = async (req, res) => {
       throw Error('page not found');
     }
     const projects = await projectModel.getAllProjectByUserId(userId);
-    return res.status(200).render('overview', { projects });
+
+    const projectsArr = Object.entries(projects);
+    return res.status(200).render('overview', { projectsArr, accountName });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
@@ -173,6 +175,7 @@ exports.renderBasicProjectPage = async (req, res) => {
     }
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
+    console.log(projectToken);
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(projectToken);
     const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
     const errorsTimeStampPromises = errorMessageArr.map(async (err) => {

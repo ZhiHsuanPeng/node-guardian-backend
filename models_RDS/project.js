@@ -46,5 +46,5 @@ exports.getProjectToken = async (userId, prjName) => {
     `SELECT token FROM access AS a INNER JOIN projects AS p ON a.projectId = p.id WHERE a.userId = ? AND p.name = ?`,
     [userId, prjName]
   );
-  return results[0][0].token * 1;
+  return results[0][0].token;
 };

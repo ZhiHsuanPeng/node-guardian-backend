@@ -10,6 +10,27 @@ html
 
     body
         main.main This is a overview page
-        
+            .project_container 
+                .project_container_header Project lists
+                if projectsArr
+                    each project in projectsArr
+                        a(href=`/a/${accountName}/prj/${project[0]}`)
+                            .project_name #{project[0]}
+                button#open-create-project Create a Project
+
+            .create-project-window.hidden
+                .create-project-form
+                    .value_contianer
+                        .form_group
+                            label(for="projectName") Project Name:
+                            input#projectName(type="text" name="projectName" required)
+                        .form_group
+                            label(for="token") Token:
+                            input#token(type="text" name="token" readonly)
+                            button#generate-token Generate Token
+                        button#submit-create-project Create
+                    button.close_btn X
+
+
         
         script(src='/js/overview.js' type="module")
