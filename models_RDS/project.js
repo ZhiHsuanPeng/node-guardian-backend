@@ -6,6 +6,14 @@ exports.createProject = async (userId, projectName, accessToken) => {
   if (!projectId) {
     throw Error('create project failed');
   }
-  await pool.query(`INSERT INTO access ( userId, projectId, level )VALUES (? ,?, ?)`, [userId, projectId, 'admin']);
+  await pool.query(`INSERT INTO access ( userId, projectId, level ) VALUES (? ,?, ?)`, [userId, projectId, 'admin']);
   return projectId;
+};
+
+exports.findProject = async (accessToken) => {
+  const results = await pool.query(`SELECT * FROM projects WHERE token = ?`, [accessToken]);
+  if (!results[0][0]) {
+    return false;
+  }
+  return true;
 };

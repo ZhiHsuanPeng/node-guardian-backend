@@ -1,19 +1,32 @@
 const amqplib = require('amqplib');
+const projectModel = require('../models_RDS/project');
 
 exports.insertNewLogs = async (req, res) => {
-  const amqpUser = process.env.AMQP_USER;
-  const amqpPassword = process.env.AMQP_PASSWORD;
-  const serverIp = process.env.AMQP_SERVERIP;
+  try {
+    const { accessToken } = req.body;
+    if (!(await projectModel.findProject(accessToken))) {
+      throw Error('no project found with that access token, please check again!');
+    }
+    const amqpUser = process.env.AMQP_USER;
+    const amqpPassword = process.env.AMQP_PASSWORD;
+    const serverIp = process.env.AMQP_SERVERIP;
 
-  const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
+    const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
-  const queue = 'job';
-  const conn = await amqplib.connect(rabbitmqServer);
-  const ch = await conn.createChannel();
-  await ch.assertQueue(queue);
+    const queue = 'job';
+    const conn = await amqplib.connect(rabbitmqServer);
+    const ch = await conn.createChannel();
+    await ch.assertQueue(queue);
 
-  const requestBody = JSON.stringify(req.body);
-  ch.sendToQueue(queue, Buffer.from(requestBody));
+    const requestBody = JSON.stringify(req.body);
+    ch.sendToQueue(queue, Buffer.from(requestBody));
 
-  return res.status(200).json({ message: 'OK' });
+    return res.status(200).json({ message: 'OK' });
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({ message: err.message });
+      return;
+    }
+    res.status(500).json({ message: err.message });
+  }
 };
