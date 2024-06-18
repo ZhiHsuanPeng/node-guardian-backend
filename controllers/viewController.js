@@ -124,6 +124,28 @@ const countDevicePercentage = (docs) => {
   return { browserPercentage, osPercentage };
 };
 
+exports.renderSignUpForm = async (req, res) => {
+  try {
+    return res.status(200).render('signUp');
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: 'something went wrong, please try again!' });
+  }
+};
+
+exports.renderSignInForm = async (req, res) => {
+  try {
+    return res.status(200).render('signIn');
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    res.status(500).json({ message: 'something went wrong, please try again!' });
+  }
+};
+
 exports.renderOverViewPage = async (req, res) => {
   try {
     const { accountName } = req.params;

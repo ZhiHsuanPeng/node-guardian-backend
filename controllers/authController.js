@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const argon2 = require('argon2');
 const userModel = require('../models_RDS/user');
 
-const signTokenAndSendCookie = (res, id) => {
+const signTokenAndSendCookie = (res, id, name, email) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRETS, { expiresIn: 7 * 24 * 60 * 60 });
 
   const cookieOptions = {
@@ -11,7 +11,7 @@ const signTokenAndSendCookie = (res, id) => {
     secure: true,
   };
   res.cookie('jwt', token, cookieOptions);
-  return res.status(200).json({ message: 'cookie sent!' });
+  return res.status(200).json({ message: 'cookie sent!', data: { user: { name, email } } });
 };
 
 exports.signIn = async (req, res) => {
@@ -22,7 +22,7 @@ exports.signIn = async (req, res) => {
       throw Error('user email does not exist!');
     }
     if (await argon2.verify(user.password, password)) {
-      return signTokenAndSendCookie(res, user.id);
+      return signTokenAndSendCookie(res, user.id, user.name, user.email);
     }
     throw Error('incorrect password');
   } catch (err) {
@@ -37,7 +37,7 @@ exports.signUp = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     const userId = await userModel.createUser(name, email, password);
-    return signTokenAndSendCookie(res, userId);
+    return signTokenAndSendCookie(res, userId, name, email);
   } catch (err) {
     if (err.sqlState === '23000') {
       return res.status(400).json({ message: 'User email already exits!' });

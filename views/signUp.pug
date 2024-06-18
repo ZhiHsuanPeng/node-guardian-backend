@@ -1,0 +1,21 @@
+extends base 
+
+block content
+    main.main
+        .signup-form
+            #token-access
+            h2.login__heading 
+            form.form
+                .form__group
+                    label.form__label(for='name') Name
+                    input#name.form__input(type='text', placeholder='Your Name')
+                .form__group
+                    label.form__label(for='email') Email 
+                    input#email.form__input(type='email', placeholder='you@example.com')
+                .form__group
+                    label.form__label(for='password') Password
+                    input#password.form__input(type='password', placeholder='••••••••')
+                .form__group
+                    p.form__link Already have an account? Click <a href="/signin" style="font-weight: bold; text-decoration: none">here</a> to sign in now!
+                .form__group
+                    button.btn Sign Up
