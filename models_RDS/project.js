@@ -17,3 +17,15 @@ exports.findProject = async (accessToken) => {
   }
   return true;
 };
+
+exports.getAllProjectByUserId = async (userId) => {
+  const results = await pool.query(
+    `SELECT * FROM access AS a INNER JOIN projects AS p ON a.projectId = p.id WHERE userId = ? `,
+    [userId]
+  );
+  const projectTokenPair = {};
+  results[0].forEach((row) => {
+    projectTokenPair[row.name] = row.token;
+  });
+  return projectTokenPair;
+};

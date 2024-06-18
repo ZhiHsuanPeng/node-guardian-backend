@@ -3,6 +3,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable comma-dangle */
 const errorLog = require('../models_Search/errorLog');
+const projectModel = require('../models_RDS/project');
 
 const transformUNIXtoDiff = (unix) => {
   const timeStamp = new Date(unix);
@@ -120,6 +121,13 @@ const countDevicePercentage = (docs) => {
   }
 
   return { browserPercentage, osPercentage };
+};
+
+exports.renderOverViewPage = async (req, res) => {
+  const userId = res.locals.userId;
+  const projects = await projectModel.getAllProjectByUserId(userId);
+
+  res.render('overview', { projects });
 };
 
 exports.renderBasicProjectPage = async (req, res) => {
