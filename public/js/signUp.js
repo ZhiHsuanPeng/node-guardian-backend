@@ -11,7 +11,7 @@ export const signup = async (name, email, password) => {
     if (!password) {
       throw Error('Password Field Can Not Be Blank!');
     }
-    const response = await fetch('/api/v1/users/signUp', {
+    const response = await fetch('/api/v1/users/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

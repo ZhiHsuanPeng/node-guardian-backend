@@ -6,7 +6,7 @@ const validator = require('../middleware/validator');
 const router = express.Router();
 
 router
-  .route('/signUp')
+  .route('/signup')
   .post([
     body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
     body('name').notEmpty().withMessage('Name is required').trim(),
@@ -16,7 +16,7 @@ router
   ]);
 
 router
-  .route('/signIn')
+  .route('/signin')
   .post([
     body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
     body('password').notEmpty().withMessage('Password is required'),

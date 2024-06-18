@@ -8,7 +8,7 @@ export const signin = async (email, password) => {
     if (!password) {
       throw Error('Password Field Can Not Be Blank!');
     }
-    const response = await fetch('/api/v1/users/signIn', {
+    const response = await fetch('/api/v1/users/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
