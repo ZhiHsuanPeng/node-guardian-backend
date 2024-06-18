@@ -151,7 +151,6 @@ exports.renderBasicProjectPage = async (req, res) => {
     }
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
-
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(projectToken);
     const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
     const errorsTimeStampPromises = errorMessageArr.map(async (err) => {
@@ -180,16 +179,14 @@ exports.renderBasicProjectPage = async (req, res) => {
 
 exports.renderErrorDetailPage = async (req, res) => {
   try {
-    const { accountName, prjName } = req.params;
+    const { err, accountName, prjName } = req.params;
     const userId = res.locals.userId;
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
       throw Error('page not found');
     }
 
-    const { latest, first, errTitle, all, timeStamp, latestErr } = await errorLog.getAllErrors(
-      '123',
-      'Error: HAHA! Another error!'
-    );
+    const projectToken = await projectModel.getProjectToken(userId, prjName);
+    const { latest, first, errTitle, all, timeStamp, latestErr } = await errorLog.getAllErrors(projectToken, err);
 
     const latestToTimeDiff = transformUNIXtoDiff(latest);
     const firstToTimeDiff = transformUNIXtoDiff(first);
