@@ -175,7 +175,6 @@ exports.renderBasicProjectPage = async (req, res) => {
     }
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
-    console.log(projectToken);
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(projectToken);
     const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
     const errorsTimeStampPromises = errorMessageArr.map(async (err) => {

@@ -2,6 +2,15 @@ import { showAlert } from './alerts.js';
 
 export const signup = async (name, email, password) => {
   try {
+    if (!name) {
+      throw Error('Name Field Can Not Be Blank!');
+    }
+    if (!email) {
+      throw Error('Email Field Can Not Be Blank!');
+    }
+    if (!password) {
+      throw Error('Password Field Can Not Be Blank!');
+    }
     const response = await fetch('/api/v1/users/signUp', {
       method: 'POST',
       headers: {
@@ -22,7 +31,7 @@ export const signup = async (name, email, password) => {
         `Hello! ${responseData.data.user.name}! <br> Please confirm this is your email: ${responseData.data.user.email}`
       ); // Assuming your backend returns a message
       window.setTimeout(() => {
-        location.assign('/index');
+        location.assign(`/a/${name}`);
       }, 1000);
     } else {
       // Handle non-successful response status (e.g., 4xx or 5xx errors)
@@ -31,8 +40,6 @@ export const signup = async (name, email, password) => {
       showAlert('error', errorData.message);
     }
   } catch (err) {
-    // Handle network errors or other exceptions
-    alert('An error occurred during signup.');
-    console.error(err);
+    showAlert('error', err.message);
   }
 };

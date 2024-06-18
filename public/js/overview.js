@@ -49,6 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (response.ok) {
         showAlert('success', 'Create project success!');
       }
+      window.setTimeout(() => {
+        location.reload();
+      }, 1000);
     } catch (error) {
       const errorData = await response.json();
       console.log(error);
