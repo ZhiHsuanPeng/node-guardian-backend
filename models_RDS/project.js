@@ -40,3 +40,11 @@ exports.getAllProjectByUserId = async (userId) => {
   });
   return projectTokenPair;
 };
+
+exports.getProjectToken = async (userId, prjName) => {
+  const results = await pool.query(
+    `SELECT token FROM access AS a INNER JOIN projects AS p ON a.projectId = p.id WHERE a.userId = ? AND p.name = ?`,
+    [userId, prjName]
+  );
+  return results[0][0].token * 1;
+};

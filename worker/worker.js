@@ -17,21 +17,15 @@ const serverIp = process.env.AMQP_SERVERIP;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
 const checkIndexAndStoreData = async (payLoad) => {
-  const indexResponse = await client.indices.exists({
+  const indexExists = await client.indices.exists({
     index: payLoad.accessToken,
   });
-
-  if (indexResponse) {
-    await client.index({
+  if (!indexExists) {
+    await client.indices.create({
       index: payLoad.accessToken,
-      body: payLoad,
     });
-    return;
   }
 
-  await client.indices.create({
-    index: payLoad.accessToken,
-  });
   await client.index({
     index: payLoad.accessToken,
     body: payLoad,
