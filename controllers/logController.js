@@ -5,7 +5,9 @@ exports.insertNewLogs = async (req, res) => {
   try {
     const { accessToken } = req.body;
     if (!(await projectModel.findProject(accessToken))) {
-      throw Error('no project found with that access token, please check again!');
+      throw Error(
+        ' Unable to send logs data to nodeguardian server because no project is found with that access token, please check again!'
+      );
     }
     const amqpUser = process.env.AMQP_USER;
     const amqpPassword = process.env.AMQP_PASSWORD;
