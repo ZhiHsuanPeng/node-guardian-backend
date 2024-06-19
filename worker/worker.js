@@ -16,16 +16,46 @@ const amqpPassword = process.env.AMQP_PASSWORD;
 const serverIp = process.env.AMQP_SERVERIP;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
-const checkIndexAndStoreData = async (payLoad) => {
-  const indexExists = await client.indices.exists({
-    index: payLoad.accessToken,
-  });
-  if (!indexExists) {
-    await client.indices.create({
-      index: payLoad.accessToken,
-    });
-  }
+const insertAlertQueue = async (message) => {
+  try {
+    const queue = 'alert';
+    const conn = await amqplib.connect(rabbitmqServer);
+    const ch = await conn.createChannel();
+    await ch.assertQueue(queue);
+    ch.sendToQueue(queue, Buffer.from(message));
 
+    return res.status(200).json({ message: 'OK' });
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(400).json({ message: err.message });
+      return;
+    }
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const checkIndexAndStoreData = async (payLoad) => {
+  const checkIsFirstError = await client.search({
+    index: payLoad.accessToken,
+    body: {
+      size: 100,
+      query: {
+        bool: {
+          must: [
+            {
+              term: {
+                'errMessage.keyword': payLoad.errMessage,
+              },
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  if (checkIsFirstError.hits[total][value] === 0) {
+    insertAlertQueue(payLoad);
+  }
   await client.index({
     index: payLoad.accessToken,
     body: payLoad,
