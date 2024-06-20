@@ -18,20 +18,6 @@ const amqpPassword = process.env.AMQP_PASSWORD;
 const serverIp = process.env.AMQP_SERVERIP;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
-const insertAlertQueue = async (message) => {
-  try {
-    const queue = 'alert';
-    const conn = await amqplib.connect(rabbitmqServer);
-    const ch = await conn.createChannel();
-    await ch.assertQueue(queue);
-    ch.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
-
-    console.log('Sending message to alert queue');
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 const checkIsFirstAndSetAlert = async (payLoad) => {
   try {
     const [rows] = await pool.query(
@@ -62,7 +48,6 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
       },
     });
     const docNum = checkIsFirstError.hits.total.value;
-    // If the result is not 0, it indicates that this is not the first occurrence
 
     if (docNum !== 0) {
       return;
@@ -78,8 +63,21 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
   }
 };
 
+const insertAlertQueue = async (message) => {
+  try {
+    const queue = 'alert';
+    const conn = await amqplib.connect(rabbitmqServer);
+    const ch = await conn.createChannel();
+    await ch.assertQueue(queue);
+    ch.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
+
+    console.log('Sending message to alert queue');
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const storeData = async (payLoad) => {
-  insertAlertQueue(payLoad);
   await client.index({
     index: payLoad.accessToken,
     body: payLoad,
@@ -96,13 +94,17 @@ const storeData = async (payLoad) => {
   ch.consume(queue, (msg) => {
     if (msg !== null) {
       const payLoad = JSON.parse(msg.content.toString());
+
       const headersObj = {};
       for (let i = 0; i < payLoad.filteredReqObj.headers.length; i += 2) {
         headersObj[payLoad.filteredReqObj.headers[i]] = payLoad.filteredReqObj.headers[i + 1];
       }
       payLoad.filteredReqObj.headers = headersObj;
+
       checkIsFirstAndSetAlert(payLoad);
+      insertAlertQueue(payLoad);
       storeData(payLoad);
+
       ch.ack(msg);
     } else {
       console.log('Consumer cancelled by server');

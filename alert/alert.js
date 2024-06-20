@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const pool = require('../models_RDS/databasePool');
 const client = require('../models_Search/elasticSearch');
 const mail = require('../utils/alert_mail');
+const redis = require('./alert_redis');
 
 dotenv.config();
 
@@ -10,6 +11,11 @@ const amqpUser = process.env.AMQP_USER;
 const amqpPassword = process.env.AMQP_PASSWORD;
 const serverIp = process.env.AMQP_SERVERIP;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
+
+const getProjectRules = async (token) => {
+  const result = await pool.query('SELECT timewindow quota FROM projects WHERE token = ?', [token]);
+  return result[0];
+};
 
 (async () => {
   const queue = 'alert';
@@ -20,7 +26,11 @@ const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
   ch.consume(queue, async (msg) => {
     if (msg !== null) {
       const payLoad = JSON.parse(msg.content.toString());
-
+      const rules = getProjectRules(payLoad.accessToken);
+      if (rules.timeWindow === 'off') {
+        console.log('Alert function not on!');
+        return;
+      }
       console.log('Alert worker just process one alert');
       ch.ack(msg);
     } else {
