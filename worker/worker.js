@@ -25,11 +25,10 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
       [payLoad.accessToken]
     );
 
-    // if user does not turn on alertFirst function, return right away
     if (rows[0].alertFirst === 'off') {
       return;
     }
-    // Search for error message in search engine
+
     const checkIsFirstError = await client.search({
       index: payLoad.accessToken,
       body: {
@@ -48,7 +47,6 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
       },
     });
     const docNum = checkIsFirstError.hits.total.value;
-
     if (docNum !== 0) {
       return;
     }
@@ -91,7 +89,7 @@ const storeData = async (payLoad) => {
   const ch = await conn.createChannel();
   await ch.assertQueue(queue);
 
-  ch.consume(queue, (msg) => {
+  ch.consume(queue, async (msg) => {
     if (msg !== null) {
       const payLoad = JSON.parse(msg.content.toString());
 
@@ -101,9 +99,9 @@ const storeData = async (payLoad) => {
       }
       payLoad.filteredReqObj.headers = headersObj;
 
-      checkIsFirstAndSetAlert(payLoad);
-      insertAlertQueue(payLoad);
-      storeData(payLoad);
+      await checkIsFirstAndSetAlert(payLoad);
+      await insertAlertQueue(payLoad);
+      await storeData(payLoad);
 
       ch.ack(msg);
     } else {
