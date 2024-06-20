@@ -22,15 +22,11 @@ const insertAlertQueue = async (message) => {
     const conn = await amqplib.connect(rabbitmqServer);
     const ch = await conn.createChannel();
     await ch.assertQueue(queue);
-    ch.sendToQueue(queue, Buffer.from(message));
+    ch.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
 
-    return res.status(200).json({ message: 'OK' });
+    console.log('Sending message to alert queue');
   } catch (err) {
-    if (err instanceof Error) {
-      res.status(400).json({ message: err.message });
-      return;
-    }
-    res.status(500).json({ message: err.message });
+    console.log(err);
   }
 };
 
@@ -52,14 +48,16 @@ const checkIndexAndStoreData = async (payLoad) => {
       },
     },
   });
+  console.log(checkIsFirstError);
 
-  if (checkIsFirstError.hits[total][value] === 0) {
+  if (checkIsFirstError.hits.total.value === 0) {
     insertAlertQueue(payLoad);
   }
   await client.index({
     index: payLoad.accessToken,
     body: payLoad,
   });
+  console.log('Worker just process one log');
 };
 
 (async () => {
@@ -77,7 +75,7 @@ const checkIndexAndStoreData = async (payLoad) => {
       }
       payLoad.filteredReqObj.headers = headersObj;
       checkIndexAndStoreData(payLoad);
-      console.log('Worker just process one log');
+
       ch.ack(msg);
     } else {
       console.log('Consumer cancelled by server');

@@ -117,3 +117,5 @@ exports.getAllErrors = async (accessToken, err) => {
 //     console.error('Error deleting documents:', error);
 //   }
 // }
+
+// deleteAllDocuments('9fwvc36edtel93ruxcduja');
