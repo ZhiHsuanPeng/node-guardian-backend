@@ -30,29 +30,8 @@ const insertAlertQueue = async (message) => {
   }
 };
 
-const checkIndexAndStoreData = async (payLoad) => {
-  const checkIsFirstError = await client.search({
-    index: payLoad.accessToken,
-    body: {
-      size: 100,
-      query: {
-        bool: {
-          must: [
-            {
-              term: {
-                'errMessage.keyword': payLoad.errMessage,
-              },
-            },
-          ],
-        },
-      },
-    },
-  });
-  console.log(checkIsFirstError);
-
-  if (checkIsFirstError.hits.total.value === 0) {
-    insertAlertQueue(payLoad);
-  }
+const storeData = async (payLoad) => {
+  insertAlertQueue(payLoad);
   await client.index({
     index: payLoad.accessToken,
     body: payLoad,
@@ -74,8 +53,7 @@ const checkIndexAndStoreData = async (payLoad) => {
         headersObj[payLoad.filteredReqObj.headers[i]] = payLoad.filteredReqObj.headers[i + 1];
       }
       payLoad.filteredReqObj.headers = headersObj;
-      checkIndexAndStoreData(payLoad);
-
+      storeData(payLoad);
       ch.ack(msg);
     } else {
       console.log('Consumer cancelled by server');
