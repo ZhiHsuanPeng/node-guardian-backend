@@ -12,7 +12,7 @@ exports.createProject = async (req, res) => {
     await elasticSearchClient.indices.create({
       index: accessToken,
     });
-    res.status(200).json({ message: `create project success` });
+    res.status(200).json({ message: 'create project success' });
   } catch (err) {
     if (err instanceof Error) {
       res.status(400).json({ message: err.message });

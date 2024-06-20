@@ -22,7 +22,7 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
   try {
     const [rows] = await pool.query(
       'select u.email, p.alertFirst from projects AS p INNER JOIN access AS a ON p.id = a.projectId INNER JOIN users AS u ON u.id = a.userId WHERE p.token = ?',
-      [payLoad.accessToken]
+      [payLoad.accessToken],
     );
 
     if (rows[0].alertFirst === 'off') {
@@ -57,7 +57,6 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
     }
   } catch (error) {
     console.error('Error querying the database:', error);
-    return false;
   }
 };
 
@@ -95,7 +94,8 @@ const storeData = async (payLoad) => {
 
       const headersObj = {};
       for (let i = 0; i < payLoad.filteredReqObj.headers.length; i += 2) {
-        headersObj[payLoad.filteredReqObj.headers[i]] = payLoad.filteredReqObj.headers[i + 1];
+        headersObj[payLoad.filteredReqObj.headers[i]] =
+          payLoad.filteredReqObj.headers[i + 1];
       }
       payLoad.filteredReqObj.headers = headersObj;
 

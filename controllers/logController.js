@@ -6,7 +6,7 @@ exports.insertNewLogs = async (req, res) => {
     const { accessToken } = req.body;
     if (!(await projectModel.findProject(accessToken))) {
       throw Error(
-        ' Unable to send logs data to nodeguardian server because no project is found with that access token, please check again!'
+        'Unable to send logs data to nodeguardian server because no project is found with that access token, please check again!',
       );
     }
     const amqpUser = process.env.AMQP_USER;
@@ -26,9 +26,8 @@ exports.insertNewLogs = async (req, res) => {
     return res.status(200).json({ message: 'OK' });
   } catch (err) {
     if (err instanceof Error) {
-      res.status(400).json({ message: err.message });
-      return;
+      return res.status(400).json({ message: err.message });
     }
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 };

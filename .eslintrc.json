@@ -1,0 +1,21 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "prefer-destructuring": "off",
+    "operator-linebreak": ["error", "after"],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "ForInStatement",
+        "message": "Avoid using for...in loops, use for...of loops instead."
+      }
+    ],
+    "implicit-arrow-linebreak": 0,
+    "linebreak-style": "off",
+    "arrow-body-style": "off",
+    "import/no-extraneous-dependencies": "off",
+    "object-curly-newline": "off",
+    "no-underscore-dangle": "off",
+    "no-await-in-loop": "off"
+  }
+}
