@@ -1,6 +1,8 @@
 const amqplib = require('amqplib');
 const dotenv = require('dotenv');
 const { Client } = require('@elastic/elasticsearch');
+const pool = require('../models_RDS/databasePool');
+const mail = require('../utils/alert_mail');
 
 dotenv.config();
 
@@ -30,6 +32,52 @@ const insertAlertQueue = async (message) => {
   }
 };
 
+const checkIsFirstAndSetAlert = async (payLoad) => {
+  try {
+    const [rows] = await pool.query(
+      'select u.email, p.alertFirst from projects AS p INNER JOIN access AS a ON p.id = a.projectId INNER JOIN users AS u ON u.id = a.userId WHERE p.token = ?',
+      [payLoad.accessToken]
+    );
+
+    // if user does not turn on alertFirst function, return right away
+    if (rows[0].alertFirst === 'off') {
+      return;
+    }
+    // Search for error message in search engine
+    const checkIsFirstError = await client.search({
+      index: payLoad.accessToken,
+      body: {
+        size: 100,
+        query: {
+          bool: {
+            must: [
+              {
+                term: {
+                  'errMessage.keyword': payLoad.errMessage,
+                },
+              },
+            ],
+          },
+        },
+      },
+    });
+    const docNum = checkIsFirstError.hits.total.value;
+    // If the result is not 0, it indicates that this is not the first occurrence
+
+    if (docNum !== 0) {
+      return;
+    }
+
+    for (const user of rows) {
+      await mail.sendFirstErrorEmail(user.email);
+      console.log('First error alert: email sent!');
+    }
+  } catch (error) {
+    console.error('Error querying the database:', error);
+    return false;
+  }
+};
+
 const storeData = async (payLoad) => {
   insertAlertQueue(payLoad);
   await client.index({
@@ -53,6 +101,7 @@ const storeData = async (payLoad) => {
         headersObj[payLoad.filteredReqObj.headers[i]] = payLoad.filteredReqObj.headers[i + 1];
       }
       payLoad.filteredReqObj.headers = headersObj;
+      checkIsFirstAndSetAlert(payLoad);
       storeData(payLoad);
       ch.ack(msg);
     } else {
