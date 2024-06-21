@@ -136,4 +136,4 @@ async function deleteAllDocuments(index) {
   }
 }
 
-deleteAllDocuments('9fwvc36edtel93ruxcduja');
+deleteAllDocuments('v4nbn1nkiijglynre53pt');

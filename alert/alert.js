@@ -13,7 +13,7 @@ const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
 const getEmailAndProjectRules = async (token) => {
   const result = await pool.query(
-    'select u.email, p.timeWindow, p.quota from projects AS p INNER JOIN access AS a ON p.id = a.projectId INNER JOIN users AS u ON u.id = a.userId WHERE p.token = ?',
+    'select u.name, u.email, p.name AS projectName, p.timeWindow, p.quota from projects AS p INNER JOIN access AS a ON p.id = a.projectId INNER JOIN users AS u ON u.id = a.userId WHERE p.token = ?',
     [token],
   );
   return result[0];
@@ -52,7 +52,7 @@ const isExcessQuota = async (key, data) => {
       const isExcess = await isExcessQuota(key, data[0]);
       if (isExcess) {
         for (const row of data) {
-          await mail.sendAnomalyEmail(row.email);
+          await mail.sendAnomalyEmail(row, payLoad);
         }
       }
 

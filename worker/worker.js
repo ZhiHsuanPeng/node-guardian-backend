@@ -21,7 +21,7 @@ const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 const checkIsFirstAndSetAlert = async (payLoad) => {
   try {
     const [rows] = await pool.query(
-      'select u.email, p.alertFirst from projects AS p INNER JOIN access AS a ON p.id = a.projectId INNER JOIN users AS u ON u.id = a.userId WHERE p.token = ?',
+      'select u.name, u.email, p.alertFirst, p.name AS projectName from projects AS p INNER JOIN access AS a ON p.id = a.projectId INNER JOIN users AS u ON u.id = a.userId WHERE p.token = ?',
       [payLoad.accessToken],
     );
 
@@ -52,7 +52,12 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
     }
 
     for (const user of rows) {
-      await mail.sendFirstErrorEmail(user.email);
+      await mail.sendFirstErrorEmail(
+        user.email,
+        user.name,
+        user.projectName,
+        payLoad,
+      );
       console.log('First error alert: email sent!');
     }
   } catch (error) {
