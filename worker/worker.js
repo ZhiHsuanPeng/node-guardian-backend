@@ -58,7 +58,6 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
         user.projectName,
         payLoad,
       );
-      console.log('First error alert: email sent!');
     }
   } catch (error) {
     console.error('Error querying the database:', error);
@@ -72,8 +71,6 @@ const insertAlertQueue = async (message) => {
     const ch = await conn.createChannel();
     await ch.assertQueue(queue);
     ch.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
-
-    console.log('Sending message to alert queue');
   } catch (err) {
     console.log(err);
   }
@@ -84,7 +81,6 @@ const storeData = async (payLoad) => {
     index: payLoad.accessToken,
     body: payLoad,
   });
-  console.log('Worker just process one log');
 };
 
 (async () => {

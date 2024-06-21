@@ -9,11 +9,18 @@ const router = express.Router();
 router
   .route('/')
   .post([
-    body('projectName').notEmpty().withMessage('Project name is required').trim(),
-    body('accessToken').notEmpty().withMessage('Project should have an accessToken'),
+    body('projectName')
+      .notEmpty()
+      .withMessage('Project name is required')
+      .trim(),
+    body('accessToken')
+      .notEmpty()
+      .withMessage('Project should have an accessToken'),
     validator.handleResult,
     authenticate,
     projectController.createProject,
   ]);
+
+router.route('/').patch(authenticate, projectController.modifiedProjectSetting);
 
 module.exports = router;
