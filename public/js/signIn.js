@@ -26,7 +26,7 @@ export const signin = async (email, password) => {
         `Hello! ${responseData.data.user.name}! <br> Please confirm this is your email: ${responseData.data.user.email}`,
       );
       window.setTimeout(() => {
-        location.assign('/index');
+        location.assign(`/a/${responseData.data.user.name}`);
       }, 1000);
       console.log(responseData);
     } else {

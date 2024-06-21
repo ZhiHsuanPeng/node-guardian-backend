@@ -10,6 +10,10 @@ html
 
     body
         main.main This is a overview page
+            each ts in timeStamp
+                .timeStampStat(data-time = `${ts}`)
+
+            #past1day
             .project_container 
                 .project_container_header Project lists
                 if projectsArr

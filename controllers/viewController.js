@@ -169,8 +169,16 @@ exports.renderOverViewPage = async (req, res) => {
     const projects = await projectModel.getAllProjectByUserId(userId);
 
     const projectsArr = Object.entries(projects);
-    console.log(projectsArr);
-    return res.status(200).render('overview', { projectsArr, accountName });
+    const projectTimeStamp = {};
+    for (const row of projectsArr) {
+      const ts = await errorLog.getAllProjectTimeStamp(row[1]);
+      projectTimeStamp[row[0]] = ts;
+    }
+    const timeStamp = Object.entries(projectTimeStamp);
+    console.log(timeStamp);
+    return res
+      .status(200)
+      .render('overview', { projectsArr, accountName, timeStamp });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });

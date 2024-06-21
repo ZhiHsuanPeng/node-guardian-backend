@@ -120,6 +120,24 @@ exports.getAllErrors = async (accessToken, err) => {
   return errorDetail;
 };
 
+exports.getAllProjectTimeStamp = async (token) => {
+  const response = await elasticSearchClient.search({
+    index: token,
+    body: {
+      size: 100,
+      query: {
+        match_all: {},
+      },
+    },
+    _source: ['timestamp'],
+  });
+  const timeStamp = [];
+  response.hits.hits.forEach((doc) => {
+    timeStamp.push(doc._source.timestamp);
+  });
+  return timeStamp;
+};
+
 // async function deleteAllDocuments(index) {
 //   try {
 //     const response = await elasticSearchClient.deleteByQuery({
