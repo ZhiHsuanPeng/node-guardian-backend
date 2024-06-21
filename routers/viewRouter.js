@@ -9,9 +9,6 @@ router.route('/signin').get(viewController.renderSignInForm);
 
 router
   .route('/a/:accountName')
-  .get(authenticate, viewController.renderAccountHomePage);
-router
-  .route('/a/:accountName/projects')
   .get(authenticate, viewController.renderOverViewPage);
 router
   .route('/a/:accountName/prj/:prjName')

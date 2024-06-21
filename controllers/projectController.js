@@ -63,9 +63,8 @@ exports.modifiedProjectSetting = async (req, res) => {
     return res.status(200).json({ message: 'change setting success' });
   } catch (err) {
     if (err instanceof Error) {
-      res.status(400).json({ message: err.message });
-      return;
+      return res.status(400).json({ message: err.message });
     }
-    res.status(500).json({ message: 'modified project failed' });
+    return res.status(500).json({ message: 'modified project failed' });
   }
 };

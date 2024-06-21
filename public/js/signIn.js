@@ -23,7 +23,7 @@ export const signin = async (email, password) => {
       const responseData = await response.json();
       showAlert(
         'success',
-        `Hello! ${responseData.data.user.name}! <br> Please confirm this is your email: ${responseData.data.user.email}`
+        `Hello! ${responseData.data.user.name}! <br> Please confirm this is your email: ${responseData.data.user.email}`,
       );
       window.setTimeout(() => {
         location.assign('/index');
@@ -31,8 +31,8 @@ export const signin = async (email, password) => {
       console.log(responseData);
     } else {
       const errorData = await response.json();
-      console.log(errorData);
-      showAlert('error', errorData.message);
+      console.log(errorData.errors);
+      showAlert('error', errorData.errors);
     }
   } catch (err) {
     showAlert('error', err.message);

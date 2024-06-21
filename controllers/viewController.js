@@ -169,6 +169,7 @@ exports.renderOverViewPage = async (req, res) => {
     const projects = await projectModel.getAllProjectByUserId(userId);
 
     const projectsArr = Object.entries(projects);
+    console.log(projectsArr);
     return res.status(200).render('overview', { projectsArr, accountName });
   } catch (err) {
     if (err instanceof Error) {
