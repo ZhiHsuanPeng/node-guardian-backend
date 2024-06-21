@@ -1,6 +1,18 @@
 const projectModel = require('../models_RDS/project');
 const pool = require('../models_RDS/databasePool');
 const elasticSearchClient = require('../models_Search/elasticSearch');
+const redis = require('../utils/redis');
+
+const resetAlert = async (token) => {
+  const keys = await redis.keys('*');
+
+  const regex = new RegExp(`^${token}-`);
+
+  const matchedKeys = keys.filter((key) => regex.test(key));
+
+  const values = await Promise.all(matchedKeys.map((key) => redis.set(key, 0)));
+  console.log(values);
+};
 
 exports.createProject = async (req, res) => {
   try {
@@ -28,7 +40,7 @@ exports.modifiedProjectSetting = async (req, res) => {
     const { accountName, projectName, alertFirst, timeWindow, quota } =
       req.body;
 
-    if (quota * 1 !== 0 && timeWindow !== 'off') {
+    if (quota * 1 !== 0 && timeWindow === 'off') {
       throw Error('You cannot set quota without setting time window!');
     }
 
@@ -40,7 +52,15 @@ exports.modifiedProjectSetting = async (req, res) => {
         WHERE u.name = ? AND p.name = ?`,
       [alertFirst, timeWindow, quota, accountName, projectName],
     );
-    res.status(200).json({ message: 'change setting success' });
+
+    const result = await pool.query(
+      'SELECT token FROM projects WHERE name = ?',
+      [projectName],
+    );
+    const token = result[0][0].token;
+    await resetAlert(token);
+
+    return res.status(200).json({ message: 'change setting success' });
   } catch (err) {
     if (err instanceof Error) {
       res.status(400).json({ message: err.message });

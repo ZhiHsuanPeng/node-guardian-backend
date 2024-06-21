@@ -81,6 +81,7 @@ const storeData = async (payLoad) => {
     index: payLoad.accessToken,
     body: payLoad,
   });
+  console.log('Worker just process 1 log');
 };
 
 (async () => {
@@ -103,7 +104,6 @@ const storeData = async (payLoad) => {
       await checkIsFirstAndSetAlert(payLoad);
       await insertAlertQueue(payLoad);
       await storeData(payLoad);
-
       ch.ack(msg);
     } else {
       console.log('Consumer cancelled by server');

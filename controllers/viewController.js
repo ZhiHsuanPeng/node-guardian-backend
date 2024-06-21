@@ -118,7 +118,7 @@ const countDevicePercentage = (docs) => {
 
   for (const browser in browserCounts) {
     browserPercentage[browser] = Math.round(
-      (browserCounts[browser].length / totalDocs) * 100
+      (browserCounts[browser].length / totalDocs) * 100,
     );
   }
 
@@ -155,6 +155,10 @@ exports.renderSignInForm = async (req, res) => {
   }
 };
 
+exports.renderAccountHomePage = async (req, res) => {
+  res.status.render('accountHome');
+};
+
 exports.renderOverViewPage = async (req, res) => {
   try {
     const { accountName } = req.params;
@@ -187,21 +191,21 @@ exports.renderBasicProjectPage = async (req, res) => {
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(
-      projectToken
+      projectToken,
     );
     const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
     const errorsTimeStampPromises = errorMessageArr.map(async (err) => {
       const timeStamp = await errorLog.getErrorTimeStampFilteredByTime(
         projectToken,
         err,
-        24
+        24,
       );
       return { err, timeStamp };
     });
     const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
     const recentTime = errorsTimeStampArray.map((ts) => {
       const recentTs = new Date(
-        ts.timeStamp.sort((a, b) => a - b)[ts.timeStamp.length - 1]
+        ts.timeStamp.sort((a, b) => a - b)[ts.timeStamp.length - 1],
       );
       return transformUNIXtoDiff(recentTs);
     });
@@ -241,17 +245,17 @@ exports.renderErrorDetailPage = async (req, res) => {
     const latestDate = transformUNIXtoDate(latest);
     const firstDate = transformUNIXtoDate(first);
     const firstStack = extractPathFromStackTrace(
-      latestErr.err.split('\n')[1]
+      latestErr.err.split('\n')[1],
     ).slice(1);
     const otherStack = latestErr.err.split('\n').slice(2);
     const ipPercentage = Object.entries(countIpPercent(all));
     const ipTimeStamp = Object.values(extractIpTimeStamp(all));
     const errCode = formatString(latestErr.code);
     const browserPercentage = Object.entries(
-      Object.values(countDevicePercentage(all))[0]
+      Object.values(countDevicePercentage(all))[0],
     );
     const osPercentage = Object.entries(
-      Object.values(countDevicePercentage(all))[1]
+      Object.values(countDevicePercentage(all))[1],
     );
     return res.status(200).render('errorDetail', {
       accountName,
