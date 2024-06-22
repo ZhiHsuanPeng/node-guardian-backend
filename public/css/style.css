@@ -1,7 +1,8 @@
 html {
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  font-family: 'Roboto', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans,
+    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol,
+    Noto Color Emoji;
   box-sizing: border-box;
 }
 .main {
@@ -472,7 +473,7 @@ h1 {
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .wrapper {
@@ -612,7 +613,6 @@ a.sidebar-link:hover {
   transition: background-color 0.3s;
 }
 
-.sidebar ul li a:hover,
 .sidebar ul li.active a {
   background-color: #34495e;
 }
@@ -620,4 +620,32 @@ a.sidebar-link:hover {
 .sidebar2_title {
   padding: 10px 10px 20px 10px;
   font-weight: 600;
+}
+.setting_container {
+  padding: 20px 20px 0 20px;
+}
+.members_title {
+  font-size: 32px;
+  font-weight: 500;
+}
+.members_description {
+  margin: 20px 0 0 0;
+}
+.members_description {
+  font-size: 15px;
+}
+
+.members_container {
+  width: 320px;
+  height: 150px;
+  padding: 20px;
+  margin: 20px 0;
+  border: 2px solid rgb(207, 204, 204);
+}
+
+.user_img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin: 0 0 10px 0;
 }

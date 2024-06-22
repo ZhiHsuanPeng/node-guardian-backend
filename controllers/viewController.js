@@ -159,7 +159,11 @@ exports.renderSignInForm = async (req, res) => {
 exports.renderSettingMemeberPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
-    return res.status(200).render('setting_members', { prjName, accountName });
+    const users = await projectModel.getAllUserByProjectName(prjName);
+
+    return res
+      .status(200)
+      .render('setting_members', { prjName, accountName, users });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
@@ -190,10 +194,11 @@ exports.renderOverViewPage = async (req, res) => {
     for (const project of projectsArr) {
       userList[project[0]] = await projectModel.getAllUserInProject(project[1]);
     }
+
     Object.values(userList).forEach((user, index) =>
       projectsArr[index].push(user.length),
     );
-    console.log(projectsArr);
+
     return res
       .status(200)
       .render('overview', { projectsArr, accountName, timeStamp });
