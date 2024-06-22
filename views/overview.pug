@@ -16,14 +16,22 @@ html
                 .error_overview_graph_container
                     .past1dOverviewGraph 
                         .title Occurrences
-                        .inspect_text double click to choose projects to inspect
+                        .inspect_text click to choose projects to inspect
                     #past1day
             .project_container 
                 .project_container_header Project lists
                 if projectsArr
-                    each project in projectsArr
-                        a(href=`/a/${accountName}/prj/${project[0]}`)
-                            .project_name #{project[0]}
+                    .project_list_container
+                        .project_list_title
+                            .project_title Project
+                            each project in projectsArr
+                                .project_overview_info_container
+                                    a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}
+                        .project_user_number_container
+                            .project_user Users
+                            each project in projectsArr
+                                .project_overview_info_container        
+                                    a(class= 'project_user' href=`/a/${accountName}/${project[0]}/settings/members`) #{project[2]}        
                 button#open-create-project Create a Project
 
             .create-project-window.hidden

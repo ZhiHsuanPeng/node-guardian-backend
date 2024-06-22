@@ -1,3 +1,4 @@
+/* eslint-disable function-paren-newline */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-restricted-syntax */
@@ -175,7 +176,14 @@ exports.renderOverViewPage = async (req, res) => {
       projectTimeStamp[row[0]] = ts;
     }
     const timeStamp = Object.entries(projectTimeStamp);
-    console.log(timeStamp);
+    const userList = {};
+    for (const project of projectsArr) {
+      userList[project[0]] = await projectModel.getAllUserInProject(project[1]);
+    }
+    Object.values(userList).forEach((user, index) =>
+      projectsArr[index].push(user.length),
+    );
+    console.log(projectsArr);
     return res
       .status(200)
       .render('overview', { projectsArr, accountName, timeStamp });
