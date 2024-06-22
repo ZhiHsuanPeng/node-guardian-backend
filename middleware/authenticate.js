@@ -17,7 +17,15 @@ const authenticate = async (req, res, next) => {
     next();
   } catch (err) {
     if (err instanceof Error) {
-      res.status(401).render('error', { msg: err.message });
+      const protocol = req.protocol;
+      const host = req.get('host');
+      const redirectUrl = `${protocol}://${host}/signin`;
+
+      res.status(401).render('error', {
+        msg: err.message,
+        redirectUrl,
+      });
+
       return;
     }
     res.status(401).json({ errors: 'authenticate failed' });

@@ -6,4 +6,8 @@ block content
       .error__title
         h2.heading-secondary.heading-secondary--error Uh oh! Something went wrong!   
         h2.error__emoji 😢🤯
+        
       .error__msg= msg
+      if redirectUrl
+        p You will be redirected in 3 seconds. If not, click 
+            a(href=redirectUrl) here. 
