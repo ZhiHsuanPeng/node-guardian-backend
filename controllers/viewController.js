@@ -156,9 +156,19 @@ exports.renderSignInForm = async (req, res) => {
   }
 };
 
-// exports.renderAccountHomePage = async (req, res) => {
-//   res.status.render('accountHome');
-// };
+exports.renderSettingMemeberPage = async (req, res) => {
+  try {
+    // const { accountName, prjName } = req.params;
+    return res.status(200).render('setting_members');
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
+};
 
 exports.renderOverViewPage = async (req, res) => {
   try {

@@ -17,4 +17,8 @@ router
   .route('/a/:accountName/prj/:prjName/err/:err')
   .get(authenticate, viewController.renderErrorDetailPage);
 
+router
+  .route('/a/:accountName/:prjName/settings/members')
+  .get(authenticate, viewController.renderSettingMemeberPage);
+
 module.exports = router;
