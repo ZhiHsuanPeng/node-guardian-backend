@@ -591,3 +591,33 @@ a.sidebar-link:hover {
   transform: rotate(45deg);
   transition: all 0.2s ease-out;
 }
+
+.sidebar {
+  width: 260px;
+  background-color: #afb9c3;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: white;
+  display: block;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li.active a {
+  background-color: #34495e;
+}
+
+.sidebar2_title {
+  padding: 10px 10px 20px 10px;
+  font-weight: 600;
+}
