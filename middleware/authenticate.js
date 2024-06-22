@@ -9,7 +9,7 @@ const authenticate = async (req, res, next) => {
     const tokenInHeaders = req.get('Authorization');
     const token = tokenInHeaders?.split(' ')[1] || req.cookies.jwt;
     if (!token) {
-      throw Error('user not authenticated, please sign in to proceed');
+      throw Error('You are not logged in! Please sign in to proceed!');
     }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRETS);
@@ -17,7 +17,7 @@ const authenticate = async (req, res, next) => {
     next();
   } catch (err) {
     if (err instanceof Error) {
-      res.status(401).json({ errors: err.message });
+      res.status(401).render('error', { msg: err.message });
       return;
     }
     res.status(401).json({ errors: 'authenticate failed' });

@@ -146,7 +146,7 @@ const past1d = () => {
     },
     hovermode: 'x',
     autosize: true,
-    width: 1000,
+    width: 1100,
     height: 300,
     margin: {
       l: 40,
