@@ -107,7 +107,11 @@ const past1d = () => {
     occurrencesMap.set(name, occurrences);
   });
 
-  const traceColors = ['rgba(26, 118, 186, 0.8)', 'rgba(193, 66, 66, 0.8)'];
+  const traceColors = [
+    'rgba(252, 222, 190, 0.8)',
+    'rgba(146, 135, 121, 0.8)',
+    'rgba(212, 210, 165, 0.8)',
+  ];
 
   const traces = Array.from(occurrencesMap.entries()).map(
     ([name, occurrences], index) => ({
@@ -136,20 +140,19 @@ const past1d = () => {
       type: 'category', // Set x-axis type to category
     },
     yaxis: {
-      title: 'Occurrences',
       showline: true,
       linecolor: 'black',
       linewidth: 1,
     },
     hovermode: 'x',
     autosize: true,
-    width: 1400,
+    width: 1000,
     height: 300,
     margin: {
       l: 40,
       r: 40,
       b: 40,
-      t: 40,
+      t: 10,
     },
   };
 

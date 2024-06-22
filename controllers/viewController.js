@@ -155,9 +155,9 @@ exports.renderSignInForm = async (req, res) => {
   }
 };
 
-exports.renderAccountHomePage = async (req, res) => {
-  res.status.render('accountHome');
-};
+// exports.renderAccountHomePage = async (req, res) => {
+//   res.status.render('accountHome');
+// };
 
 exports.renderOverViewPage = async (req, res) => {
   try {
@@ -167,8 +167,8 @@ exports.renderOverViewPage = async (req, res) => {
       throw Error('page not found');
     }
     const projects = await projectModel.getAllProjectByUserId(userId);
-
     const projectsArr = Object.entries(projects);
+
     const projectTimeStamp = {};
     for (const row of projectsArr) {
       const ts = await errorLog.getAllProjectTimeStamp(row[1]);

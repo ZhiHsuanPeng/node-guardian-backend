@@ -12,8 +12,12 @@ html
         main.main This is a overview page
             each ts in timeStamp
                 .timeStampStat(data-time = `${ts}`)
-
-            #past1day
+            .error_overview_graph
+                .error_overview_graph_container
+                    .past1dOverviewGraph 
+                        .title Occurrences
+                        .inspect_text double click to choose projects to inspect
+                    #past1day
             .project_container 
                 .project_container_header Project lists
                 if projectsArr
