@@ -21,6 +21,12 @@ router
     projectController.createProject,
   ]);
 
-router.route('/').patch(authenticate, projectController.modifiedProjectSetting);
+router
+  .route('/')
+  .patch(authenticate, projectController.modifyProjectAlertSettings);
+
+router
+  .route('/access')
+  .post(authenticate, projectController.modifyProjectMembersSettings);
 
 module.exports = router;

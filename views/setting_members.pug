@@ -77,6 +77,8 @@ html
                         a(href='/alert' class='nav-link') Alert
             .main.p-3
                 .setting_container
+                    .project_owner(data-owner = `${accountName}`)
+                    .project_name(data-prjname = `${prjName}`)
                     .members_title Members 
                     .members_description Users in Nodeguardian can access projects after you invite them to collaborate. Click the button below to send invitations via emails. After successful invitations, you can view and manage your team members in this setting page.
                     .members_access_container  

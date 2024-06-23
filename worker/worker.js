@@ -2,7 +2,7 @@ const amqplib = require('amqplib');
 const dotenv = require('dotenv');
 const { Client } = require('@elastic/elasticsearch');
 const pool = require('../models_RDS/databasePool');
-const mail = require('../utils/alert_mail');
+const mail = require('../utils/mail');
 
 dotenv.config();
 

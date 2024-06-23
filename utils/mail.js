@@ -46,3 +46,24 @@ exports.sendAnomalyEmail = async (row, payLoad) => {
 
   console.log('Message sent: %s', info.messageId);
 };
+
+exports.sendProjectInvitation = async (
+  email,
+  name,
+  projectOwner,
+  projectName,
+) => {
+  const html = pug.renderFile(`${__dirname}/../views/emails/invitation.pug`, {
+    name,
+    projectOwner,
+    projectName,
+  });
+  const info = await transporter.sendMail({
+    from: `"NodeGuardian" <${process.env.EMAIL_FROM}>`,
+    to: email,
+    subject: 'Hi! Here is your invitation!',
+    html,
+    text: htmlToText(html),
+  });
+  console.log('Message sent: %s', info.messageId);
+};

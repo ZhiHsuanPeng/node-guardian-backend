@@ -1,7 +1,12 @@
+const dotenv = require('dotenv');
 const projectModel = require('../models_RDS/project');
+const userModel = require('../models_RDS/user');
+const mail = require('../utils/mail');
 const pool = require('../models_RDS/databasePool');
 const elasticSearchClient = require('../models_Search/elasticSearch');
 const redis = require('../utils/redis');
+
+dotenv.config();
 
 const resetAlert = async (token) => {
   const keys = await redis.keys('*');
@@ -35,7 +40,7 @@ exports.createProject = async (req, res) => {
   }
 };
 
-exports.modifiedProjectSetting = async (req, res) => {
+exports.modifyProjectAlertSettings = async (req, res) => {
   try {
     const { accountName, projectName, alertFirst, timeWindow, quota } =
       req.body;
@@ -67,4 +72,19 @@ exports.modifiedProjectSetting = async (req, res) => {
     }
     return res.status(500).json({ message: 'modified project failed' });
   }
+};
+
+exports.modifyProjectMembersSettings = async (req, res) => {
+  const { email, projectOwner, projectName } = req.body;
+  const user = await userModel.findUserByEmail(email);
+  console.log(user);
+  if (user) {
+    await mail.sendProjectInvitation(
+      user.email,
+      user.name,
+      projectOwner,
+      projectName,
+    );
+  }
+  return res.status(200).json({ message: 'invitation sent!' });
 };
