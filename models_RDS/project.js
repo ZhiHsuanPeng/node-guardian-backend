@@ -56,3 +56,27 @@ exports.getProjectToken = async (userId, prjName) => {
   );
   return results[0][0].token;
 };
+
+exports.getProjectId = async (userId, prjName) => {
+  const results = await pool.query(
+    'SELECT p.id FROM access AS a INNER JOIN projects AS p ON a.projectId = p.id WHERE a.userId = ? AND p.name = ?',
+    [userId, prjName],
+  );
+  return results[0][0].id;
+};
+
+exports.isGrandAccessSuccess = async (projectId, userId) => {
+  try {
+    const result = await pool.query(
+      'INSERT INTO access (projectId, userId, level) VALUES (?, ?, ?) ',
+      [projectId, userId, 'collaborators'],
+    );
+    console.log(result);
+    if (result) {
+      return true;
+    }
+  } catch (err) {
+    console.log(err);
+    return false;
+  }
+};

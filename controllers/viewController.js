@@ -159,11 +159,12 @@ exports.renderSignInForm = async (req, res) => {
 exports.renderSettingMemeberPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
+    const userId = res.locals.userId;
     const users = await userModel.getAllUserByProjectName(prjName);
 
     return res
       .status(200)
-      .render('setting_members', { prjName, accountName, users });
+      .render('setting_members', { prjName, accountName, users, userId });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
@@ -181,7 +182,7 @@ exports.renderOverViewPage = async (req, res) => {
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
       throw Error('page not found');
     }
-    const projects = await userModel.getAllProjectByUserId(userId);
+    const projects = await projectModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
 
     const projectTimeStamp = {};
@@ -192,7 +193,7 @@ exports.renderOverViewPage = async (req, res) => {
     const timeStamp = Object.entries(projectTimeStamp);
     const userList = {};
     for (const project of projectsArr) {
-      userList[project[0]] = await projectModel.getAllUserInProject(project[1]);
+      userList[project[0]] = await userModel.getAllUserInProject(project[1]);
     }
 
     Object.values(userList).forEach((user, index) =>

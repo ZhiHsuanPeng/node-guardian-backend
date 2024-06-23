@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelButton = document.querySelector('.cancel_btn');
   const projectOwner = document.querySelector('.project_owner').dataset.owner;
   const projectName = document.querySelector('.project_name').dataset.prjname;
+  const userId = document.querySelector('.project_ownerId').dataset.id;
 
   addButton.addEventListener('click', (e) => {
     addMembersWindow.classList.toggle('hidden');
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
           email: userEmail,
           projectOwner,
           projectName,
+          ownerId: userId,
         }),
       });
 

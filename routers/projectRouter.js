@@ -29,4 +29,6 @@ router
   .route('/access')
   .post(authenticate, projectController.modifyProjectMembersSettings);
 
+router.route('/access/:token').get(projectController.grandAccessToMembers);
+
 module.exports = router;

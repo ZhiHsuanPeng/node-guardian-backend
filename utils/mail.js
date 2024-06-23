@@ -52,11 +52,13 @@ exports.sendProjectInvitation = async (
   name,
   projectOwner,
   projectName,
+  confirmUrl,
 ) => {
   const html = pug.renderFile(`${__dirname}/../views/emails/invitation.pug`, {
     name,
     projectOwner,
     projectName,
+    confirmUrl,
   });
   const info = await transporter.sendMail({
     from: `"NodeGuardian" <${process.env.EMAIL_FROM}>`,

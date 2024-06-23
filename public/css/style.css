@@ -246,22 +246,6 @@ html {
   text-decoration: none;
 }
 
-.btn,
-.btn:link,
-.btn:visited {
-  font-size: 1.6rem;
-  padding: 1.4rem 3rem;
-  border-radius: 10rem;
-  text-transform: uppercase;
-  display: inline-block;
-  text-decoration: none;
-  position: relative;
-  transition: all 0.4s;
-  font-weight: 400;
-  border: none;
-  cursor: pointer;
-}
-
 .alert {
   position: fixed;
   top: 0;
@@ -667,17 +651,18 @@ a.sidebar-link:hover {
   align-items: center;
 }
 
-button {
+/* button {
   background: none;
   border: none;
   padding: 0;
   font: inherit;
   color: inherit;
   cursor: pointer;
-}
+} */
 
 .add_users_btn {
   display: flex;
+  border: none;
   background-color: #127dd5;
   border-radius: 3px;
   font-size: 14px;
@@ -700,6 +685,12 @@ button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   z-index: -1; /* Ensure it is below other elements */
+}
+#submit_add_members,
+.cancel_btn {
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .add-users-window.visible {
@@ -762,4 +753,20 @@ input#userEmail {
   border: 1px solid #127dd5;
   border-radius: 4px;
   padding: 10px;
+}
+
+.btn,
+.btn:link,
+.btn:visited {
+  font-size: 1.6rem;
+  padding: 1.4rem 3rem;
+  border-radius: 10rem;
+  text-transform: uppercase;
+  display: inline-block;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.4s;
+  font-weight: 400;
+  border: none;
+  cursor: pointer;
 }
