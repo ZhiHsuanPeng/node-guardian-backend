@@ -143,6 +143,8 @@ const past1d = () => {
       showline: true,
       linecolor: 'black',
       linewidth: 1,
+      tickmode: 'linear',
+      dtick: 1,
     },
     hovermode: 'x',
     autosize: true,
