@@ -159,7 +159,7 @@ exports.renderSignInForm = async (req, res) => {
 exports.renderSettingMemeberPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
-    const users = await projectModel.getAllUserByProjectName(prjName);
+    const users = await userModel.getAllUserByProjectName(prjName);
 
     return res
       .status(200)
@@ -181,7 +181,7 @@ exports.renderOverViewPage = async (req, res) => {
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
       throw Error('page not found');
     }
-    const projects = await projectModel.getAllProjectByUserId(userId);
+    const projects = await userModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
 
     const projectTimeStamp = {};

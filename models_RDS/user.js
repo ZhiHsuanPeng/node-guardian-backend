@@ -28,3 +28,23 @@ exports.isUserIdAndNameMatched = async (accountName, userId) => {
   }
   return false;
 };
+
+exports.getAllUserInProject = async (token) => {
+  const result = await pool.query(
+    `SELECT u.email FROM projects AS p
+    INNER JOIN access AS a ON a.projectId = p.id
+    INNER JOIN users AS u ON u.id = a.userId WHERE p.token = ?`,
+    [token],
+  );
+  return result[0];
+};
+
+exports.getAllUserByProjectName = async (projectName) => {
+  const result = await pool.query(
+    `SELECT u.name, u.email FROM projects AS p
+    INNER JOIN access AS a ON a.projectId = p.id
+    INNER JOIN users AS u ON u.id = a.userId WHERE p.name = ?`,
+    [projectName],
+  );
+  return result[0];
+};

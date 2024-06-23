@@ -623,6 +623,7 @@ a.sidebar-link:hover {
 }
 .setting_container {
   padding: 20px 20px 0 20px;
+  position: relative;
 }
 .members_title {
   font-size: 32px;
@@ -637,15 +638,128 @@ a.sidebar-link:hover {
 
 .members_container {
   width: 320px;
-  height: 150px;
+  height: 140px;
   padding: 20px;
   margin: 20px 0;
   border: 2px solid rgb(207, 204, 204);
 }
 
 .user_img {
-  height: 50px;
-  width: 50px;
+  height: 45px;
+  width: 45px;
   border-radius: 50%;
   margin: 0 0 10px 0;
+}
+
+.members_access_container {
+  margin: 20px 0 0 0;
+}
+
+.members_access_title {
+  color: #104c91;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 40px 0 0;
+}
+
+.members_button_container {
+  display: flex;
+  align-items: center;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.add_users_btn {
+  display: flex;
+  background-color: #127dd5;
+  border-radius: 3px;
+  font-size: 14px;
+  color: white;
+  padding: 8px 16px;
+  align-items: center;
+}
+
+.add-users-window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 50vh;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 30px 40px;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  z-index: -1; /* Ensure it is below other elements */
+}
+
+.add-users-window.visible {
+  z-index: 999;
+}
+
+.add-users-window.hidden {
+  z-index: -1;
+}
+
+.members_window_title {
+  color: #104c91;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.btn_container {
+  display: flex;
+}
+
+.submit_button,
+.cancel_button {
+  margin: 32px 16px 0 0;
+  font: 14px;
+  padding: 0 16px;
+  height: 32px;
+  border: 1px solid black;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.cancel_button {
+  border: 1px solid #bcbbbb;
+}
+
+.submit_button {
+  background-color: #127dd5;
+  color: white;
+  border: none;
+}
+
+.form_group_members {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+#userEmail {
+  margin: 20px 0 0 0;
+  width: 100%;
+}
+
+input#userEmail::placeholder {
+  font-size: 14px; /* Change this to your desired font size */
+  color: #ccc; /* You can also change the placeholder color if needed */
+}
+
+input#userEmail {
+  border: 1px solid #127dd5;
+  border-radius: 4px;
+  padding: 10px;
 }
