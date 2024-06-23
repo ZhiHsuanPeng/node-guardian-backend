@@ -69,3 +69,27 @@ exports.sendProjectInvitation = async (
   });
   console.log('Message sent: %s', info.messageId);
 };
+
+exports.sendProjectInvitationAndSignUp = async (
+  email,
+  projectOwner,
+  projectName,
+  signUpUrl,
+) => {
+  const html = pug.renderFile(
+    `${__dirname}/../views/emails/inviteAndSignUp.pug`,
+    {
+      projectOwner,
+      projectName,
+      signUpUrl,
+    },
+  );
+  const info = await transporter.sendMail({
+    from: `"NodeGuardian" <${process.env.EMAIL_FROM}>`,
+    to: email,
+    subject: 'Hi! Here is your invitation!',
+    html,
+    text: htmlToText(html),
+  });
+  console.log('Message sent: %s', info.messageId);
+};

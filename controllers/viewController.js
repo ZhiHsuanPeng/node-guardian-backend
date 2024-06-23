@@ -3,9 +3,11 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable comma-dangle */
+const crypto = require('crypto');
 const errorLog = require('../models_Search/errorLog');
 const projectModel = require('../models_RDS/project');
 const userModel = require('../models_RDS/user');
+const redis = require('../utils/redis');
 
 const transformUNIXtoDiff = (unix) => {
   const timeStamp = new Date(unix);
@@ -128,6 +130,27 @@ const countDevicePercentage = (docs) => {
   }
 
   return { browserPercentage, osPercentage };
+};
+exports.renderSpecialSignUpForm = async (req, res) => {
+  try {
+    const { token } = req.params;
+    console.log(token);
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+    const data = await redis.get(hashedToken);
+    if (!data) {
+      throw Error(
+        'The link is not longer valid! Please ask the project owner to send invitations again!',
+      );
+    }
+    return res.status(200).render('specialSignUp', { token });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
 };
 
 exports.renderSignUpForm = async (req, res) => {

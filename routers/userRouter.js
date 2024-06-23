@@ -8,7 +8,10 @@ const router = express.Router();
 router
   .route('/signup')
   .post([
-    body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email format')
+      .normalizeEmail(),
     body('name').notEmpty().withMessage('Name is required').trim(),
     body('password').notEmpty().withMessage('Password is required'),
     validator.handleResult,
@@ -18,10 +21,26 @@ router
 router
   .route('/signin')
   .post([
-    body('email').isEmail().withMessage('Invalid email format').normalizeEmail(),
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email format')
+      .normalizeEmail(),
     body('password').notEmpty().withMessage('Password is required'),
     validator.handleResult,
     authController.signIn,
+  ]);
+
+router
+  .route('/signup/:token')
+  .post([
+    body('email')
+      .isEmail()
+      .withMessage('Invalid email format')
+      .normalizeEmail(),
+    body('name').notEmpty().withMessage('Name is required').trim(),
+    body('password').notEmpty().withMessage('Password is required'),
+    validator.handleResult,
+    authController.specialSignUp,
   ]);
 
 module.exports = router;

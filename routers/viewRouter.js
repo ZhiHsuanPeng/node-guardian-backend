@@ -5,6 +5,7 @@ const authenticate = require('../middleware/authenticate');
 const router = express.Router();
 
 router.route('/signup').get(viewController.renderSignUpForm);
+router.route('/signup/:token').get(viewController.renderSpecialSignUpForm);
 router.route('/signin').get(viewController.renderSignInForm);
 
 router

@@ -1,0 +1,28 @@
+doctype html 
+html 
+    head    
+        
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title #{errTitle}
+        link(rel='stylesheet' href='/css/style.css')
+        script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
+
+    body
+        main.main
+            .token(data-token = `${token}`)
+            .signup-form
+                form.form
+                    .form__group
+                        label.form__label(for='name') Name
+                        input#name.form__input(type='text', placeholder='Your Name')
+                    .form__group
+                        label.form__label(for='email') Email 
+                        input#email.form__input(type='email', placeholder='you@example.com')
+                    .form__group
+                        label.form__label(for='password') Password
+                        input#password.form__input(type='password', placeholder='••••••••')
+                    .form__group
+                        button.btn Sign Up
+        script(src='/js/specialSignUp.js' type="module")
+        

@@ -1,0 +1,17 @@
+extends baseEmail
+
+block content
+    p Hi!
+    p Here is the invitation to collaborate with #{projectOwner} on project #{projectName}
+    p However, you are not registered yet, please click the link below to sign up!
+    table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+            tr
+                td(align='left')
+                    table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                            tr
+                                td
+                                    a(href=`${signUpUrl}`, target='_blank') Click to join!
+    p If you need any help with our services, please don't hesitate to contact me!
+    p - Zhi Hsuan Peng, CEO

@@ -76,32 +76,54 @@ exports.modifyProjectAlertSettings = async (req, res) => {
 };
 
 exports.modifyProjectMembersSettings = async (req, res) => {
-  const { email, projectOwner, projectName, ownerId } = req.body;
-  const user = await userModel.findUserByEmail(email);
-  const projectId = await projectModel.getProjectId(ownerId, projectName);
-  const token = crypto.randomBytes(16).toString('hex');
-  const confirmUrl = `${req.protocol}://${req.get(
-    'host',
-  )}/api/v1/projects/access/${token}`;
-  console.log(confirmUrl);
-  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-  if (user) {
-    await mail.sendProjectInvitation(
-      user.email,
-      user.name,
+  try {
+    const { email, projectOwner, projectName, ownerId } = req.body;
+
+    const user = await userModel.findUserByEmail(email);
+    const projectId = await projectModel.getProjectId(ownerId, projectName);
+
+    const token = crypto.randomBytes(16).toString('hex');
+    const confirmUrl = `${req.protocol}://${req.get(
+      'host',
+    )}/api/v1/projects/access/${token}`;
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    if (user) {
+      await mail.sendProjectInvitation(
+        user.email,
+        user.name,
+        projectOwner,
+        projectName,
+        confirmUrl,
+      );
+      await redis.set(hashedToken, `${projectId},${user.id},${user.name}`);
+      return res.status(200).json({ message: 'invitation sent!' });
+    }
+
+    // Handle situation when the teammate is not registered yet
+    const signUpUrl = `${req.protocol}://${req.get('host')}/signup/${token}`;
+    console.log(signUpUrl);
+
+    await mail.sendProjectInvitationAndSignUp(
+      email,
       projectOwner,
       projectName,
-      confirmUrl,
+      signUpUrl,
     );
-    await redis.set(hashedToken, `${projectId},${user.id},${user.name}`);
+    await redis.set(hashedToken, projectId);
     return res.status(200).json({ message: 'invitation sent!' });
+  } catch (err) {
+    console.log(err);
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res.status(500).json({ message: 'modified project failed' });
   }
 };
 
 exports.grandAccessToMembers = async (req, res) => {
   try {
     const { token } = req.params;
-    console.log(token);
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
     const data = await redis.get(hashedToken);
     if (!data) {
@@ -119,9 +141,9 @@ exports.grandAccessToMembers = async (req, res) => {
       message: 'Something went wrong!',
     });
   } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      message: 'Something went wrong!',
-    });
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res.status(500).json({ message: 'modified project failed' });
   }
 };
