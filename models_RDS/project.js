@@ -71,10 +71,10 @@ exports.isGrandAccessSuccess = async (projectId, userId) => {
       'INSERT INTO access (projectId, userId, level) VALUES (?, ?, ?) ',
       [projectId, userId, 'collaborators'],
     );
-    console.log(result);
     if (result) {
       return true;
     }
+    return false;
   } catch (err) {
     console.log(err);
     return false;

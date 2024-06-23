@@ -46,6 +46,7 @@ const isExcessQuota = async (key, data) => {
   ch.consume(queue, async (msg) => {
     if (msg !== null) {
       const payLoad = JSON.parse(msg.content.toString());
+      console.log(payLoad);
       const data = await getEmailAndProjectRules(payLoad.accessToken);
       console.log(data);
       if (data[0].timeWindow === 'off') {

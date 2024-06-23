@@ -1,6 +1,6 @@
 import { showAlert } from './alerts.js';
-import { signup } from './signup.js';
-import { signin } from './signin.js';
+import { signup } from './signUp.js';
+import { signin } from './signIn.js';
 
 const signupBtn = document.querySelector('.signup-form .btn');
 const loginBtn = document.querySelector('.login-form .btn');
