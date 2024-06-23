@@ -17,9 +17,7 @@ const authenticate = async (req, res, next) => {
     next();
   } catch (err) {
     if (err instanceof Error) {
-      const protocol = req.protocol;
-      const host = req.get('host');
-      const redirectUrl = `${protocol}://${host}/signin`;
+      const redirectUrl = `${process.env.DEV_URL}/signin`;
 
       res.status(401).render('error', {
         msg: err.message,
