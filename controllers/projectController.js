@@ -78,14 +78,13 @@ exports.modifyProjectAlertSettings = async (req, res) => {
 exports.modifyProjectMembersSettings = async (req, res) => {
   try {
     const { email, projectOwner, projectName, ownerId } = req.body;
+    const url = process.env.DEV_URL || 'http://localhost:3000';
 
     const user = await userModel.findUserByEmail(email);
     const projectId = await projectModel.getProjectId(ownerId, projectName);
 
     const token = crypto.randomBytes(16).toString('hex');
-    const confirmUrl = `${req.protocol}://${req.get(
-      'host',
-    )}/api/v1/projects/access/${token}`;
+    const confirmUrl = `${url}/api/v1/projects/access/${token}`;
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
     if (user) {
@@ -101,7 +100,7 @@ exports.modifyProjectMembersSettings = async (req, res) => {
     }
 
     // Handle situation when the teammate is not registered yet
-    const signUpUrl = `${req.protocol}://${req.get('host')}/signup/${token}`;
+    const signUpUrl = `${url}/signup/${token}`;
     console.log(signUpUrl);
 
     await mail.sendProjectInvitationAndSignUp(
