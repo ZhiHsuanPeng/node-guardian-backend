@@ -139,16 +139,37 @@ const past1d = () => {
           y: 0.5,
           xref: 'paper',
           yref: 'paper',
-          text: 'No data available',
+          text: 'There are no occurrences for the past 24 hours.',
           showarrow: false,
           font: {
             family: 'Arial',
-            size: 32,
-            color: 'rgba(31, 119, 180, 1)',
+            size: 28,
+            color: 'rgba(255, 255, 255, 1)',
           },
         },
       ],
-
+      shapes: [
+        {
+          type: 'rect',
+          xref: 'paper',
+          yref: 'paper',
+          x0: 0.1,
+          y0: 0.3,
+          x1: 0.9,
+          y1: 0.7,
+          fillcolor: 'rgba(128, 128, 128, 1)',
+          opacity: 0.8,
+          line: {
+            width: 0,
+            radius: 10,
+          },
+          layer: 'below',
+          hoverinfo: 'none',
+          style: {
+            pointerEvents: 'none',
+          },
+        },
+      ],
       xaxis: {
         tickvals: hours.filter((_, index) => index % 2 === 0),
         ticktext: hours.filter((_, index) => index % 2 === 0),
