@@ -207,7 +207,6 @@ exports.renderOverViewPage = async (req, res) => {
     }
     const projects = await projectModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
-
     const projectTimeStamp = {};
     for (const row of projectsArr) {
       const ts = await errorLog.getAllProjectTimeStamp(row[1]);
@@ -218,11 +217,9 @@ exports.renderOverViewPage = async (req, res) => {
     for (const project of projectsArr) {
       userList[project[0]] = await userModel.getAllUserInProject(project[1]);
     }
-
     Object.values(userList).forEach((user, index) =>
       projectsArr[index].push(user.length),
     );
-    console.log(timeStamp);
     return res
       .status(200)
       .render('overview', { projectsArr, accountName, timeStamp });

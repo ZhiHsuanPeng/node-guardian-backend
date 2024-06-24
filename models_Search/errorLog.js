@@ -121,12 +121,17 @@ exports.getAllErrors = async (accessToken, err) => {
 };
 
 exports.getAllProjectTimeStamp = async (token) => {
+  const twentyFourHoursAgo = Math.floor(Date.now() / 1000) - 24 * 60 * 60;
   const response = await elasticSearchClient.search({
     index: token,
     body: {
       size: 100,
       query: {
-        match_all: {},
+        range: {
+          timestamp: {
+            gte: twentyFourHoursAgo,
+          },
+        },
       },
     },
     _source: ['timestamp'],

@@ -112,9 +112,10 @@ const past1d = () => {
     'rgba(146, 135, 121, 0.8)',
     'rgba(212, 210, 165, 0.8)',
   ];
-
-  if (occurrencesMap.size === 0) {
-    // Display a message if no data is present
+  const allZeroes = Array.from(occurrencesMap.values()).every((occurrences) =>
+    occurrences.every((value) => value === 0),
+  );
+  if (occurrencesMap.size === 0 || allZeroes) {
     const defaultData = Array(24)
       .fill(0)
       .map((_, index) => Math.floor(Math.random() * 10));
