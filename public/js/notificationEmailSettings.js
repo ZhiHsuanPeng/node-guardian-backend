@@ -16,10 +16,66 @@ document.addEventListener('DOMContentLoaded', () => {
   const save = document.querySelector('.rules_save_btn');
   const quotaOption = document.querySelector('.quota');
   const quota = document.querySelector('.quotaVal').dataset.quota;
+  const emailNotificationsSwitch = document.querySelector('.switch');
 
-  // if (!checkbox.checked) {
-  //   anomalyWindow.style.display = 'none';
-  // }
+  const toggleNotifications = (enabled) => {
+    const ruleContainers = document.querySelectorAll('.rule_set_container');
+    const anomalySwitch = document.querySelector('.switch.anomaly');
+    const newErrorSwitch = document.querySelector('.switch.new_error');
+
+    if (enabled) {
+      ruleContainers.forEach((container) =>
+        container.classList.remove('disabled'),
+      );
+      anomalyWindow.style.display = 'block';
+      quotaOption.value = 1;
+      anomalySwitch.checked = true;
+      newErrorSwitch.checked = true;
+    } else {
+      ruleContainers.forEach((container) =>
+        container.classList.add('disabled'),
+      );
+      anomalyWindow.style.display = 'none';
+      anomalySwitch.checked = false;
+      newErrorSwitch.checked = false;
+    }
+  };
+
+  if (!emailNotificationsSwitch.checked) {
+    const ruleContainers = document.querySelectorAll('.rule_set_container');
+    ruleContainers.forEach((container) => container.classList.add('disabled'));
+  }
+  emailNotificationsSwitch.addEventListener('change', function () {
+    const enabled = this.checked;
+    toggleNotifications(enabled);
+  });
+
+  if (timeWindow) {
+    for (let option of windowDropdown.options) {
+      if (option.value === timeWindow.toString()) {
+        option.selected = true;
+        break;
+      }
+    }
+  }
+
+  if (quota) {
+    quotaOption.value = quota;
+  }
+
+  windowDropdown.addEventListener('change', (event) => {
+    const selectedValue = event.target.value;
+    console.log('Selected value:', selectedValue);
+  });
+
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      anomalyWindow.style.display = 'block';
+      quotaOption.value = 1;
+    } else {
+      anomalyWindow.style.display = 'none';
+    }
+  });
 
   save.addEventListener('click', async () => {
     try {
@@ -79,72 +135,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  function toggleNotifications(enabled) {
-    const ruleContainers = document.querySelectorAll('.rule_set_container');
-    const anomalySwitch = document.querySelector('.switch.anomaly');
-    const newErrorSwitch = document.querySelector('.switch.new_error');
-
-    if (enabled) {
-      ruleContainers.forEach((container) =>
-        container.classList.remove('disabled'),
-      );
-      anomalyWindow.style.display = 'block';
-      anomalySwitch.checked = true;
-      newErrorSwitch.checked = true;
-    } else {
-      ruleContainers.forEach((container) =>
-        container.classList.add('disabled'),
-      );
-      anomalyWindow.style.display = 'none';
-      anomalySwitch.checked = false;
-      newErrorSwitch.checked = false;
-    }
-  }
-
-  const emailNotificationsSwitch = document.querySelector('.switch');
-  if (!emailNotificationsSwitch.checked) {
-    const ruleContainers = document.querySelectorAll('.rule_set_container');
-    ruleContainers.forEach((container) => container.classList.add('disabled'));
-  }
-  emailNotificationsSwitch.addEventListener('change', function () {
-    const enabled = this.checked;
-    toggleNotifications(enabled);
-  });
-
-  if (timeWindow) {
-    for (let option of windowDropdown.options) {
-      if (option.value === timeWindow.toString()) {
-        option.selected = true;
-        break; // Exit the loop once the default option is selected
-      }
-    }
-  }
-  if (quota) {
-    quotaOption.value = quota;
-  }
-
-  windowDropdown.addEventListener('change', (event) => {
-    const selectedValue = event.target.value;
-    console.log('Selected value:', selectedValue);
-    // Perform actions based on the selected value
-  });
-
   navLinks.forEach((link) => {
     const href = link.getAttribute('href');
     if (href === currentPath) {
       link.parentElement.classList.add('active');
     } else if (href.includes('/settings/notifications')) {
-      // Exclude the Notifications link from styling changes
       link.parentElement.classList.add('active');
-    }
-  });
-
-  checkbox.addEventListener('change', () => {
-    if (checkbox.checked) {
-      anomalyWindow.style.display = 'block';
-      quotaOption.value = 1;
-    } else {
-      anomalyWindow.style.display = 'none';
     }
   });
 });
