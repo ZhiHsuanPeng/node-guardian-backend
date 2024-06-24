@@ -30,4 +30,8 @@ router
   .route('/a/:accountName/:prjName/settings/notifications/emails')
   .get(authenticate, viewController.renderSettingNotificationEmailsPage);
 
+router
+  .route('/a/:accountName/:prjName/settings/general')
+  .get(authenticate, viewController.renderSettingGeneralPage);
+
 module.exports = router;

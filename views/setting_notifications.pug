@@ -65,17 +65,18 @@ html
                             i.lni.lni-exit
                             span Logout
 
-            .sidebar
-                .sidebar2_title #{prjName} Settings
-                ul
-                    li(class='nav-item')
-                        a(href='/general' class='nav-link') General
-                    li(class='nav-item')
-                        a(href=`/a/${accountName}/${prjName}/settings/members` class='nav-link') Members
-                    li(class='nav-item')
-                        a(href='/project-access-token' class='nav-link') Project Access Token
-                    li(class='nav-item')
-                        a(href=`/a/${accountName}/${prjName}/settings/notifications` class='nav-link') Notifications
+            .sidebar_container                
+                .sidebar
+                    .sidebar2_title #{prjName} Settings
+                    ul
+                        li(class='nav-item')
+                            a(href=`/a/${accountName}/${prjName}/settings/general` class='nav-link') General
+                        li(class='nav-item')
+                            a(href=`/a/${accountName}/${prjName}/settings/members` class='nav-link') Members
+                        li(class='nav-item')
+                            a(href='/project-access-token' class='nav-link') Project Access Token
+                        li(class='nav-item')
+                            a(href=`/a/${accountName}/${prjName}/settings/notifications` class='nav-link') Notifications
             .main.p-3
                 .setting_container
                     .notifications_title Notifications 

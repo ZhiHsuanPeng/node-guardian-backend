@@ -178,6 +178,25 @@ exports.renderSignInForm = async (req, res) => {
   }
 };
 
+exports.renderSettingGeneralPage = async (req, res) => {
+  try {
+    const { accountName, prjName } = req.params;
+    const userId = res.locals.userId;
+    return res.status(200).render('setting_general', {
+      prjName,
+      accountName,
+      userId,
+    });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
+};
+
 exports.renderSettingNotificationEmailsPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;

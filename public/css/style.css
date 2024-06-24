@@ -580,7 +580,7 @@ a.sidebar-link:hover {
 .sidebar {
   width: 260px;
   background-color: #afb9c3;
-  height: 100vh;
+  height: 100%;
   box-sizing: border-box;
 }
 
@@ -984,4 +984,17 @@ select#windowDropdown option {
 .rule_set_container.disabled {
   opacity: 0.5; /* Adjust the opacity as needed */
   pointer-events: none;
+}
+
+.sidebar_container {
+  display: flex;
+  flex-direction: column;
+  width: 190px;
+}
+
+.sidebar_container {
+  flex: 1 1 auto;
+}
+body {
+  height: 900px;
 }
