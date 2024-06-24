@@ -113,56 +113,135 @@ const past1d = () => {
     'rgba(212, 210, 165, 0.8)',
   ];
 
-  const traces = Array.from(occurrencesMap.entries()).map(
-    ([name, occurrences], index) => ({
+  if (occurrencesMap.size === 0) {
+    // Display a message if no data is present
+    const defaultData = Array(24)
+      .fill(0)
+      .map((_, index) => Math.floor(Math.random() * 10));
+
+    const defaultTrace = {
       x: hours,
-      y: occurrences,
+      y: defaultData,
       type: 'bar',
-      hovertemplate: `%{y}<extra>${name}</extra>`,
-      name: name,
       marker: {
-        color: traceColors[index % traceColors.length],
-        line: {
-          color: 'rgba(31, 119, 180, 1)',
-          width: 0.1,
-        },
+        color: 'rgba(255, 99, 71, 0.1)',
+        opacity: 0.4,
       },
-    }),
-  );
-  console.log(traces);
 
-  const layout = {
-    xaxis: {
-      tickvals: hours.filter((_, index) => index % 2 === 0),
-      ticktext: hours.filter((_, index) => index % 2 === 0),
-      tickangle: 45,
-      hoverformat: '%H:00',
-      type: 'category', // Set x-axis type to category
-    },
-    yaxis: {
-      showline: true,
-      linecolor: 'black',
-      linewidth: 1,
-      tickmode: 'linear',
-      dtick: 1,
-    },
-    hovermode: 'x',
-    autosize: true,
-    width: 1100,
-    height: 300,
-    margin: {
-      l: 40,
-      r: 40,
-      b: 40,
-      t: 10,
-    },
-  };
+      showlegend: false,
+    };
 
-  const config = {
-    displayModeBar: false,
-  };
+    const layout = {
+      annotations: [
+        {
+          x: 0.5,
+          y: 0.5,
+          xref: 'paper',
+          yref: 'paper',
+          text: 'No data available',
+          showarrow: false,
+          font: {
+            family: 'Arial',
+            size: 32,
+            color: 'rgba(31, 119, 180, 1)',
+          },
+        },
+      ],
 
-  Plotly.newPlot('past1day', traces, layout, config);
+      xaxis: {
+        tickvals: hours.filter((_, index) => index % 2 === 0),
+        ticktext: hours.filter((_, index) => index % 2 === 0),
+        tickangle: 45,
+        type: 'category',
+        tickmode: 'linear',
+        dtick: 1,
+        gridcolor: 'rgba(0,0,0,0)',
+        tickfont: {
+          color: 'rgba(0,0,0,0.1)',
+        },
+        tickcolor: 'rgba(0,0,0,0.1)',
+      },
+      yaxis: {
+        showline: true,
+        linecolor: 'black',
+        linewidth: 1,
+        tickmode: 'linear',
+        dtick: 1,
+        tickvals: Array.from({ length: 10 }, (_, i) => i + 1),
+        gridcolor: 'rgba(0,0,0,0)',
+        tickfont: {
+          color: 'rgba(0,0,0,0.1)',
+        },
+        tickcolor: 'rgba(0,0,0,0.1)',
+      },
+      hovermode: false,
+      autosize: true,
+      width: 1100,
+      height: 300,
+      margin: {
+        l: 40,
+        r: 40,
+        b: 50,
+        t: 10,
+      },
+    };
+
+    Plotly.newPlot('past1day', [defaultTrace], layout, {
+      displayModeBar: false,
+    });
+  } else {
+    const traces = Array.from(occurrencesMap.entries()).map(
+      ([name, occurrences], index) => ({
+        x: hours,
+        y: occurrences,
+        type: 'bar',
+        hovertemplate: `%{y}<extra>${name}</extra>`,
+        name: name,
+        marker: {
+          color: traceColors[index % traceColors.length],
+          line: {
+            color: 'rgba(31, 119, 180, 1)',
+            width: 0.1,
+          },
+        },
+      }),
+    );
+
+    const layout = {
+      xaxis: {
+        tickvals: hours.filter((_, index) => index % 2 === 0),
+        ticktext: hours.filter((_, index) => index % 2 === 0),
+        tickangle: 45,
+        hoverformat: '%H:00',
+        type: 'category', // Set x-axis type to category
+        tickmode: 'linear', // Set tick mode to linear
+        dtick: 1, // Set the interval between ticks to 1 (integer)
+      },
+      yaxis: {
+        showline: true,
+        linecolor: 'black',
+        linewidth: 1,
+        tickmode: 'linear', // Set tick mode to linear for the y-axis
+        dtick: 1, // Set the interval between ticks to 1 (integer)
+      },
+      hovermode: 'x',
+      autosize: true,
+      width: 1100,
+      height: 300,
+      margin: {
+        l: 40,
+        r: 40,
+        b: 40,
+        t: 10,
+      },
+    };
+
+    const config = {
+      displayModeBar: false,
+    };
+
+    Plotly.newPlot('past1day', traces, layout, config);
+  }
 };
 
 past1d();

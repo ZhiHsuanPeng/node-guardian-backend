@@ -222,7 +222,7 @@ exports.renderOverViewPage = async (req, res) => {
     Object.values(userList).forEach((user, index) =>
       projectsArr[index].push(user.length),
     );
-
+    console.log(timeStamp);
     return res
       .status(200)
       .render('overview', { projectsArr, accountName, timeStamp });
