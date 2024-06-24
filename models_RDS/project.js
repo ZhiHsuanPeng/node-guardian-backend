@@ -91,3 +91,21 @@ exports.getProjectByUserIdAndProjectName = async (userId, prjName) => {
   );
   return result[0][0];
 };
+
+exports.changeProjectSettings = async (
+  notification,
+  alertFirst,
+  timeWindow,
+  quota,
+  accountName,
+  projectName,
+) => {
+  await pool.query(
+    `UPDATE projects p
+      INNER JOIN access a ON p.id = a.projectId
+      INNER JOIN users u ON u.id = a.userId
+      SET p.notification = ?,p.alertFirst = ?, p.timeWindow = ?, p.quota = ?
+      WHERE u.name = ? AND p.name = ?`,
+    [notification, alertFirst, timeWindow, quota, accountName, projectName],
+  );
+};

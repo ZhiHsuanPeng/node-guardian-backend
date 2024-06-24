@@ -963,3 +963,25 @@ select#windowDropdown option {
 .anomaly_options {
   padding: 20px 0;
 }
+
+.rules_save_btn {
+  margin: 40px 0 0 0;
+  font-size: 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  width: 90px;
+  height: 45px;
+  border-radius: 3px;
+  padding: 8px 16px;
+}
+
+.notifications_container.disabled {
+  opacity: 0.5; /* Adjust the opacity as needed */
+  pointer-events: none;
+}
+
+.rule_set_container.disabled {
+  opacity: 0.5; /* Adjust the opacity as needed */
+  pointer-events: none;
+}

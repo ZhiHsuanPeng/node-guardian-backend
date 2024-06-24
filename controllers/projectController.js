@@ -16,8 +16,7 @@ const resetAlert = async (token) => {
 
   const matchedKeys = keys.filter((key) => regex.test(key));
 
-  const values = await Promise.all(matchedKeys.map((key) => redis.set(key, 0)));
-  console.log(values);
+  await Promise.all(matchedKeys.map((key) => redis.set(key, 0)));
 };
 
 exports.createProject = async (req, res) => {
@@ -43,27 +42,31 @@ exports.createProject = async (req, res) => {
 
 exports.modifyProjectAlertSettings = async (req, res) => {
   try {
-    const { accountName, projectName, alertFirst, timeWindow, quota } =
-      req.body;
+    const {
+      userId,
+      accountName,
+      projectName,
+      notification,
+      alertFirst,
+      timeWindow,
+      quota,
+    } = req.body;
 
     if (quota * 1 !== 0 && timeWindow === 'off') {
       throw Error('You cannot set quota without setting time window!');
     }
 
-    await pool.query(
-      `UPDATE projects p
-        INNER JOIN access a ON p.id = a.projectId
-        INNER JOIN users u ON u.id = a.userId
-        SET p.alertFirst = ?, p.timeWindow = ?, p.quota = ?
-        WHERE u.name = ? AND p.name = ?`,
-      [alertFirst, timeWindow, quota, accountName, projectName],
+    await projectModel.changeProjectSettings(
+      notification,
+      alertFirst,
+      timeWindow,
+      quota,
+      accountName,
+      projectName,
     );
 
-    const result = await pool.query(
-      'SELECT token FROM projects WHERE name = ?',
-      [projectName],
-    );
-    const token = result[0][0].token;
+    const token = await projectModel.getProjectToken(userId, projectName);
+
     await resetAlert(token);
 
     return res.status(200).json({ message: 'change setting success' });
