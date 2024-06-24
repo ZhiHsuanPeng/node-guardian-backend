@@ -1,5 +1,11 @@
 import { showAlert } from './alerts.js';
 
+const checkbox = document.querySelector('.switch.anomaly');
+const anomalyWindow = document.querySelector('.anomaly_rule_window');
+if (!checkbox.checked) {
+  anomalyWindow.style.display = 'none';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const currentPath = window.location.pathname;
   const navLinks = document.querySelectorAll('.nav-link');
@@ -11,9 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const quotaOption = document.querySelector('.quota');
   const quota = document.querySelector('.quotaVal').dataset.quota;
 
-  //   const projectOwner = document.querySelector('.project_owner').dataset.owner;
-  //   const projectName = document.querySelector('.project_name').dataset.prjname;
-  //   const userId = document.querySelector('.project_ownerId').dataset.id;
+  // if (!checkbox.checked) {
+  //   anomalyWindow.style.display = 'none';
+  // }
+
   save.addEventListener('click', async () => {
     try {
       const userId = document.querySelector('.project_ownerId').dataset.id;
@@ -21,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.project_owner').dataset.owner;
       const projectName =
         document.querySelector('.project_name').dataset.prjname;
-      const notificationSwitch = document.querySelector('.switch').checked; // true or false
+      const notificationSwitch = document.querySelector('.switch').checked;
       const newErrorSwitch =
         document.querySelector('.switch.new_error').checked;
       const anomalySwitch = document.querySelector('.switch.anomaly').checked;
@@ -59,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log(responseData);
-        showAlert('success', 'New rules set!'); // Assuming your backend returns a message
+        showAlert('success', 'New rules set!');
         window.setTimeout(() => {
           location.assign(
             `/a/${accountName}/${projectName}/settings/notifications/emails`,
@@ -133,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   checkbox.addEventListener('change', () => {
     if (checkbox.checked) {
       anomalyWindow.style.display = 'block';
+      quotaOption.value = 1;
     } else {
       anomalyWindow.style.display = 'none';
     }

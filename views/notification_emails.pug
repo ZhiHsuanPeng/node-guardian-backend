@@ -110,7 +110,7 @@ html
                                             .rule_description Set threshold to detect anamoly
                                             .anomaly_rule_window 
                                                 .anomaly_options
-                                                    .anomaly_timewindow Time window setting: 
+                                                    .anomaly_timewindow Time window setting
                                                         .anomaly_timewindow_description To set anomaly detection, you must choose a time window first
                                                     select#windowDropdown
                                                         option(value="60") 1 minute
@@ -122,7 +122,7 @@ html
                                                     .anomaly_quota Number of errors
                                                         .anomaly_quota_description During the set time window, if the number of the same error exceeds this value, an email will be sent to notify you and your team
                                                     label(for='numberInput')
-                                                    input(type='number' id='numberInput' name='numberInput' class='quota' min='1' max='100' step='1')
+                                                    input(type='number' id='numberInput' name='numberInput' class='quota' min='1' max='100' step='1' value= "1")
                                         if (projectRules.timeWindow === 'off')
                                             input.switch.anomaly(type="checkbox")
                                         else 
