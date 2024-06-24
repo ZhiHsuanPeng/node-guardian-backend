@@ -179,6 +179,25 @@ exports.renderSignInForm = async (req, res) => {
   }
 };
 
+exports.renderSettingNotificationPage = async (req, res) => {
+  try {
+    const { accountName, prjName } = req.params;
+    const userId = res.locals.userId;
+    const users = await userModel.getAllUserByProjectName(prjName);
+
+    return res
+      .status(200)
+      .render('setting_notifications', { prjName, accountName, users, userId });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
+};
+
 exports.renderSettingMemeberPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;

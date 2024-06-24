@@ -22,4 +22,8 @@ router
   .route('/a/:accountName/:prjName/settings/members')
   .get(authenticate, viewController.renderSettingMemeberPage);
 
+router
+  .route('/a/:accountName/:prjName/settings/notifications')
+  .get(authenticate, viewController.renderSettingNotificationPage);
+
 module.exports = router;
