@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log(responseData);
-        showAlert('success', 'New rules set!');
+        showAlert('success', 'New Rules Set Successfully!');
         window.setTimeout(() => {
           location.assign(
             `/a/${accountName}/${projectName}/settings/notifications/emails`,
@@ -88,12 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
       ruleContainers.forEach((container) =>
         container.classList.remove('disabled'),
       );
+      anomalyWindow.style.display = 'block';
       anomalySwitch.checked = true;
       newErrorSwitch.checked = true;
     } else {
       ruleContainers.forEach((container) =>
         container.classList.add('disabled'),
       );
+      anomalyWindow.style.display = 'none';
       anomalySwitch.checked = false;
       newErrorSwitch.checked = false;
     }
