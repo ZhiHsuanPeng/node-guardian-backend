@@ -134,7 +134,6 @@ const countDevicePercentage = (docs) => {
 exports.renderSpecialSignUpForm = async (req, res) => {
   try {
     const { token } = req.params;
-    console.log(token);
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
     const data = await redis.get(hashedToken);
     if (!data) {
@@ -169,6 +168,31 @@ exports.renderSignUpForm = async (req, res) => {
 exports.renderSignInForm = async (req, res) => {
   try {
     return res.status(200).render('signIn');
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
+};
+
+exports.renderSettingNotificationEmailsPage = async (req, res) => {
+  try {
+    const { accountName, prjName } = req.params;
+    const userId = res.locals.userId;
+    const projectRules = await projectModel.getProjectByUserIdAndProjectName(
+      userId,
+      prjName,
+    );
+    console.log(projectRules);
+    return res.status(200).render('notification_emails', {
+      prjName,
+      accountName,
+      userId,
+      projectRules,
+    });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });

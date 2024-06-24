@@ -80,3 +80,14 @@ exports.isGrandAccessSuccess = async (projectId, userId) => {
     return false;
   }
 };
+
+exports.getProjectByUserIdAndProjectName = async (userId, prjName) => {
+  const result = await pool.query(
+    `SELECT p.notification, p.alertFirst, p.timeWindow, p.quota FROM projects AS p 
+    INNER JOIN access AS a ON a.projectId = p.id
+    INNER JOIN   users AS u ON u.id = a.userId 
+    WHERE u.id = ? AND p.name = ?`,
+    [userId, prjName],
+  );
+  return result[0][0];
+};
