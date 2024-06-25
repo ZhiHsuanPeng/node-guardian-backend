@@ -24,7 +24,7 @@ const getEmailAndProjectRules = async (token) => {
 };
 const isMute = async (key) => {
   const result = await redis.get(key);
-  if (isNaN(Number(result)) || result === '0') {
+  if (!isNaN(Number(result)) || result === '0') {
     return false;
   }
   return true;
