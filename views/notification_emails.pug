@@ -20,46 +20,32 @@ html
                     button.toggle-btn(type='button')
                         i.lni.lni-grid-alt
                     .sidebar-logo
-                        a(href='#') CodzSword
+                        a(href='#') NodeGuardian
                 ul.sidebar-nav
                     li.sidebar-item
                         a.sidebar-link(href='#')
                             i.lni.lni-user
                             span Profile
                     li.sidebar-item
-                        a.sidebar-link(href='#')
+                        a.sidebar-link(href=`/a/${accountName}`)
                             i.lni.lni-agenda
-                            span Task
+                            span Dashboard
                     li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
+                        a.sidebar-link(href='#')
                             i.lni.lni-protection
                             span Auth
-                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            li.sidebar-item
-                                a.sidebar-link(href='#') Login
-                            li.sidebar-item
-                                a.sidebar-link(href='#') Register
-                    li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#multi' aria-expanded='false' aria-controls='multi')
-                            i.lni.lni-layout
-                            span Multi Level
-                        ul#multi.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            li.sidebar-item
-                                a.sidebar-link.collapsed(href='#' data-bs-toggle='collapse' data-bs-target='#multi-two' aria-expanded='false' aria-controls='multi-two')
-                                    | Two Links
-                                ul#multi-two.sidebar-dropdown.list-unstyled.collapse
-                                    li.sidebar-item
-                                        a.sidebar-link(href='#') Link 1
-                                    li.sidebar-item
-                                        a.sidebar-link(href='#') Link 2
                     li.sidebar-item
                         a.sidebar-link(href='#')
                             i.lni.lni-popup
-                            span Notification
+                            span Alert Summary
                     li.sidebar-item
-                        a.sidebar-link(href='#')
+                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
                             i.lni.lni-cog
-                            span Setting
+                            span Project Settings
+                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
+                            each project in projectsArr
+                                li.sidebar-item
+                                    a.sidebar-link(href=`/a/${accountName}/${project[0]}/settings/general`) #{project[0]}
                     .sidebar-footer
                         a.sidebar-link(href='#')
                             i.lni.lni-exit
@@ -67,6 +53,7 @@ html
             .sidebar_container                
                 .sidebar
                     .sidebar2_title #{prjName} Settings
+                    .sidebar2_title.subtitle Basic Setup
                     ul
                         li(class='nav-item')
                             a(href=`/a/${accountName}/${prjName}/settings/general` class='nav-link') General
