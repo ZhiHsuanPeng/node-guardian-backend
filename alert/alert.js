@@ -22,6 +22,10 @@ const getEmailAndProjectRules = async (token) => {
   );
   return result[0];
 };
+const isMute = async (key) => {
+  const result = await redis.get(key);
+  return result === 'mute';
+};
 
 const isExcessQuota = async (key, data) => {
   const results = await redis
@@ -48,12 +52,16 @@ const isExcessQuota = async (key, data) => {
       const payLoad = JSON.parse(msg.content.toString());
       console.log(payLoad);
       const data = await getEmailAndProjectRules(payLoad.accessToken);
-      console.log(data);
       if (data[0].timeWindow === 'off') {
         console.log('Alert function not on!');
         return;
       }
       const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
+
+      if (isMute(key)) {
+        return;
+      }
+
       const isExcess = await isExcessQuota(key, data[0]);
       if (isExcess) {
         for (const row of data) {
