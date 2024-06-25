@@ -34,4 +34,8 @@ router
   .route('/a/:accountName/:prjName/settings/general')
   .get(authenticate, viewController.renderSettingGeneralPage);
 
+router
+  .route('/a/:accountName/:prjName/settings/token')
+  .get(authenticate, viewController.renderSettingTokenPage);
+
 module.exports = router;

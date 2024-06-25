@@ -178,6 +178,25 @@ exports.renderSignInForm = async (req, res) => {
   }
 };
 
+exports.renderSettingTokenPage = async (req, res) => {
+  try {
+    const { accountName, prjName } = req.params;
+    const userId = res.locals.userId;
+    const token = await projectModel.getProjectToken(userId, prjName);
+    return res
+      .status(200)
+      .render('setting_token', { accountName, prjName, userId, token });
+  } catch (err) {
+    console.log(err);
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
+};
+
 exports.renderSettingGeneralPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;

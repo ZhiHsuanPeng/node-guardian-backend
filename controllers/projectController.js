@@ -112,7 +112,6 @@ exports.modifyProjectMembersSettings = async (req, res) => {
       return res.status(200).json({ message: 'invitation sent!' });
     }
 
-    // Handle situation when the teammate is not registered yet
     const signUpUrl = `${url}/signup/${token}`;
     console.log(signUpUrl);
 
