@@ -24,6 +24,7 @@ const getEmailAndProjectRules = async (token) => {
 };
 const isMute = async (key) => {
   const result = await redis.get(key);
+  console.log(result);
   return result === 'mute';
 };
 
