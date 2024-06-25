@@ -3,7 +3,6 @@ const crypto = require('crypto');
 const projectModel = require('../models_RDS/project');
 const userModel = require('../models_RDS/user');
 const mail = require('../utils/mail');
-const pool = require('../models_RDS/databasePool');
 const elasticSearchClient = require('../models_Search/elasticSearch');
 const redis = require('../utils/redis');
 
@@ -151,6 +150,29 @@ exports.grandAccessToMembers = async (req, res) => {
     return res.status(500).json({
       message: 'Something went wrong!',
     });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res.status(500).json({ message: 'modified project failed' });
+  }
+};
+
+exports.muteErrorAlert = async (req, res) => {
+  try {
+    const { projecToken, errMessage, mute } = req.body;
+    if (mute === '0') {
+      await redis.set(`${projecToken}-${errMessage}`, 0);
+    } else {
+      await redis.set(
+        `${projecToken}-${errMessage}`,
+        `mute_${mute}`,
+        'EX',
+        mute * 1,
+      );
+    }
+
+    return res.status(200).json({ message: 'success' });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });

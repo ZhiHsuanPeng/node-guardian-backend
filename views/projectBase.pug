@@ -12,12 +12,14 @@ html
         main.main This is a project base page
         
             .errTitle(data-error= `${errorMessageArr}`)
+            .projectToken(data-token = `${errObj[0].projectToken}`)
             .errorLogsContainer
                 .containerBar
                     .title Error Message 
                     .count Total 
                     .last Last
                     .1daytrends 24 Hours Trends
+                    .mute_option Mute
                 each error in errObj
                     .errorContainer
                         .timeStampStat(data-time = `${error.timeStamp}`)
@@ -25,5 +27,16 @@ html
                         .errCount Count: #{error.count}
                         .errRecent #{error.recentTime}
                         div(id=`${error.err}`)
+                        .mute_cotainer
+                            if error.mute === true  
+                                .mute_status Muting...
+                                .mute_expires= `Expires in ${error.muteTime} hours` 
+                            select.mutedropdown(data-error=`mute_${error.err}_${error.muteTime}`)
+                                option(value="0") none
+                                option(value="3600") 1 hour
+                                option(value="10800") 3 hours 
+                                option(value="21600") 6 hours 
+                                option(value="43200") 12 hours  
+                                option(value="86400") 24 hours
         script(src='/js/projectPage.js' type="module")
             

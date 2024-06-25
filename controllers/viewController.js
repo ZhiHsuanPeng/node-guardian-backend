@@ -382,7 +382,20 @@ exports.renderBasicProjectPage = async (req, res) => {
       count: errorMessageAndCount[err],
       timeStamp,
       recentTime: recentTime[index],
+      projectToken,
     }));
+    for (const error of errObj) {
+      const key = `${error.projectToken}-${error.err}`;
+      const muteStatus = await redis.get(key);
+      if (!isNaN(Number(muteStatus)) || !muteStatus || muteStatus === '0') {
+        error.mute = false;
+        error.muteTime = 0;
+      } else {
+        const muteTime = (muteStatus.split('_')[1] * 1) / 3600;
+        error.mute = true;
+        error.muteTime = muteTime;
+      }
+    }
     return res
       .status(200)
       .render('projectBase', { errObj, errorMessageArr, accountName, prjName });

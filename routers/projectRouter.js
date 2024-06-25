@@ -31,4 +31,6 @@ router
 
 router.route('/access/:token').get(projectController.grandAccessToMembers);
 
+router.route('/mute').post(projectController.muteErrorAlert);
+
 module.exports = router;

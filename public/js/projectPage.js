@@ -1,9 +1,36 @@
+import { showAlert } from './alerts.js';
 const timeStamp = [];
-console.log(timeStamp);
 document.querySelectorAll('.timeStampStat').forEach((element) => {
   timeStamp.push(element.dataset.time);
 });
 const errorTitle = document.querySelector('.errTitle').dataset.error;
+const dropdowns = document.querySelectorAll('.mutedropdown');
+
+dropdowns.forEach(function (dropdown) {
+  const muteTime = dropdown.dataset.error.split('_')[2].trim();
+  const dropDown = dropdown;
+  dropDown.value = (parseInt(muteTime, 10) * 3600).toString();
+  dropdown.addEventListener('change', async function (event) {
+    const selectedTime = this.value;
+    const errorName = this.dataset.error.split('_')[1];
+    const token = document.querySelector('.projectToken').dataset.token;
+
+    const response = await fetch('/api/v1/projects/mute', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        projecToken: token,
+        errMessage: errorName,
+        mute: selectedTime,
+      }),
+    });
+    if (response.ok) {
+      showAlert('success', 'mute success');
+    }
+  });
+});
 
 errorTitle.split(',').forEach((title, index) => {
   const now = new Date();
@@ -21,10 +48,14 @@ errorTitle.split(',').forEach((title, index) => {
       const ts = Number(timestamp);
       if (!isNaN(ts)) {
         const gmtTimestamp = new Date(ts);
-        const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+        const gmtPlus8Timestamp = new Date(
+          gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
+        );
         const hour = gmtPlus8Timestamp.getUTCHours();
 
-        const index = hours.findIndex((h) => h.startsWith(hour.toString().padStart(2, '0')));
+        const index = hours.findIndex((h) =>
+          h.startsWith(hour.toString().padStart(2, '0')),
+        );
         if (index !== -1) {
           occurrences[index]++;
         }

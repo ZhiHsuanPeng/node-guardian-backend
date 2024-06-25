@@ -16,6 +16,7 @@
     "@opensearch-project/opensearch": "^2.10.0",
     "amqplib": "^0.10.4",
     "argon2": "^0.40.3",
+    "axios": "^1.7.2",
     "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
