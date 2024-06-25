@@ -995,6 +995,22 @@ select#windowDropdown option {
 .sidebar_container {
   flex: 1 1 auto;
 }
-body {
-  height: 900px;
+.project_info_container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+#projectName {
+  width: 380px;
+  margin: 10px 0 0 0;
+}
+.general_setting_title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #969393;
+  padding: 0 0 10px 0;
+}
+
+.general_setting_field {
+  margin: 10px 0 0 0;
 }

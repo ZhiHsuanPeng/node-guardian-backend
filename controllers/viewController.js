@@ -182,10 +182,17 @@ exports.renderSettingGeneralPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
+    const projectInfo = await projectModel.getProjectInfoByUserIdAndPrjName(
+      userId,
+      prjName,
+    );
+    const { id } = projectInfo;
+    const prjId = id;
     return res.status(200).render('setting_general', {
       prjName,
       accountName,
       userId,
+      prjId,
     });
   } catch (err) {
     if (err instanceof Error) {

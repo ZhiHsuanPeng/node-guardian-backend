@@ -44,6 +44,8 @@ exports.modifyProjectAlertSettings = async (req, res) => {
   try {
     const {
       userId,
+      prjId,
+      newProjectName,
       accountName,
       projectName,
       notification,
@@ -51,6 +53,13 @@ exports.modifyProjectAlertSettings = async (req, res) => {
       timeWindow,
       quota,
     } = req.body;
+
+    if (newProjectName && prjId) {
+      await projectModel.changeProjectName(prjId, newProjectName);
+      return res
+        .status(200)
+        .json({ message: 'Change Project Name Successfully!' });
+    }
 
     if (quota * 1 !== 0 && timeWindow === 'off') {
       throw Error('You cannot set quota without setting time window!');
@@ -71,6 +80,7 @@ exports.modifyProjectAlertSettings = async (req, res) => {
 
     return res.status(200).json({ message: 'change setting success' });
   } catch (err) {
+    console.log(err);
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
     }
