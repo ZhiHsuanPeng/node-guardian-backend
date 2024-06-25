@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { truncate } = require('fs');
 const crypto = require('crypto');
 const argon2 = require('argon2');
 const userModel = require('../models_RDS/user');
@@ -81,4 +82,12 @@ exports.specialSignUp = async (req, res) => {
     }
     return res.status(500).json({ errors: 'sign up failed' });
   }
+};
+
+exports.logout = (req, res) => {
+  res.cookie('jwt', 'loggout', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: truncate,
+  });
+  res.status(200).json({ status: 'success' });
 };

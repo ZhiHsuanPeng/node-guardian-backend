@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
         showAlert('success', 'New Name Set Successfully!');
         window.setTimeout(() => {
           location.assign(
