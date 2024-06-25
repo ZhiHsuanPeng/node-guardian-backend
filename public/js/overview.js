@@ -198,11 +198,11 @@ const past1d = () => {
       },
       hovermode: false,
       autosize: true,
-      width: 1100,
-      height: 300,
+      // width: 1100,
+      // height: 300,
       margin: {
-        l: 40,
-        r: 40,
+        l: 50,
+        r: 50,
         b: 50,
         t: 10,
       },
@@ -210,6 +210,7 @@ const past1d = () => {
 
     Plotly.newPlot('past1day', [defaultTrace], layout, {
       displayModeBar: false,
+      responsive: true,
     });
   } else {
     const traces = Array.from(occurrencesMap.entries()).map(
@@ -248,11 +249,11 @@ const past1d = () => {
       },
       hovermode: 'x',
       autosize: true,
-      width: 1100,
-      height: 300,
+      // width: 1100,
+      // height: 300,
       margin: {
-        l: 40,
-        r: 40,
+        l: 50,
+        r: 50,
         b: 40,
         t: 10,
       },
@@ -260,6 +261,7 @@ const past1d = () => {
 
     const config = {
       displayModeBar: false,
+      responsive: true,
     };
 
     Plotly.newPlot('past1day', traces, layout, config);

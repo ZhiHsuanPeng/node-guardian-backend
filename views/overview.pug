@@ -60,9 +60,11 @@ html
                             .past1dOverviewGraph 
                                 .title Occurrences
                                 .inspect_text click to choose projects to inspect
-                            #past1day
+                            #past1day(style="width: 100%;")
                     .project_container 
-                        .project_container_header Project lists
+                        .project_container_header Project list
+                        .create_button_container                          
+                            button#open-create-project + Create a Project
                         if projectsArr
                             .project_list_container
                                 .project_list_title
@@ -74,12 +76,12 @@ html
                                     .project_user Users
                                     each project in projectsArr
                                         .project_overview_info_container        
-                                            a(class= 'project_user' href=`/a/${accountName}/${project[0]}/settings/members`) #{project[2]}        
-                        button#open-create-project Create a Project
+                                            a(class= 'project_user_numbers' href=`/a/${accountName}/${project[0]}/settings/members`) #{project[2]}  
+                        
 
                     .create-project-window.hidden
                         .create-project-form
-                            .value_contianer
+                            .value_contianer Let's Create a Project!
                                 .form_group
                                     label(for="projectName") Project Name:
                                     input#projectName(type="text" name="projectName" required)

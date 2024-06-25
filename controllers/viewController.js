@@ -296,15 +296,13 @@ exports.renderSettingMemeberPage = async (req, res) => {
     const projectsArr = Object.entries(
       await projectModel.getAllProjectByUserId(userId),
     );
-    return res
-      .status(200)
-      .render('setting_members', {
-        prjName,
-        accountName,
-        users,
-        userId,
-        projectsArr,
-      });
+    return res.status(200).render('setting_members', {
+      prjName,
+      accountName,
+      users,
+      userId,
+      projectsArr,
+    });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
@@ -337,7 +335,6 @@ exports.renderOverViewPage = async (req, res) => {
     Object.values(userList).forEach((user, index) =>
       projectsArr[index].push(user.length),
     );
-    console.log(projectsArr);
     return res
       .status(200)
       .render('overview', { projectsArr, accountName, timeStamp });
