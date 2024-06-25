@@ -24,8 +24,10 @@ const getEmailAndProjectRules = async (token) => {
 };
 const isMute = async (key) => {
   const result = await redis.get(key);
-  console.log(result);
-  return result === 'mute';
+  if (isNaN(Number(result)) || result === '0') {
+    return false;
+  }
+  return true;
 };
 
 const isExcessQuota = async (key, data) => {
@@ -51,7 +53,6 @@ const isExcessQuota = async (key, data) => {
   ch.consume(queue, async (msg) => {
     if (msg !== null) {
       const payLoad = JSON.parse(msg.content.toString());
-      console.log(payLoad);
       const data = await getEmailAndProjectRules(payLoad.accessToken);
       if (data[0].timeWindow === 'off') {
         console.log('Alert function not on!');
@@ -59,7 +60,8 @@ const isExcessQuota = async (key, data) => {
       }
       const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
 
-      if (isMute(key)) {
+      if (await isMute(key)) {
+        console.log('returning');
         return;
       }
 
@@ -67,6 +69,7 @@ const isExcessQuota = async (key, data) => {
       if (isExcess) {
         for (const row of data) {
           await mail.sendAnomalyEmail(row, payLoad);
+          console.log('sending');
         }
       }
 
