@@ -370,6 +370,7 @@ exports.renderBasicProjectPage = async (req, res) => {
       );
       return { err, timeStamp };
     });
+
     const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
     const recentTime = errorsTimeStampArray.map((ts) => {
       const recentTs = new Date(
@@ -384,6 +385,7 @@ exports.renderBasicProjectPage = async (req, res) => {
       recentTime: recentTime[index],
       projectToken,
     }));
+    console.log(errObj);
     for (const error of errObj) {
       const key = `${error.projectToken}-${error.err}`;
       const muteStatus = await redis.get(key);
@@ -398,7 +400,13 @@ exports.renderBasicProjectPage = async (req, res) => {
     }
     return res
       .status(200)
-      .render('projectBase', { errObj, errorMessageArr, accountName, prjName });
+      .render('projectBase', {
+        errObj,
+        errorMessageArr,
+        accountName,
+        prjName,
+        projectToken,
+      });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
