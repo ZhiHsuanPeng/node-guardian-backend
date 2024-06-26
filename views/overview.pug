@@ -32,13 +32,13 @@ html
                             i.lni.lni-agenda
                             span Dashboard
                     li.sidebar-item
-                        a.sidebar-link(href='#')
-                            i.lni.lni-protection
-                            span Auth
-                    li.sidebar-item
-                        a.sidebar-link(href='#')
-                            i.lni.lni-popup
-                            span Alert Summary
+                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
+                            i.lni.lni-radio-button
+                            span Projects
+                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
+                            each project in projectsArr
+                                li.sidebar-item
+                                    a.sidebar-link(href=`/a/${accountName}/prj/${project[0]}`) #{project[0]} 
                     li.sidebar-item
                         a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
                             i.lni.lni-cog

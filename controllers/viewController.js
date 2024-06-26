@@ -356,6 +356,8 @@ exports.renderBasicProjectPage = async (req, res) => {
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
       throw Error('page not found');
     }
+    const projects = await projectModel.getAllProjectByUserId(userId);
+    const projectsArr = Object.entries(projects);
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(
@@ -398,15 +400,14 @@ exports.renderBasicProjectPage = async (req, res) => {
         error.muteTime = muteTime;
       }
     }
-    return res
-      .status(200)
-      .render('projectBase', {
-        errObj,
-        errorMessageArr,
-        accountName,
-        prjName,
-        projectToken,
-      });
+    return res.status(200).render('projectBase', {
+      errObj,
+      errorMessageArr,
+      accountName,
+      prjName,
+      projectToken,
+      projectsArr,
+    });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
@@ -424,6 +425,9 @@ exports.renderErrorDetailPage = async (req, res) => {
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
       throw Error('page not found');
     }
+
+    const projects = await projectModel.getAllProjectByUserId(userId);
+    const projectsArr = Object.entries(projects);
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
     const { latest, first, errTitle, all, timeStamp, latestErr } =
@@ -447,6 +451,7 @@ exports.renderErrorDetailPage = async (req, res) => {
       Object.values(countDevicePercentage(all))[1],
     );
     return res.status(200).render('errorDetail', {
+      projectsArr,
       accountName,
       prjName,
       latest,
