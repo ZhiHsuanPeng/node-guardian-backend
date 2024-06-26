@@ -40,6 +40,10 @@ html {
   margin: 0 0 10px 0;
 }
 
+.errTrends_container {
+  display: flex;
+}
+
 .graph_container {
   display: column;
 }
@@ -48,7 +52,6 @@ html {
   display: flex;
   justify-content: center;
   margin: 0 auto;
-  padding: 35px 0 0 0;
   background-color: #dbe3f3;
 }
 
@@ -561,21 +564,15 @@ body {
 a.sidebar-link {
   padding: 0.625rem 1.625rem;
   color: #fff;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  display: block;
   font-size: 0.9rem;
   white-space: nowrap;
   border-left: 3px solid transparent;
 }
 
 .sidebar-link i {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   margin-right: 0.75rem;
-}
-
-.sidebar-link span {
-  font-size: 1rem;
 }
 
 a.sidebar-link:hover {
