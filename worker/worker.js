@@ -85,6 +85,7 @@ const storeData = async (payLoad) => {
 };
 
 (async () => {
+  console.log('Listening for jobs...');
   const queue = 'job';
   const conn = await amqplib.connect(rabbitmqServer);
   const ch = await conn.createChannel();
