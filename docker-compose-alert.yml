@@ -1,0 +1,7 @@
+version: '3.4'
+
+services:
+  node_alert_worker:
+    image: zhihsuanpeng/node_alert
+    env_file:
+      - .env

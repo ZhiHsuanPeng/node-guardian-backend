@@ -54,14 +54,25 @@ const isExcessQuota = async (key, data) => {
     if (msg !== null) {
       const payLoad = JSON.parse(msg.content.toString());
       const data = await getEmailAndProjectRules(payLoad.accessToken);
+      console.log(data);
+      if (!data[0]) {
+        console.log('Project has been deleted!');
+        console.log('Alert worker just process one alert');
+        ch.ack(msg);
+        return;
+      }
       if (data[0].timeWindow === 'off') {
         console.log('Alert function not on!');
+        console.log('Alert worker just process one alert');
+        ch.ack(msg);
         return;
       }
       const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
 
       if (await isMute(key)) {
         console.log('returning');
+        console.log('Alert worker just process one alert');
+        ch.ack(msg);
         return;
       }
 
