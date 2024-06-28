@@ -64,11 +64,9 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
   }
 };
 
-const insertAlertQueue = async (message) => {
+const insertAlertQueue = async (ch, message) => {
   try {
     const queue = 'alert';
-    const conn = await amqplib.connect(rabbitmqServer);
-    const ch = await conn.createChannel();
     await ch.assertQueue(queue);
     ch.sendToQueue(queue, Buffer.from(JSON.stringify(message)));
   } catch (err) {
@@ -103,7 +101,7 @@ const storeData = async (payLoad) => {
       payLoad.filteredReqObj.headers = headersObj;
 
       await checkIsFirstAndSetAlert(payLoad);
-      await insertAlertQueue(payLoad);
+      await insertAlertQueue(ch, payLoad);
       await storeData(payLoad);
       ch.ack(msg);
     } else {
