@@ -49,6 +49,7 @@ const isExcessQuota = async (key, data) => {
   const conn = await amqplib.connect(rabbitmqServer);
   const ch = await conn.createChannel();
   await ch.assertQueue(queue);
+  console.log('Listening for alert...');
 
   ch.consume(queue, async (msg) => {
     if (msg !== null) {
