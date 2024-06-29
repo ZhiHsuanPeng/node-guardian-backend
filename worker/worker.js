@@ -82,30 +82,45 @@ const storeData = async (payLoad) => {
   console.log('Worker just process 1 log');
 };
 
-(async () => {
+const connectAndConsume = async () => {
   console.log('Listening for jobs...');
   const queue = 'job';
   const conn = await amqplib.connect(rabbitmqServer);
   const ch = await conn.createChannel();
   await ch.assertQueue(queue);
+  try {
+    ch.consume(queue, async (msg) => {
+      if (msg !== null) {
+        const payLoad = JSON.parse(msg.content.toString());
 
-  ch.consume(queue, async (msg) => {
-    if (msg !== null) {
-      const payLoad = JSON.parse(msg.content.toString());
+        const headersObj = {};
+        for (let i = 0; i < payLoad.filteredReqObj.headers.length; i += 2) {
+          headersObj[payLoad.filteredReqObj.headers[i]] =
+            payLoad.filteredReqObj.headers[i + 1];
+        }
+        payLoad.filteredReqObj.headers = headersObj;
 
-      const headersObj = {};
-      for (let i = 0; i < payLoad.filteredReqObj.headers.length; i += 2) {
-        headersObj[payLoad.filteredReqObj.headers[i]] =
-          payLoad.filteredReqObj.headers[i + 1];
+        await checkIsFirstAndSetAlert(payLoad);
+        await insertAlertQueue(ch, payLoad);
+        await storeData(payLoad);
+        ch.ack(msg);
+      } else {
+        console.log('Consumer cancelled by server');
       }
-      payLoad.filteredReqObj.headers = headersObj;
+      conn.on('error', (err) => {
+        console.error('Connection error:', err);
+        setTimeout(connectAndConsume, 5000);
+      });
 
-      await checkIsFirstAndSetAlert(payLoad);
-      await insertAlertQueue(ch, payLoad);
-      await storeData(payLoad);
-      ch.ack(msg);
-    } else {
-      console.log('Consumer cancelled by server');
-    }
-  });
-})();
+      conn.on('close', () => {
+        console.error('Connection closed, retrying...');
+        setTimeout(connectAndConsume, 5000);
+      });
+    });
+  } catch (err) {
+    console.error('Failed to connect to RabbitMQ:', err);
+    setTimeout(connectAndConsume, 5000);
+  }
+};
+
+connectAndConsume();

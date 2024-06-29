@@ -44,51 +44,67 @@ const isExcessQuota = async (key, data) => {
   return false;
 };
 
-(async () => {
+const connectAndConsume = async () => {
   const queue = 'alert';
   const conn = await amqplib.connect(rabbitmqServer);
   const ch = await conn.createChannel();
   await ch.assertQueue(queue);
   console.log('Listening for alert...');
-
-  ch.consume(queue, async (msg) => {
-    if (msg !== null) {
-      const payLoad = JSON.parse(msg.content.toString());
-      const data = await getEmailAndProjectRules(payLoad.accessToken);
-      console.log(data);
-      if (!data[0]) {
-        console.log('Project has been deleted!');
-        console.log('Alert worker just process one alert');
-        ch.ack(msg);
-        return;
-      }
-      if (data[0].timeWindow === 'off') {
-        console.log('Alert function not on!');
-        console.log('Alert worker just process one alert');
-        ch.ack(msg);
-        return;
-      }
-      const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
-
-      if (await isMute(key)) {
-        console.log('returning');
-        console.log('Alert worker just process one alert');
-        ch.ack(msg);
-        return;
-      }
-
-      const isExcess = await isExcessQuota(key, data[0]);
-      if (isExcess) {
-        for (const row of data) {
-          await mail.sendAnomalyEmail(row, payLoad);
-          console.log('sending');
+  try {
+    ch.consume(queue, async (msg) => {
+      if (msg !== null) {
+        const payLoad = JSON.parse(msg.content.toString());
+        const data = await getEmailAndProjectRules(payLoad.accessToken);
+        console.log(data);
+        if (!data[0]) {
+          console.log('Project has been deleted!');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
         }
-      }
+        if (data[0].timeWindow === 'off') {
+          console.log('Alert function not on!');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
+        const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
 
-      console.log('Alert worker just process one alert');
-      ch.ack(msg);
-    } else {
-      console.log('Consumer cancelled by server');
-    }
-  });
-})();
+        if (await isMute(key)) {
+          console.log('returning');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
+
+        const isExcess = await isExcessQuota(key, data[0]);
+        if (isExcess) {
+          for (const row of data) {
+            await mail.sendAnomalyEmail(row, payLoad);
+            console.log('sending');
+          }
+        }
+
+        console.log('Alert worker just process one alert');
+        ch.ack(msg);
+      } else {
+        console.log('Consumer cancelled by server');
+      }
+    });
+
+    conn.on('error', (err) => {
+      console.error('Connection error:', err);
+      setTimeout(connectAndConsume, 5000);
+    });
+
+    conn.on('close', () => {
+      console.error('Connection closed, retrying...');
+      setTimeout(connectAndConsume, 5000);
+    });
+  } catch (err) {
+    console.error('Failed to connect to RabbitMQ:', err);
+    setTimeout(connectAndConsume, 5000);
+  }
+};
+
+connectAndConsume();
