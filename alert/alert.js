@@ -13,7 +13,7 @@ const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
 
 const getEmailAndProjectRules = async (token) => {
   const result = await pool.query(
-    `select u.name, u.email, p.name AS projectName, p.timeWindow, p.quota 
+    `select u.name, u.email, p.name AS projectName, p.timeWindow, p.quota, p.reactivate, p.notification
       from projects AS p 
       INNER JOIN access AS a ON p.id = a.projectId 
       INNER JOIN users AS u ON u.id = a.userId 
@@ -24,7 +24,7 @@ const getEmailAndProjectRules = async (token) => {
 };
 const isMute = async (key) => {
   const result = await redis.get(key);
-  if (!isNaN(Number(result)) || result === '0') {
+  if (!isNaN(Number(result)) || result === '0' || result === 'resolve') {
     return false;
   }
   return true;
@@ -66,24 +66,29 @@ const connectAndConsume = async () => {
           ch.ack(msg);
           return;
         }
-        if (data[0].timeWindow === 'off') {
-          console.log('Alert function not on!');
+        if (data[0].notification === 'off') {
+          console.log('Notification function not on!');
           console.log('Alert worker just process one alert');
           ch.ack(msg);
           return;
         }
+
         const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
 
         if (await isMute(key)) {
-          console.log('returning');
+          console.log('this error is muted');
           console.log('Alert worker just process one alert');
           ch.ack(msg);
           return;
         }
 
         if (await isResolve(key)) {
+          if (data[0].reactivate === 'off') {
+            console.log('Reactivate function not on!');
+            return;
+          }
           console.log('Reactivate resolved error!');
-          await redis.set(key, 0, 'EX', data.timeWindow * 1);
+          await redis.set(key, 0, 'EX', 60);
           for (const row of data) {
             await mail.sendAnomalyEmail(row, payLoad);
             console.log('sending');
@@ -92,6 +97,12 @@ const connectAndConsume = async () => {
           return;
         }
 
+        if (data[0].timeWindow === 'off') {
+          console.log('Anamoly detection function not on!');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
         const isExcess = await isExcessQuota(key, data[0]);
         if (isExcess) {
           for (const row of data) {
