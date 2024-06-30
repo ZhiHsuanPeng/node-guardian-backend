@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${REMOTE_USER}@${REMOTE_HOST} '
-          cd /server/node-guardian-backend &&
+          cd /home/ubuntu/server/node-guardian-backend &&
           git pull origin main &&
           npm install &&
           sudo pm2 stop app &&
