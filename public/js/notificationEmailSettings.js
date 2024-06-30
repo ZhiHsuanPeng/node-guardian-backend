@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ruleContainers = document.querySelectorAll('.rule_set_container');
     const anomalySwitch = document.querySelector('.switch.anomaly');
     const newErrorSwitch = document.querySelector('.switch.new_error');
+    const reactivateSwitch = document.querySelector('.switch.reactivate');
 
     if (enabled) {
       ruleContainers.forEach((container) =>
@@ -31,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       quotaOption.value = 1;
       anomalySwitch.checked = true;
       newErrorSwitch.checked = true;
+      reactivateSwitch.checked = true;
     } else {
       ruleContainers.forEach((container) =>
         container.classList.add('disabled'),
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       anomalyWindow.style.display = 'none';
       anomalySwitch.checked = false;
       newErrorSwitch.checked = false;
+      reactivateSwitch.checked = false;
     }
   };
 
@@ -85,11 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const projectName =
         document.querySelector('.project_name').dataset.prjname;
       const notificationSwitch = document.querySelector('.switch').checked;
+      const reactivateSwitch =
+        document.querySelector('.switch.reactivate').checked;
       const newErrorSwitch =
         document.querySelector('.switch.new_error').checked;
       const anomalySwitch = document.querySelector('.switch.anomaly').checked;
       const timeWindowVal = document.querySelector('#windowDropdown').value;
       const quotaVal = document.querySelector('.quota').value;
+      console.log(reactivateSwitch);
 
       const transformBoolean = (item) => {
         if (item === true) {
@@ -116,6 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             : 'off',
           timeWindow: anomalySwitch ? timeWindowVal : 'off',
           quota: anomalySwitch ? quotaVal : 0,
+          reactivate: transformBoolean(reactivateSwitch),
         }),
       });
 

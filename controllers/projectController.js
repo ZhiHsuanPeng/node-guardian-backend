@@ -51,6 +51,7 @@ exports.modifyProjectAlertSettings = async (req, res) => {
       alertFirst,
       timeWindow,
       quota,
+      reactivate,
     } = req.body;
 
     if (newProjectName && prjId) {
@@ -71,6 +72,7 @@ exports.modifyProjectAlertSettings = async (req, res) => {
       quota,
       accountName,
       projectName,
+      reactivate,
     );
 
     const token = await projectModel.getProjectToken(userId, projectName);

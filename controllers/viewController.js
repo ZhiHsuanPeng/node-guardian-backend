@@ -245,6 +245,7 @@ exports.renderSettingNotificationEmailsPage = async (req, res) => {
       userId,
       prjName,
     );
+    console.log(projectRules);
     return res.status(200).render('notification_emails', {
       prjName,
       accountName,

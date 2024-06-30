@@ -83,7 +83,7 @@ exports.isGrandAccessSuccess = async (projectId, userId) => {
 
 exports.getProjectByUserIdAndProjectName = async (userId, prjName) => {
   const result = await pool.query(
-    `SELECT p.notification, p.alertFirst, p.timeWindow, p.quota FROM projects AS p 
+    `SELECT p.notification, p.alertFirst, p.timeWindow, p.quota, p.reactivate FROM projects AS p 
     INNER JOIN access AS a ON a.projectId = p.id
     INNER JOIN   users AS u ON u.id = a.userId 
     WHERE u.id = ? AND p.name = ?`,
@@ -99,14 +99,23 @@ exports.changeProjectSettings = async (
   quota,
   accountName,
   projectName,
+  reactivate,
 ) => {
   await pool.query(
     `UPDATE projects p
       INNER JOIN access a ON p.id = a.projectId
       INNER JOIN users u ON u.id = a.userId
-      SET p.notification = ?,p.alertFirst = ?, p.timeWindow = ?, p.quota = ?
+      SET p.notification = ?,p.alertFirst = ?, p.timeWindow = ?, p.quota = ?, p.reactivate = ?
       WHERE u.name = ? AND p.name = ?`,
-    [notification, alertFirst, timeWindow, quota, accountName, projectName],
+    [
+      notification,
+      alertFirst,
+      timeWindow,
+      quota,
+      reactivate,
+      accountName,
+      projectName,
+    ],
   );
 };
 

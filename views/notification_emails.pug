@@ -114,6 +114,14 @@ html
                                             input.switch.anomaly(type="checkbox")
                                         else 
                                             input.switch.anomaly(checked="true" type="checkbox")
+                                    .rule_set_container
+                                        .rule_name_description_container     
+                                            .rule_name Error Reactivate
+                                            .rule_description Send alert email when resolved error reactivate
+                                        if (projectRules.reactivate === 'off')
+                                            input.switch.reactivate(type="checkbox")
+                                        else 
+                                            input.switch.reactivate(checked="true" type="checkbox")
                             button.rules_save_btn Save    
                         
                             
