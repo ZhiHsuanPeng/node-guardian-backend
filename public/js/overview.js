@@ -52,15 +52,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         showAlert('success', 'Create project success!');
+      } else {
+        showAlert('error', result.error || 'Unknown error occurred');
       }
       window.setTimeout(() => {
         location.reload();
       }, 1000);
     } catch (error) {
-      const errorData = await response.json();
       console.log(error);
-      console.log(errorData);
-      showAlert('error', errorData.message);
+      showAlert('error', error.message);
     }
   });
 });

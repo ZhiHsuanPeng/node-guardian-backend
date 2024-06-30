@@ -21,6 +21,14 @@ const resetAlert = async (token) => {
 exports.createProject = async (req, res) => {
   try {
     const { projectName, accessToken } = req.body;
+    const invalidCharacters = /[\s?:]/;
+
+    if (invalidCharacters.test(projectName)) {
+      return res.status(400).json({
+        error:
+          'Project name should not contain spaces, question marks, or colons.',
+      });
+    }
     const userId = res.locals.userId;
     if (await projectModel.isProjectNameExist(userId, projectName)) {
       throw Error('project name already exists!');
