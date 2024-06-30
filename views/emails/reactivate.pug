@@ -1,0 +1,30 @@
+extends baseEmail
+
+block content
+    p Hi #{row.name},
+    p There is a reactivated error in your project: #{row.projectName} 
+    p #{payLoad.errMessage} 
+    p Error header: 
+        p request.browser: #{payLoad.deviceInfo.browser.name} #{payLoad.deviceInfo.browser.version}
+        p request.os: #{payLoad.deviceInfo.os.name} #{payLoad.deviceInfo.os.version}   
+        p request.device: #{payLoad.deviceInfo.device.model || 'unknown'}   
+        p request.headers.user-agent: #{payLoad.filteredReqObj.userAgent}      
+        p request.headers.accept: #{payLoad.filteredReqObj.accept}  
+        p request.headers.accept-encoding: #{payLoad.filteredReqObj.headers['Accept-Encoding']} 
+        p request.headers.accept-language: #{payLoad.filteredReqObj.headers['Accept-Language']}
+        p request.headers.connection: #{payLoad.filteredReqObj.headers.Connection}       
+        p request.headers.host: #{payLoad.filteredReqObj.headers.Host}        
+        p request.method: #{payLoad.filteredReqObj.method}  
+        p request.url: #{payLoad.filteredReqObj.fullUrl}    
+        p request.userIp: #{payLoad.filteredReqObj.requestIp}
+    table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+        tbody
+            tr
+                td(align='left')
+                    table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                        tbody
+                            tr
+                                td
+                                    a(href=`https://nodeguardianapp.com/a/${row.name}/prj/${row.projectName}`, target='_blank') Go and inspect error
+    p If you need any help with our services, please don't hesitate to contact me!
+    p - Zhi Hsuan Peng, CEO

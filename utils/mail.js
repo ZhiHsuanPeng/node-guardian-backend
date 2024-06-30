@@ -47,6 +47,22 @@ exports.sendAnomalyEmail = async (row, payLoad) => {
   console.log('Message sent: %s', info.messageId);
 };
 
+exports.sendReactivateEmail = async (row, payLoad) => {
+  const html = pug.renderFile(`${__dirname}/../views/emails/reactivate.pug`, {
+    row,
+    payLoad,
+  });
+  const info = await transporter.sendMail({
+    from: `"NodeGuardian" <${process.env.EMAIL_FROM}>`,
+    to: row.email,
+    subject: 'Error Reactivated! A resolved error just got reactivated!',
+    html,
+    text: htmlToText(html),
+  });
+
+  console.log('Message sent: %s', info.messageId);
+};
+
 exports.sendProjectInvitation = async (
   email,
   name,

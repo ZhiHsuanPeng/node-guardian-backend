@@ -90,7 +90,7 @@ const connectAndConsume = async () => {
           console.log('Reactivate resolved error!');
           await redis.set(key, 0, 'EX', 60);
           for (const row of data) {
-            await mail.sendAnomalyEmail(row, payLoad);
+            await mail.sendReactivateEmail(row, payLoad);
             console.log('sending');
           }
           ch.ack(msg);
