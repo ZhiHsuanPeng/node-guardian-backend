@@ -60,7 +60,6 @@ const connectAndConsume = async () => {
       if (msg !== null) {
         const payLoad = JSON.parse(msg.content.toString());
         const data = await getEmailAndProjectRules(payLoad.accessToken);
-        console.log(data);
         if (!data[0]) {
           console.log('Project has been deleted!');
           console.log('Alert worker just process one alert');
