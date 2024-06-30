@@ -33,6 +33,6 @@ jobs:
           cd /home/ubuntu/server/node-guardian-backend &&
           git pull origin main &&
           npm install &&
-          sudo pm2 stop app &&
-          sudo pm2 start app
+          sudo pm2 stop ./app.js &&
+          sudo pm2 start ./app.js
           '
