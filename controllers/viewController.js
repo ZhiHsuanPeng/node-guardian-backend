@@ -395,6 +395,10 @@ exports.renderBasicProjectPage = async (req, res) => {
       if (!isNaN(Number(muteStatus)) || !muteStatus || muteStatus === '0') {
         error.mute = false;
         error.muteTime = 0;
+      } else if (muteStatus === 'resolve') {
+        error.mute = false;
+        error.muteTime = 0;
+        error.resolve = true;
       } else {
         const muteTime = (muteStatus.split('_')[1] * 1) / 3600;
         error.mute = true;

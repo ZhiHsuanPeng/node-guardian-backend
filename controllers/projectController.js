@@ -163,6 +163,10 @@ exports.grandAccessToMembers = async (req, res) => {
 exports.muteErrorAlert = async (req, res) => {
   try {
     const { projecToken, errMessage, mute } = req.body;
+    const value = await redis.get(`${projecToken}-${errMessage}`);
+    if (value === 'resolve') {
+      throw Error('Can not mute resolved error.');
+    }
     if (mute === '0') {
       await redis.set(`${projecToken}-${errMessage}`, 0);
     } else {

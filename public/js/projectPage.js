@@ -34,23 +34,32 @@ dropdowns.forEach(function (dropdown) {
   const dropDown = dropdown;
   dropDown.value = (parseInt(muteTime, 10) * 3600).toString();
   dropdown.addEventListener('change', async function (event) {
-    const selectedTime = this.value;
-    const errorName = this.dataset.error.split('_')[1];
-    const token = document.querySelector('.projectToken').dataset.token;
+    try {
+      const selectedTime = this.value;
+      const errorName = this.dataset.error.split('_')[1];
+      const token = document.querySelector('.projectToken').dataset.token;
 
-    const response = await fetch('/api/v1/projects/mute', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        projecToken: token,
-        errMessage: errorName,
-        mute: selectedTime,
-      }),
-    });
-    if (response.ok) {
-      showAlert('success', 'mute success');
+      const response = await fetch('/api/v1/projects/mute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          projecToken: token,
+          errMessage: errorName,
+          mute: selectedTime,
+        }),
+      });
+      if (response.ok) {
+        showAlert('success', 'mute success');
+      }
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Unknown error occurred');
+      }
+    } catch (err) {
+      showAlert('error', err.message);
+      setTimeout(() => (this.value = '0'), 250);
     }
   });
 });

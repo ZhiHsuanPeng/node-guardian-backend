@@ -29,6 +29,10 @@ const isMute = async (key) => {
   }
   return true;
 };
+const isResolve = async (key) => {
+  const result = await redis.get(key);
+  return result === 'resolve';
+};
 
 const isExcessQuota = async (key, data) => {
   const results = await redis
@@ -73,6 +77,17 @@ const connectAndConsume = async () => {
         if (await isMute(key)) {
           console.log('returning');
           console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
+
+        if (await isResolve(key)) {
+          console.log('Reactivate resolved error!');
+          await redis.set(key, 0, 'EX', data.timeWindow * 1);
+          for (const row of data) {
+            await mail.sendAnomalyEmail(row, payLoad);
+            console.log('sending');
+          }
           ch.ack(msg);
           return;
         }
