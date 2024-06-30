@@ -86,16 +86,16 @@ const connectAndConsume = async () => {
         if (await isResolve(key)) {
           if (data[0].reactivate === 'off') {
             console.log('Reactivate function not on!');
+          } else {
+            console.log('Reactivate resolved error!');
+            await redis.set(key, 0, 'EX', 60);
+            for (const row of data) {
+              await mail.sendReactivateEmail(row, payLoad);
+              console.log('sending');
+            }
+            ch.ack(msg);
             return;
           }
-          console.log('Reactivate resolved error!');
-          await redis.set(key, 0, 'EX', 60);
-          for (const row of data) {
-            await mail.sendReactivateEmail(row, payLoad);
-            console.log('sending');
-          }
-          ch.ack(msg);
-          return;
         }
 
         if (data[0].timeWindow === 'off') {
