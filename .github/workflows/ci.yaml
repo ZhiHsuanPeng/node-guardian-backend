@@ -35,3 +35,4 @@ jobs:
           npm install &&
           sudo pm2 stop app &&
           sudo pm2 start app
+          '
