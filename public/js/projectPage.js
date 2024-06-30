@@ -5,6 +5,29 @@ document.querySelectorAll('.timeStampStat').forEach((element) => {
 });
 const errorTitle = document.querySelector('.errTitle').dataset.error;
 const dropdowns = document.querySelectorAll('.mutedropdown');
+const reactivate = document.querySelectorAll('.reactivate');
+
+reactivate.forEach(function (re) {
+  re.addEventListener('change', async function (e) {
+    const errorName = this.dataset.error.split('_')[1];
+    const token = document.querySelector('.projectToken').dataset.token;
+
+    const response = await fetch('/api/v1/projects/resolve', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        projecToken: token,
+        errMessage: errorName,
+        resolve: this.checked,
+      }),
+    });
+    if (response.ok) {
+      showAlert('success', 'resolve success');
+    }
+  });
+});
 
 dropdowns.forEach(function (dropdown) {
   const muteTime = dropdown.dataset.error.split('_')[2].trim();

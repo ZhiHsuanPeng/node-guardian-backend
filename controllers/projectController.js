@@ -182,3 +182,20 @@ exports.muteErrorAlert = async (req, res) => {
     return res.status(500).json({ message: 'modified project failed' });
   }
 };
+
+exports.resolveError = async (req, res) => {
+  try {
+    const { projecToken, errMessage, resolve } = req.body;
+    if (resolve === true) {
+      await redis.set(`${projecToken}-${errMessage}`, 'resolve');
+    } else {
+      await redis.set(`${projecToken}-${errMessage}`, 0);
+    }
+    return res.status(200).json({ message: 'success' });
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res.status(500).json({ message: 'modified project failed' });
+  }
+};
