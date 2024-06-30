@@ -16,7 +16,8 @@ const client = new Client({
 const amqpUser = process.env.AMQP_USER;
 const amqpPassword = process.env.AMQP_PASSWORD;
 const serverIp = process.env.AMQP_SERVERIP;
-const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}`;
+const heartbeatInterval = 60;
+const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}?heartbeat=${heartbeatInterval}`;
 
 const checkIsFirstAndSetAlert = async (payLoad) => {
   try {
