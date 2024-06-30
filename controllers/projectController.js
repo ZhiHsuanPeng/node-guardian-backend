@@ -21,12 +21,12 @@ const resetAlert = async (token) => {
 exports.createProject = async (req, res) => {
   try {
     const { projectName, accessToken } = req.body;
-    const invalidCharacters = /[\s?:]/;
+    const invalidCharacters = /[\s!@#$%^&*()\-+=\[\]{}|\\:;"'<>,.?/~`]/;
 
     if (invalidCharacters.test(projectName)) {
       return res.status(400).json({
         error:
-          'Project name should not contain spaces, question marks, or colons.',
+          'Project name invalid, the name of the project should not contain any spcial characters.',
       });
     }
     const userId = res.locals.userId;
