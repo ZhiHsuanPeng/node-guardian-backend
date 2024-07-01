@@ -370,7 +370,7 @@ html {
 }
 
 .error_overview_graph_container {
-  padding: 10px;
+  padding: 25px;
   border: 2px solid rgb(181, 195, 241);
   border-radius: 8px;
   background-color: white;

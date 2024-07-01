@@ -26,10 +26,14 @@ const past1d = () => {
       if (!isNaN(ts)) {
         if (ts >= yesterday.getTime()) {
           const gmtTimestamp = new Date(ts);
-          const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+          const gmtPlus8Timestamp = new Date(
+            gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
+          );
           const hour = gmtPlus8Timestamp.getUTCHours();
 
-          const index = hours.findIndex((h) => h.startsWith(hour.toString().padStart(2, '0')));
+          const index = hours.findIndex((h) =>
+            h.startsWith(hour.toString().padStart(2, '0')),
+          );
           if (index !== -1) {
             occurrences[index]++;
           }
@@ -64,7 +68,11 @@ const past1d = () => {
   const layout = {
     xaxis: {
       tickvals: [0, Math.floor(hours.length / 2), hours.length - 1],
-      ticktext: [hours[0], hours[Math.floor(hours.length / 2)], hours[hours.length - 1]],
+      ticktext: [
+        hours[0],
+        hours[Math.floor(hours.length / 2)],
+        hours[hours.length - 1],
+      ],
       hoverformat: '%H:00',
       showgrid: false,
       tickangle: 0,
@@ -103,9 +111,14 @@ const past1h = () => {
   const minutes = Array.from({ length: 60 }, (_, i) => {
     const totalMinutes = currentMinuteGMT - 59 + i;
     const minuteAdjusted = (totalMinutes + 60) % 60;
-    const hourAdjusted = (currentHourGMT + 8 + Math.floor(totalMinutes / 60)) % 24;
+    const hourAdjusted =
+      (currentHourGMT + 8 + Math.floor(totalMinutes / 60)) % 24;
 
-    return hourAdjusted.toString().padStart(2, '0') + ':' + minuteAdjusted.toString().padStart(2, '0');
+    return (
+      hourAdjusted.toString().padStart(2, '0') +
+      ':' +
+      minuteAdjusted.toString().padStart(2, '0')
+    );
   });
 
   timeStamp[0].split(',').forEach((timestamp) => {
@@ -114,9 +127,13 @@ const past1h = () => {
       if (!isNaN(ts)) {
         if (new Date() - ts <= 60 * 60 * 1000) {
           const gmtTimestamp = new Date(ts);
-          const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+          const gmtPlus8Timestamp = new Date(
+            gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
+          );
           const minute = gmtPlus8Timestamp.getUTCMinutes();
-          const index = minutes.findIndex((m) => m.endsWith(minute.toString().padStart(2, '0')));
+          const index = minutes.findIndex((m) =>
+            m.endsWith(minute.toString().padStart(2, '0')),
+          );
           if (index !== -1) {
             occurrences[index]++;
           }
@@ -151,7 +168,11 @@ const past1h = () => {
   const layout = {
     xaxis: {
       tickvals: [0, Math.floor(minutes.length / 2), minutes.length - 1],
-      ticktext: [minutes[0], minutes[Math.floor(minutes.length / 2)], minutes[minutes.length - 1]],
+      ticktext: [
+        minutes[0],
+        minutes[Math.floor(minutes.length / 2)],
+        minutes[minutes.length - 1],
+      ],
       hoverformat: '%M:00',
       showgrid: false,
       tickangle: 0,
@@ -266,23 +287,32 @@ const past1hIpCount = () => {
   const minutes = Array.from({ length: 60 }, (_, i) => {
     const totalMinutes = currentMinuteGMT - 59 + i;
     const minuteAdjusted = (totalMinutes + 60) % 60;
-    const hourAdjusted = (currentHourGMT + 8 + Math.floor(totalMinutes / 60)) % 24;
+    const hourAdjusted =
+      (currentHourGMT + 8 + Math.floor(totalMinutes / 60)) % 24;
 
-    return hourAdjusted.toString().padStart(2, '0') + ':' + minuteAdjusted.toString().padStart(2, '0');
+    return (
+      hourAdjusted.toString().padStart(2, '0') +
+      ':' +
+      minuteAdjusted.toString().padStart(2, '0')
+    );
   });
   ipTimeStamp.forEach((timestamps) => {
     const uniqueMinutes = new Set();
     timestamps[0].split(',').forEach((timestamp) => {
       const ts = Number(timestamp);
       const gmtTimestamp = new Date(timestamp * 1);
-      const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+      const gmtPlus8Timestamp = new Date(
+        gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
+      );
       const minute = gmtPlus8Timestamp.getUTCMinutes();
 
       if (!uniqueMinutes.has(minute)) {
         uniqueMinutes.add(minute);
 
         if (new Date() - ts <= 60 * 60 * 1000) {
-          const index = minutes.findIndex((m) => m.endsWith(minute.toString().padStart(2, '0')));
+          const index = minutes.findIndex((m) =>
+            m.endsWith(minute.toString().padStart(2, '0')),
+          );
           if (index !== -1) {
             occurrences[index]++;
           }
@@ -317,7 +347,11 @@ const past1hIpCount = () => {
   const layout = {
     xaxis: {
       tickvals: [0, Math.floor(minutes.length / 2), minutes.length - 1],
-      ticktext: [minutes[0], minutes[Math.floor(minutes.length / 2)], minutes[minutes.length - 1]],
+      ticktext: [
+        minutes[0],
+        minutes[Math.floor(minutes.length / 2)],
+        minutes[minutes.length - 1],
+      ],
       hoverformat: '%M:00',
       showgrid: false,
       tickangle: 0,
@@ -364,14 +398,18 @@ const past1dIpCount = () => {
     timestamps[0].split(',').forEach((timestamp) => {
       const ts = Number(timestamp);
       const gmtTimestamp = new Date(timestamp * 1);
-      const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+      const gmtPlus8Timestamp = new Date(
+        gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
+      );
       const hour = gmtPlus8Timestamp.getUTCHours();
 
       if (!uniqueHours.has(hour)) {
         uniqueHours.add(hour);
 
         if (new Date() - ts <= 24 * 60 * 60 * 1000) {
-          const index = hours.findIndex((m) => m.startsWith(hour.toString().padStart(2, '0')));
+          const index = hours.findIndex((m) =>
+            m.startsWith(hour.toString().padStart(2, '0')),
+          );
           if (index !== -1) {
             occurrences[index]++;
           }
@@ -406,7 +444,11 @@ const past1dIpCount = () => {
   const layout = {
     xaxis: {
       tickvals: [0, Math.floor(hours.length / 2), hours.length - 1],
-      ticktext: [hours[0], hours[Math.floor(hours.length / 2)], hours[hours.length - 1]],
+      ticktext: [
+        hours[0],
+        hours[Math.floor(hours.length / 2)],
+        hours[hours.length - 1],
+      ],
       hoverformat: '%H:00',
       showgrid: false,
       tickangle: 0,
@@ -453,7 +495,9 @@ const past1wIpCount = () => {
     timestamps[0].split(',').forEach((timestamp) => {
       const ts = Number(timestamp);
       const gmtTimestamp = new Date(ts);
-      const gmtPlus8Timestamp = new Date(gmtTimestamp.getTime() + 8 * 60 * 60 * 1000);
+      const gmtPlus8Timestamp = new Date(
+        gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
+      );
       const day = gmtPlus8Timestamp.getUTCDate();
 
       if (!uniqueDays.has(day)) {

@@ -108,9 +108,10 @@ const past1d = () => {
   });
 
   const traceColors = [
-    'rgba(252, 222, 190, 0.8)',
-    'rgba(146, 135, 121, 0.8)',
-    'rgba(212, 210, 165, 0.8)',
+    'rgb(186, 201, 222)',
+    'rgb(117, 147, 189)',
+    'rgb(73, 106, 151)',
+    'rgb(60, 86, 124)',
   ];
   const allZeroes = Array.from(occurrencesMap.values()).every((occurrences) =>
     occurrences.every((value) => value === 0),
@@ -175,8 +176,6 @@ const past1d = () => {
         ticktext: hours.filter((_, index) => index % 2 === 0),
         tickangle: 45,
         type: 'category',
-        tickmode: 'linear',
-        dtick: 1,
         gridcolor: 'rgba(0,0,0,0)',
         tickfont: {
           color: 'rgba(0,0,0,0.1)',
@@ -196,7 +195,13 @@ const past1d = () => {
         },
         tickcolor: 'rgba(0,0,0,0.1)',
       },
-      hovermode: false,
+      hovermode: 'closest',
+      hoverlabel: {
+        font: {
+          size: 14,
+        },
+      },
+      hoverdistance: 30,
       autosize: true,
       // width: 1100,
       // height: 300,
@@ -213,12 +218,20 @@ const past1d = () => {
       responsive: true,
     });
   } else {
+    let max = 0;
+
+    Array.from(occurrencesMap.entries()).forEach(([name, occurrences]) => {
+      const maxInCurrentArray = Math.max(...occurrences);
+      if (maxInCurrentArray > max) {
+        max = maxInCurrentArray;
+      }
+    });
     const traces = Array.from(occurrencesMap.entries()).map(
       ([name, occurrences], index) => ({
         x: hours,
         y: occurrences,
         type: 'bar',
-        hovertemplate: `%{y}<extra>${name}</extra>`,
+        hovertemplate: `&nbsp;&nbsp;Total: %{y} errors at %{x}&nbsp;&nbsp;<extra>${name}</extra>`,
         name: name,
         marker: {
           color: traceColors[index % traceColors.length],
@@ -232,25 +245,55 @@ const past1d = () => {
 
     const layout = {
       xaxis: {
-        tickvals: hours.filter((_, index) => index % 2 === 0),
-        ticktext: hours.filter((_, index) => index % 2 === 0),
-        tickangle: 45,
+        tickvals: [
+          hours[0],
+          hours[4],
+          hours[9],
+          hours[14],
+          hours[19],
+          hours[23],
+        ],
+        ticktext: [
+          hours[0],
+          hours[4],
+          hours[9],
+          hours[14],
+          hours[19],
+          hours[23],
+        ],
+        zerolinecolor: 'rgba(255, 255, 255, 0)',
+        linecolor: 'rgba(255, 255, 255, 0)',
+        linewidth: 15,
+        tickangle: 0,
+        zeroline: false,
         hoverformat: '%H:00',
-        type: 'category', // Set x-axis type to category
-        tickmode: 'linear', // Set tick mode to linear
-        dtick: 1, // Set the interval between ticks to 1 (integer)
+        tickfont: {
+          family: 'Work Sans',
+          size: 20,
+          color: 'rgb(130, 170, 255)',
+          weight: 500,
+        },
       },
       yaxis: {
-        showline: true,
-        linecolor: 'black',
-        linewidth: 1,
-        tickmode: 'linear', // Set tick mode to linear for the y-axis
-        dtick: 1, // Set the interval between ticks to 1 (integer)
+        showline: false,
+        showticklabels: false,
+        showgrid: false,
+        zeroline: false,
+        range: [0, max * 1.8],
       },
-      hovermode: 'x',
-      autosize: true,
-      // width: 1100,
-      // height: 300,
+      hovermode: 'closest',
+      hoverdistance: 1000,
+      hoverlabel: {
+        bgcolor: 'rgb(227, 233, 242)',
+        font: {
+          family: 'Work Sans',
+          size: 22,
+          weight: 'normal',
+        },
+      },
+      // autosize: true,
+      width: 1600,
+      height: 350,
       margin: {
         l: 50,
         r: 50,
