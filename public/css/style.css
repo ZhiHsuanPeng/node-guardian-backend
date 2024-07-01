@@ -1102,6 +1102,11 @@ select#windowDropdown option {
 
 .welcome_container {
   padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.text {
+  flex-grow: 1;
 }
 
 .welcome_text {
@@ -1122,7 +1127,7 @@ select#windowDropdown option {
 .SDK_setup_container {
   margin: 10px 0 0 0;
   background-color: rgb(41, 45, 62);
-  width: 60%;
+  width: 100%;
   height: 50px;
   border-radius: 3px;
   display: flex;
@@ -1160,4 +1165,10 @@ span.purple {
 }
 .sdk_code.comments.two {
   margin: 18px 0 0 0;
+}
+.debug {
+  height: 280px;
+  width: 280px;
+  padding: 30px;
+  margin: 140px 0 0 0;
 }
