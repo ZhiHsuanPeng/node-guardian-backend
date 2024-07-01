@@ -9,6 +9,7 @@ html {
   width: 1200px;
   margin: 0 auto;
   position: relative;
+  padding: 8px;
 }
 
 .containerBar {
@@ -519,26 +520,30 @@ body {
   min-width: 70px;
   z-index: 1000;
   transition: all 0.25s ease-in-out;
-  background-color: #0e2238;
+  background-color: rgb(52, 63, 85);
   display: flex;
   flex-direction: column;
 }
 
 #sidebar.expand {
-  width: 260px;
-  min-width: 260px;
+  width: 200px;
+  min-width: 200px;
 }
 
 .toggle-btn {
   background-color: transparent;
   cursor: pointer;
   border: 0;
-  padding: 1rem 1.5rem;
+  padding: 1rem 1rem;
 }
 
 .toggle-btn i {
   font-size: 1.5rem;
   color: #fff;
+}
+.d-flex {
+  display: flex;
+  align-items: center;
 }
 
 .sidebar-logo {
@@ -548,12 +553,16 @@ body {
 .sidebar-logo a {
   color: #fff;
   font-size: 1.15rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 #sidebar:not(.expand) .sidebar-logo,
 #sidebar:not(.expand) a.sidebar-link span {
   display: none;
+}
+
+.sidebar-link span {
+  color: rgb(184, 196, 219);
 }
 
 .sidebar-nav {
@@ -562,24 +571,31 @@ body {
 }
 
 a.sidebar-link {
-  padding: 0.625rem 1.625rem;
+  padding: 0.625rem 0.8rem;
+  height: 50px;
   color: #fff;
-  display: block;
+  display: flex;
+  align-items: center;
   font-size: 0.9rem;
   white-space: nowrap;
   border-left: 3px solid transparent;
 }
 
 .sidebar-link i {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin-right: 0.75rem;
+  color: rgb(184, 196, 219);
 }
 
 a.sidebar-link:hover {
   background-color: rgba(255, 255, 255, 0.075);
   border-left: 3px solid #3b7ddd;
+  color: white;
 }
 
+.sidebar-link:hover * {
+  color: white;
+}
 .sidebar-item {
   position: relative;
 }
@@ -609,7 +625,7 @@ a.sidebar-link:hover {
   padding: 2px;
   position: absolute;
   right: 1.5rem;
-  top: 1.4rem;
+  top: 1.2rem;
   transform: rotate(-135deg);
   transition: all 0.2s ease-out;
 }
@@ -696,6 +712,9 @@ a.sidebar-link:hover {
   align-items: center;
 }
 
+.p-3 {
+  padding: 24px;
+}
 /* button {
   background: none;
   border: none;
