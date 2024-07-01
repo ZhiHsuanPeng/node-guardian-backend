@@ -1092,3 +1092,72 @@ select#windowDropdown option {
 .sidebar2_title.subtitle {
   padding: 10px 10px 0px 10px;
 }
+
+.welcome {
+  width: 100%;
+  height: 600px;
+  background-color: rgb(52 63 85);
+  border-radius: 3px;
+}
+
+.welcome_container {
+  padding: 20px;
+}
+
+.welcome_text {
+  font-weight: 700;
+  font-size: 26px;
+  color: rgb(255, 255, 255);
+}
+.welcome_subtext,
+.quick_start {
+  color: rgb(184, 196, 219);
+}
+.quick_start {
+  margin: 30px 0 0 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.SDK_setup_container {
+  margin: 10px 0 0 0;
+  background-color: rgb(41, 45, 62);
+  width: 60%;
+  height: 50px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 25px;
+}
+.SDK_setup_container.init {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 210px;
+  padding: 20px 0 0 25px;
+}
+
+span.purple {
+  font-style: italic;
+}
+.space {
+  display: inline-block;
+  width: 3px;
+}
+.sdk_code {
+  font-family: 'Work Sans';
+  color: white;
+  font-size: 14px;
+  color: rgba(191, 199, 213);
+}
+.bug {
+  width: 150px;
+  height: 150px;
+}
+.sdk_code.comments {
+  font-style: italic;
+  color: rgba(105, 112, 152);
+}
+.sdk_code.comments.two {
+  margin: 18px 0 0 0;
+}
