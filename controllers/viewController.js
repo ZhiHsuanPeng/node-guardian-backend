@@ -336,9 +336,13 @@ exports.renderOverViewPage = async (req, res) => {
     Object.values(userList).forEach((user, index) =>
       projectsArr[index].push(user.length),
     );
+    const yesterday = new Date().getTime() - 24 * 60 * 60 * 1000;
+    const past1dayErr = timeStamp.map(([name, ts]) => {
+      return [name, ts.filter((s) => s >= yesterday)];
+    });
     return res
       .status(200)
-      .render('overview', { projectsArr, accountName, timeStamp });
+      .render('overview', { projectsArr, accountName, timeStamp, past1dayErr });
   } catch (err) {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
