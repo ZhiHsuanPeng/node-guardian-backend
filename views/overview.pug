@@ -230,13 +230,14 @@ html
                             .project_list_container
                                 .project_list_title
                                     .project_title Project
-                                    each project in projectsArr
-                                        .project_overview_info_container
-                                            a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}
-                                .project_user_number_container
                                     .project_user Users
+                                    //- each project in projectsArr
+                                    //-     .project_overview_info_container
+                                    //-         a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}
+                                .project_list_project_container
                                     each project in projectsArr
-                                        .project_overview_info_container        
+                                        .project_overview_info_container  
+                                            a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}      
                                             a(class= 'project_user_numbers' href=`/a/${accountName}/${project[0]}/settings/members`) #{project[2]}  
                         
 

@@ -112,6 +112,7 @@ html {
   padding: 30px;
   margin: 40px auto;
   border-radius: 8px;
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -294,11 +295,7 @@ html {
   font-size: 24px;
   font-weight: 600;
   margin: 0 0 10px 0;
-}
-
-.project_name {
-  font-size: 20px;
-  font-weight: 600;
+  padding: 0 0 0 25px;
 }
 
 .create-project-window {
@@ -458,35 +455,24 @@ html {
 }
 
 .project_container {
-  padding: 30px 20px;
+  padding: 30px 0px;
   background-color: white;
-  border: 2px solid rgb(193, 210, 235);
+  border: 3px solid #ecf1f9;
 }
-.project_list_container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  text-align: center;
-}
+
 .project_list_title {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  /* justify-content: flex-start; */
-}
-.project_title,
-.project_user {
-  margin: 0 0 20px 0;
-  font-size: 22px;
-  font-weight: 500;
-  color: rgb(169, 169, 171);
+  justify-content: space-between;
+  margin: 25px 0 0 0;
+  padding: 10px 100px 5px 40px;
+  border-bottom: 1px solid rgb(214, 221, 235);
 }
 
 .project_user_numbers,
 .project_name {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 500;
-  color: #127dd5;
+  color: #0f69b2;
   text-decoration: underline;
 }
 
@@ -1085,10 +1071,11 @@ select#windowDropdown option {
 .sidebar_container {
   flex: 1 1 auto;
 }
-.project_info_container {
+
+.project_overview_info_container {
   display: flex;
-  flex-direction: column;
-  padding: 20px 0;
+  justify-content: space-between;
+  padding: 8px 115px 8px 40px;
 }
 #projectName {
   width: 380px;
@@ -1133,12 +1120,13 @@ select#windowDropdown option {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
+  width: calc(100% - 50px);
   height: 90px;
   background-color: rgb(52 63 85);
   border-radius: 4px;
-  padding: 15px 0 15px 45px;
-  margin: 15px 0 35px 0;
+  padding: 15px 25px 15px 45px;
+  margin: 15px 25px 35px 25px;
+  box-sizing: border-box;
 }
 .project_section_description .firstLine {
   font-size: 16px;
@@ -1150,6 +1138,9 @@ select#windowDropdown option {
   font-size: 16px;
   color: rgb(127 146 185);
   padding: 0 0 0 26px;
+}
+.create_button_container {
+  padding: 0 0 0 25px;
 }
 
 .welcome_container {
@@ -1268,6 +1259,13 @@ span.purple {
   padding: 0 300px 0 0;
 }
 
+.project_overview_info_container {
+  background-color: rgb(247 249 253);
+}
+.project_overview_info_container:nth-child(odd) {
+  background-color: rgb(255 255 255);
+}
+
 .project_trends_i_container {
   background-color: rgb(247 249 253);
 }
@@ -1303,7 +1301,6 @@ span.purple {
   display: flex;
   align-items: center;
 }
-
 .check {
   width: 18px;
   height: 18px;
