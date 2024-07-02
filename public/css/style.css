@@ -1249,6 +1249,9 @@ span.purple {
   display: inline-block;
   width: 3px;
 }
+.height {
+  height: 3px;
+}
 .sdk_code {
   font-family: 'Work Sans';
   color: white;
@@ -1365,4 +1368,20 @@ span.purple {
 
 .form_button_group {
   margin: 50px 0 0 140px;
+}
+
+.form_default {
+  background-color: rgb(52 63 85);
+  border-radius: 4px;
+  padding: 15px 25px 15px 45px;
+  margin: 10px 0 0 0;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+.form_alert_setting_container {
+  display: flex;
+}
+.default_alert_setting.first {
+  margin: 0 0 0 10px;
 }
