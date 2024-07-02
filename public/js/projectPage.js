@@ -136,6 +136,8 @@ errorTitle.split(',').forEach((title, index) => {
       b: 10,
       t: 10,
     },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
   };
 
   const config = {

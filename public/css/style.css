@@ -33,8 +33,11 @@ html {
 .errorContainer {
   font-size: 14px;
 }
+.errorContainer:hover {
+  background-color: #edf2ff;
+}
 .errorContainer .errGraph {
-  margin: 0 67px 0 0;
+  margin: 0 57px 0 0;
 }
 
 .errorContainer .errRecent {
@@ -46,8 +49,19 @@ html {
   margin: 0 43px 0 0;
 }
 
-.errorContainer .mute_cotainer {
+.errorContainer .mute_container {
   margin: 0 80px 0 0;
+  width: 90px;
+}
+img.mute {
+  width: 20px;
+  height: 20px;
+}
+.errorContainer .mute_container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .errorContainer {
   display: flex;
@@ -1424,4 +1438,55 @@ span.purple {
 }
 .default_alert_setting.first {
   margin: 0 0 0 10px;
+}
+
+select.mutedropdown {
+  border-radius: 3px;
+  font-family: 'Roboto';
+  border: 1px solid rgb(214, 221, 235);
+  padding: 1px 5px;
+  width: 90px;
+  color: rgb(52 63 85);
+}
+.mutedropdown option {
+  background-color: #f8f9fc;
+}
+
+.hide {
+  display: none;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 100%; /* Position below the icon */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  white-space: nowrap;
+}
+
+/* Tooltip arrow */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%; /* Top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #555 transparent;
+}
+
+/* Show the tooltip text when you hover over the tooltip container */
+.mute_container:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
 }

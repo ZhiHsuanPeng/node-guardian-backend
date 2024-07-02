@@ -59,7 +59,7 @@ html
                     .errorLogsContainer
                         .containerBar
                             .title Error Message 
-                            .oneDayTrends 24 Hours Trends
+                            .oneDayTrends 24hr Trend
                             .count Total 
                             .last Last
                             .mute_option Mute
@@ -71,17 +71,19 @@ html
                                 div.errGraph(id=`${error.err}`)
                                 .errCount Count: #{error.count} 
                                 .errRecent #{error.recentTime}
-                                .mute_cotainer
+                                .mute_container
                                     if error.mute === true  
-                                        .mute_status Muting...
-                                        .mute_expires= `Expires in ${error.muteTime} hours` 
-                                    select.mutedropdown(data-error=`mute_${error.err}_${error.muteTime}`)
-                                        option(value="0") none
-                                        option(value="3600") 1 hour
-                                        option(value="10800") 3 hours 
-                                        option(value="21600") 6 hours 
-                                        option(value="43200") 12 hours  
-                                        option(value="86400") 24 hours
+                                        img.mute(src='/img/mute.png') 
+                                        select.mutedropdown.hide(data-error=`mute_${error.err}_${error.muteTime}`)
+                                        .tooltip= `This error is muted for ${error.muteTime} hours`
+                                    else    
+                                        select.mutedropdown(data-error=`mute_${error.err}_${error.muteTime}`)
+                                            option(value="0") none
+                                            option(value="3600") 1 hour
+                                            option(value="10800") 3 hours 
+                                            option(value="21600") 6 hours 
+                                            option(value="43200") 12 hours  
+                                            option(value="86400") 24 hours
                                 .resolved_container 
                                     if error.resolve === true
                                         input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}` checked)
