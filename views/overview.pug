@@ -198,10 +198,12 @@ html
                                         .project_trends_i_total_container
                                             .project_trends_i_total #{ts[1].length}
                                         .project_trends_i_compare_container
-                                            if ts[2] >= 0
+                                            if ts[2] > 0
                                                 .project_trends_i_compare_positive + #{ts[2]}
-                                            else
+                                            else if ts[2] < 0
                                                 .project_trends_i_compare_negative - #{ts[2]}
+                                            else
+                                                .project_trends_i_compare_nochange ------
                     .project_container 
                         .project_container_header Project list
                         .create_button_container                          
