@@ -337,8 +337,34 @@ exports.renderOverViewPage = async (req, res) => {
       projectsArr[index].push(user.length),
     );
     const yesterday = new Date().getTime() - 24 * 60 * 60 * 1000;
+    const theDayBeforeYesterday = new Date().getTime() - 48 * 60 * 60 * 1000;
+    const oneDayBeforeErr = timeStamp.map(([name, ts]) => {
+      return [
+        name,
+        ts.filter((s) => {
+          if (s <= yesterday && s >= theDayBeforeYesterday) {
+            return true;
+          }
+          return false;
+        }),
+      ];
+    });
     const past1dayErr = timeStamp.map(([name, ts]) => {
       return [name, ts.filter((s) => s >= yesterday)];
+    });
+    past1dayErr.forEach((arr, index) => {
+      let oneDayBefore = 0;
+      if (
+        !oneDayBeforeErr[index][1].length ||
+        oneDayBeforeErr[index][1].length === 0
+      ) {
+        oneDayBefore = 0;
+      } else {
+        oneDayBefore = oneDayBeforeErr[index][1].length;
+      }
+
+      const changes1DayBefore = arr[1].length - oneDayBefore;
+      arr.push(changes1DayBefore);
     });
     return res
       .status(200)

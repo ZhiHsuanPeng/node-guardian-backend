@@ -55,7 +55,7 @@ html
                             i.lni.lni-exit
                             span Logout
             .main.p-3
-                main.main This is a overview page
+                main.main
                     .welcome
                         .welcome_container
                             .text
@@ -182,19 +182,26 @@ html
                                 .title Trends of Errors
                                     .timeline
                                         .value 24 hours
-                                .inspect_text click to choose projects to inspect
+                                .inspect_container
+                                    .inspect_text click to choose projects to inspect
                             #past1day(style="width: 100%;")
                             .dashboard_summary Summary 
                             .trends_summary_container 
                                 .project_trends_title_container
                                     .project_trends_title Project 
-                                    .project_trends_title Total Errors
+                                    .project_trends_title_1 Total Errors Today
+                                    .project_trends_title_2 Compare to last day
                                 .project_trends_container 
                                 each ts in past1dayErr
                                     .project_trends_i_container
                                         .project_trends_i_title #{ts[0]}
                                         .project_trends_i_total_container
                                             .project_trends_i_total #{ts[1].length}
+                                        .project_trends_i_compare_container
+                                            if ts[2] >= 0
+                                                .project_trends_i_compare_positive + #{ts[2]}
+                                            else
+                                                .project_trends_i_compare_negative - #{ts[2]}
                     .project_container 
                         .project_container_header Project list
                         .create_button_container                          

@@ -291,9 +291,9 @@ const past1d = () => {
           weight: 'normal',
         },
       },
-      // autosize: true,
-      width: 1600,
-      height: 350,
+      autosize: true,
+      // width: 1600,
+      // height: 350,
       margin: {
         l: 50,
         r: 50,
