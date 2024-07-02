@@ -99,13 +99,9 @@ errorTitle.split(',').forEach((title, index) => {
     x: hours,
     y: occurrences,
     type: 'bar',
-    hovertemplate: '%{y}<extra></extra>',
+    hovertemplate: '%{y} at %{x}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)',
-      line: {
-        color: 'rgba(31, 119, 180, 1)',
-        width: 1,
-      },
+      color: 'rgb(137, 164, 209)',
     },
   };
 
@@ -119,21 +115,26 @@ errorTitle.split(',').forEach((title, index) => {
       hoverformat: '%H:00',
       showticklabels: false,
       showgrid: false,
+      zerolinecolor: 'rgba(255, 255, 255, 0)',
+      linecolor: 'rgba(255, 255, 255, 0)',
+      linewidth: 15,
     },
     yaxis: {
       showticklabels: false,
       range: yaxisRange,
       showgrid: false,
+      zerolinecolor: 'rgb(211, 221, 238)',
+      zerolinewidth: 1,
     },
-    hovermode: 'x',
+    hovermode: 'closet',
     autosize: true,
-    width: 150,
-    height: 100,
+    width: 120,
+    height: 45,
     margin: {
       l: 20,
       r: 20,
-      b: 20,
-      t: 20,
+      b: 10,
+      t: 10,
     },
   };
 

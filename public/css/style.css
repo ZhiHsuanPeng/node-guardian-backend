@@ -18,20 +18,27 @@ html {
   justify-content: space-between;
   text-align: center;
   border-bottom: 3px solid #ecf1f9;
-  padding: 20px 40px;
+  padding: 5px 40px;
 }
 .containerBar .oneDayTrends,
-.containerBar .count,
-.containerBar .mute_option,
-.containerBar .last {
+.containerBar .mute_option {
   margin: 0 80px 0 0;
 }
-
+.containerBar .last {
+  margin: 0 87px 0 0;
+}
+.containerBar .count {
+  margin: 0 88px 0 0;
+}
+.errorContainer {
+  font-size: 14px;
+}
 .errorContainer .errGraph {
-  margin: 0 51px 0 0;
+  margin: 0 67px 0 0;
 }
 
 .errorContainer .errRecent {
+  width: 80px;
   margin: 0 43px 0 0;
 }
 .errorContainer .errCount {
@@ -48,6 +55,7 @@ html {
   justify-content: space-between;
   width: 100%;
   padding: 0 60px 0 40px;
+  border-bottom: 1px solid #ecf1f9;
 }
 
 .errorContainer .errorTitle {
@@ -577,7 +585,6 @@ body {
   width: 100%;
   overflow: hidden;
   transition: all 0.35s ease-in-out;
-  background-color: #fafbfe;
 }
 
 #sidebar {
