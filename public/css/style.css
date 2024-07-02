@@ -218,14 +218,6 @@ img.mute {
   margin: 0 5px;
 }
 
-.header {
-  padding: 0 5rem;
-  height: 8rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .login__heading {
   margin: 0rem 0 4rem 0;
 }
@@ -256,26 +248,26 @@ img.mute {
 .login-form,
 .signup-form {
   margin: 20px auto;
-  font-size: 32px;
-  max-width: 55rem;
+  font-size: 16px;
+  width: 550px;
   background-color: #fff;
   box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
-  padding: 5rem 7rem;
+  padding: 30px 60px;
   border-radius: 5px;
 }
 
 .form__label {
   display: block;
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 600;
   margin-bottom: 0.75rem;
 }
 
 .form__input {
   display: block;
-  font-size: 1.5rem;
+  font-size: 16px;
   color: inherit;
-  padding: 1.25rem 1.75rem;
+  padding: 10px 12px;
   border: none;
   width: 100%;
   background-color: #fff;
@@ -286,6 +278,9 @@ img.mute {
   border-radius: 4px;
   box-sizing: border-box;
 }
+.form__input:hover {
+  background-color: #e4e4e4;
+}
 
 .form__group:not(:last-child) {
   margin-bottom: 2.5rem;
@@ -293,7 +288,7 @@ img.mute {
 
 .form__link {
   display: block;
-  font-size: 1.5rem;
+  font-size: 16px;
   color: inherit;
   padding: 1.25rem 0;
   text-decoration: none;
@@ -925,17 +920,23 @@ input#userEmail {
 .btn,
 .btn:link,
 .btn:visited {
-  font-size: 1.6rem;
-  padding: 1.4rem 3rem;
-  border-radius: 10rem;
+  font-size: 16px;
+  width: 100%;
+  padding: 5px 10px;
+  height: 48px;
+  border-radius: 5px;
   text-transform: uppercase;
   display: inline-block;
   text-decoration: none;
   position: relative;
   transition: all 0.4s;
+  background-color: rgb(222, 221, 221);
   font-weight: 400;
   border: none;
   cursor: pointer;
+}
+.btn:hover {
+  background-color: rgb(150, 150, 150);
 }
 .specialSignUpBtn {
   display: inline-block;
