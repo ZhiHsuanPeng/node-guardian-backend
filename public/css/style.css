@@ -303,14 +303,15 @@ html {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90vw;
-  height: 80vh;
+  width: 95vw;
+  height: 550px;
   background-color: white;
   border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   opacity: 0;
   z-index: 1000;
+  letter-spacing: 0.5px;
 }
 
 .overlay {
@@ -332,12 +333,35 @@ html {
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
 }
-
+.create-project-form-title {
+  padding: 30px 80px;
+}
+.create-project-form-title .form_title {
+  font-size: 38px;
+  font-weight: 400;
+}
+.create-project-form-title .form_description {
+  font-size: 16px;
+  color: rgb(144, 144, 144);
+  font-weight: 300;
+}
 .create-project-form {
-  padding: 20px;
+  padding: 20px 0;
+  width: 100%;
+  height: 200px;
+  background-color: #f8fbff;
   position: absolute;
   display: flex;
   z-index: 999;
+}
+
+.form_token,
+.form_projectName {
+  margin-right: auto;
+}
+
+.value_contianer {
+  width: 100%;
 }
 
 .close_btn {
@@ -354,9 +378,6 @@ html {
   margin-top: 20px;
   font-size: 16px;
   cursor: pointer;
-}
-.value_contianer {
-  display: column;
 }
 
 .error_overview_graph {
@@ -818,6 +839,13 @@ a.sidebar-link:hover {
   align-items: flex-start;
   margin-bottom: 20px;
 }
+
+.value_contianer .form_group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 140px 0 140px;
+}
 #userEmail {
   margin: 20px 0 0 0;
   width: 100%;
@@ -1077,9 +1105,38 @@ select#windowDropdown option {
   justify-content: space-between;
   padding: 8px 115px 8px 40px;
 }
-#projectName {
+#projectName,
+#token {
   width: 380px;
   margin: 10px 0 0 0;
+  padding: 5px 10px;
+  color: rgb(52 63 85);
+  border: 1px solid rgb(184 196 219);
+}
+#generate-token,
+#submit-create-project {
+  background-color: #0f69b2;
+  padding: 5px 15px;
+  color: white;
+  border: none;
+  border-radius: 3px;
+}
+#generate-token:hover,
+#submit-create-project:hover {
+  background-color: #7298d6;
+}
+.close_btn {
+  margin: 0 0 0 15px;
+}
+.close_btn:hover {
+  font-weight: 500;
+}
+
+.form_group_button {
+  width: 100%;
+  margin: 20px 0 0 0;
+  display: flex;
+  align-items: space-between;
 }
 .general_setting_title {
   font-size: 24px;
@@ -1304,4 +1361,8 @@ span.purple {
 .check {
   width: 18px;
   height: 18px;
+}
+
+.form_button_group {
+  margin: 50px 0 0 140px;
 }
