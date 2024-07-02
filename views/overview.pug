@@ -206,6 +206,24 @@ html
                                                 .project_trends_i_compare_nochange ------
                     .project_container 
                         .project_container_header Project list
+                        if projectsArr.length >= 1
+                            .project_section_description 
+                                .firstLine_container
+                                    img.check(src='/img/green_check.png') 
+                                    span.space
+                                    span.space
+                                    span.space
+                                    .firstLine Your project is up and running! 
+                                .secondLine If you have not seen any error information in your project, please ensure you have installed and initialize the SDK properly.
+                        else 
+                            .project_section_description 
+                                .firstLine_container
+                                    img.check(src='/img/light.png') 
+                                    span.space
+                                    span.space
+                                    span.space
+                                    .firstLine Create your first project to get started! 
+                                .secondLine Start monitoring your apps using our error logging services, follow the instructions above to import and install our SDK.
                         .create_button_container                          
                             button#open-create-project + Create a Project
                         if projectsArr

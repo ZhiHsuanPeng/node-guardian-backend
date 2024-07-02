@@ -366,7 +366,6 @@ exports.renderOverViewPage = async (req, res) => {
       const changes1DayBefore = arr[1].length - oneDayBefore;
       arr.push(changes1DayBefore);
     });
-    console.log(projectsArr);
     return res
       .status(200)
       .render('overview', { projectsArr, accountName, timeStamp, past1dayErr });
