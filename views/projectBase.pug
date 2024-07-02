@@ -16,7 +16,7 @@ html
 
     body
         .wrapper
-            aside#sidebar
+            aside#sidebar.expand
                 .d-flex
                     button.toggle-btn(type='button')
                         i.lni.lni-grid-alt
@@ -51,7 +51,7 @@ html
                         a.sidebar-link.logout_btn(href='#')
                             i.lni.lni-exit
                             span Logout
-            .main.p-3                    
+            .main                  
                 main.main This is a project base page
                 
                     .errTitle(data-error= `${errorMessageArr}`)
@@ -59,18 +59,18 @@ html
                     .errorLogsContainer
                         .containerBar
                             .title Error Message 
+                            .oneDayTrends 24 Hours Trends
                             .count Total 
                             .last Last
-                            .1daytrends 24 Hours Trends
                             .mute_option Mute
                             .resolved_option Resolved
                         each error in errObj
                             .errorContainer
-                                .timeStampStat(data-time = `${error.timeStamp}`)
+                                .timeStampStat(data-time = `${error.timeStamp}`)      
                                 a.errorTitle(href=`/a/${accountName}/prj/${prjName}/err/${error.err}`) #{error.err}
-                                .errCount Count: #{error.count}
+                                div.errGraph(id=`${error.err}`)
+                                .errCount Count: #{error.count} 
                                 .errRecent #{error.recentTime}
-                                div(id=`${error.err}`)
                                 .mute_cotainer
                                     if error.mute === true  
                                         .mute_status Muting...

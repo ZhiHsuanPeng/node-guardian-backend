@@ -418,7 +418,6 @@ exports.renderBasicProjectPage = async (req, res) => {
       recentTime: recentTime[index],
       projectToken,
     }));
-    console.log(errObj);
     for (const error of errObj) {
       const key = `${error.projectToken}-${error.err}`;
       const muteStatus = await redis.get(key);

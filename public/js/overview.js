@@ -49,11 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
+      console.log(result);
 
       if (response.ok) {
         showAlert('success', 'Create project success!');
       } else {
-        showAlert('error', result.error || 'Unknown error occurred');
+        showAlert('error', result.message || 'Unknown error occurred');
       }
       window.setTimeout(() => {
         location.reload();

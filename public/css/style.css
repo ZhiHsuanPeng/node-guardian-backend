@@ -9,32 +9,61 @@ html {
   width: 1200px;
   margin: 0 auto;
   position: relative;
-  padding: 8px;
+  padding: 8px 0px;
 }
 
 .containerBar {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   text-align: center;
+  border-bottom: 3px solid #ecf1f9;
+  padding: 20px 40px;
+}
+.containerBar .oneDayTrends,
+.containerBar .count,
+.containerBar .mute_option,
+.containerBar .last {
+  margin: 0 80px 0 0;
+}
+
+.errorContainer .errGraph {
+  margin: 0 51px 0 0;
+}
+
+.errorContainer .errRecent {
+  margin: 0 43px 0 0;
+}
+.errorContainer .errCount {
+  width: 70px;
+  margin: 0 43px 0 0;
+}
+
+.errorContainer .mute_cotainer {
+  margin: 0 80px 0 0;
 }
 .errorContainer {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  text-align: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 60px 0 40px;
+}
+
+.errorContainer .errorTitle {
+  margin-right: auto;
 }
 
 .errorLogsContainer {
   display: column;
   align-items: center;
-  justify-content: center;
-  width: 1200px;
+  justify-content: space-between;
+  width: 100%;
   margin: 60px auto;
 }
 
 .containerBar .title {
-  margin-right: 40px;
+  margin-right: auto;
 }
 
 .req_h {
