@@ -1458,14 +1458,14 @@ select.mutedropdown {
 
 .tooltip {
   visibility: hidden;
-  background-color: #555;
+  background-color: #224980;
   color: #fff;
   text-align: center;
   border-radius: 6px;
   padding: 5px;
   position: absolute;
   z-index: 1;
-  top: 100%; /* Position below the icon */
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   opacity: 0;
@@ -1473,19 +1473,15 @@ select.mutedropdown {
   white-space: nowrap;
 }
 
-/* Tooltip arrow */
 .tooltip::after {
   content: '';
   position: absolute;
-  bottom: 100%; /* Top of the tooltip */
+  bottom: 100%;
   left: 50%;
   margin-left: -5px;
   border-width: 5px;
-  border-style: solid;
-  border-color: transparent transparent #555 transparent;
 }
 
-/* Show the tooltip text when you hover over the tooltip container */
 .mute_container:hover .tooltip {
   visibility: visible;
   opacity: 1;
