@@ -277,9 +277,15 @@ img.mute {
   transition: all 0.3s;
   border-radius: 4px;
   box-sizing: border-box;
+  outline: none;
 }
 .form__input:hover {
   background-color: #e4e4e4;
+  box-shadow: 0 0 7px rgba(57, 60, 89, 0.5);
+}
+
+.form__input:focus {
+  box-shadow: 0 0 7px rgba(57, 60, 89, 0.5);
 }
 
 .form__group:not(:last-child) {
@@ -296,8 +302,9 @@ img.mute {
 
 .alert {
   position: fixed;
-  top: 20px;
+  top: 10px;
   left: 50%;
+  width: 1000px;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   z-index: 9999;
@@ -308,12 +315,12 @@ img.mute {
   text-align: center;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  padding: 1.6rem 15rem;
+  padding: 1.6rem 5rem;
   -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
 }
 .alert--success {
-  background-color: #20bf6b;
+  background-color: rgb(133, 148, 192);
 }
 .alert--error {
   background-color: #eb7270;
@@ -616,7 +623,7 @@ body {
   background-color: transparent;
   cursor: pointer;
   border: 0;
-  padding: 1rem 1rem;
+  padding: 1rem 0.5rem 1rem 1rem;
 }
 
 .toggle-btn i {
@@ -1344,7 +1351,7 @@ span.purple {
   height: 280px;
   width: 280px;
   padding: 30px;
-  margin: 140px 0 0 0;
+  margin: 195px 0 0 0;
 }
 
 .dashboard_summary {
@@ -1532,4 +1539,33 @@ img.logo {
   font-size: 48px;
   font-weight: 600;
   letter-spacing: 1.8px;
+}
+.side_bar_icon {
+  width: 28px;
+  height: 28px;
+}
+.profile_main_container {
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  color: rgb(101, 107, 167);
+  width: 500px;
+  font-size: 26px;
+  font-weight: 500;
+  padding: 25px 0 25px 50px;
+  text-align: center;
+}
+.profile_main.second {
+  border-bottom: 2px solid rgb(101, 107, 167);
+}
+.profile_container {
+  margin: 20px 0 0 0;
+  font-weight: 400;
+  font-size: 20px;
+  color: rgb(57, 67, 88);
+}
+.profile_center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

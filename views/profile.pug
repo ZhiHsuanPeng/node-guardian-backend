@@ -1,21 +1,23 @@
-doctype html
+doctype html 
 html 
-    head
+    head    
+        
         meta(charset='UTF-8')
-        meta(http-equiv='X-UA-Compatible' content='IE=edge')
         meta(name='viewport' content='width=device-width, initial-scale=1.0')
-        title Settings
+        title Profile
+        link(rel='stylesheet' href='/css/style.css')
+        script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
         link(rel='icon' href='/img/icon_blue.png' type='image/png')
         link(href='https://cdn.lineicons.com/4.0/lineicons.css' rel='stylesheet')
         link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ' crossorigin='anonymous')
-        link(rel='stylesheet' href='/css/style.css')
         link(rel="preconnect" href="https://fonts.googleapis.com")
+        link(rel='stylesheet' href='/css/style.css')
         link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
         link(href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet")
 
     body
         .wrapper
-            aside#sidebar
+            aside#sidebar.expand
                 .d-flex
                     button.toggle-btn(type='button')
                         img.side_bar_icon(src='/img/icon_white_64.png')
@@ -50,36 +52,17 @@ html
                         a.sidebar-link.logout_btn(href='#')
                             i.lni.lni-exit
                             span Logout
-
-            .sidebar_container                
-                .sidebar
-                    .sidebar2_title #{prjName} Settings
-                    .sidebar2_title.subtitle Basic Setup
-                    ul
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/general` class='nav-link') General
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/members` class='nav-link') Members
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/token` class='nav-link') Project Access Token
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/notifications` class='nav-link') Notifications
-            .main.p-3
-                .setting_container
-                    .project_owner(data-owner = `${accountName}`)
-                    .project_name(data-prjname = `${prjName}`)
-                    .project_ownerId(data-id = `${userId}`)
-                    .projectId(data-prjid = `${prjId}`)
-                    .members_title General Settings 
-                    .members_description You can view and change some basic setting right here.
-                    hr
-                    .project_info_container
-                        .general_setting_title Project Details
-                        .project_id_title Project ID: #{prjId}
-                        label(for="projectName" class='general_setting_field') Project Name
-                        input#projectName(type="text" name="userEmail" required)
-                    button.rules_save_btn Save
-script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
-script(src='/js/sidebar.js' type="module")
-script(src='/js/generalSettings.js' type="module")
-script(src='/js/logout.js' type="module")
+            .main.p-3                 
+                main.main
+                    .profile_center
+                        .profile_main_container 
+                            .profile_main Hello! #{accountName}
+                            .profile_main.second Here is your profile information
+                            .profile_container
+                                .profile_id User Id: #{userInfo[0].id}
+                                .profile_name Your name: #{userInfo[0].name}
+                                .profile_email Your email: #{userInfo[0].email}
+                
+        script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
+        script(src='/js/sidebar.js' type="module")
+            

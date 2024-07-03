@@ -178,6 +178,28 @@ exports.renderSignInForm = async (req, res) => {
   }
 };
 
+exports.renderProfilePage = async (req, res) => {
+  try {
+    const { accountName } = req.params;
+    const userId = res.locals.userId;
+    const userInfo = await userModel.getUserInfoById(userId);
+    const projectsArr = Object.entries(
+      await projectModel.getAllProjectByUserId(userId),
+    );
+    return res
+      .status(200)
+      .render('profile', { projectsArr, accountName, userInfo });
+  } catch (err) {
+    console.log(err);
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
+};
+
 exports.renderSettingTokenPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;

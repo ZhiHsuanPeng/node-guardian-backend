@@ -48,3 +48,8 @@ exports.getAllUserByProjectName = async (projectName) => {
   );
   return result[0];
 };
+
+exports.getUserInfoById = async (id) => {
+  const result = await pool.query('SELECT * FROM users WHERE id = ?', [id]);
+  return result[0];
+};
