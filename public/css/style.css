@@ -97,17 +97,15 @@ img.mute {
 
 .errTrends_container {
   display: flex;
+  background-color: #f7f9fd;
+  justify-content: center;
+  margin: 0 46px 0 46px;
+  border-radius: 3px;
+  padding: 15px 0 0 0;
 }
 
 .graph_container {
   display: column;
-}
-
-.errTrends_container {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-  background-color: #dbe3f3;
 }
 
 .graph_container {
@@ -123,22 +121,17 @@ img.mute {
   position: relative;
 }
 
-.errIndex_container {
-  height: 100px;
-  background-color: #dbe3f3;
-  padding: 30px;
-  margin: 0 auto;
-}
-
 .errDetail_errorTitle {
-  font-size: 24px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 500;
+  padding: 5px 0 0 0;
 }
 
 .firstError,
 .latestError,
 .errorTotal {
   margin: 10px 10px;
+  font-size: 14px;
 }
 
 .firstDate,
@@ -305,20 +298,20 @@ img.mute {
 
 .alert {
   position: fixed;
-  top: 10px;
+  top: 5px;
   left: 50%;
-  width: 1000px;
+  width: 800px;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   z-index: 9999;
   color: #fff;
-  font-size: 26px;
+  font-size: 18px;
   letter-spacing: 1.5px;
   font-weight: 400;
   text-align: center;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  padding: 1.6rem 5rem;
+  padding: 3px 20px;
   -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
 }
@@ -1593,6 +1586,18 @@ img.logo {
   background-size: contain;
   opacity: 0.5;
 }
+.err_projectName::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 83px;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 18px;
+  background: url('/img/right.png') no-repeat center center;
+  background-size: contain;
+  opacity: 0.5;
+}
 
 .containerBar .resolved_option::after {
   content: 'Resolved option allow you to mark an error with "resolved", if the same error appears, the system will send you an alert email.';
@@ -1636,4 +1641,31 @@ img.logo {
 
 .containerBar .resolved_option:hover::after {
   opacity: 1;
+}
+.errorD_first_container {
+  height: 100px;
+  width: 100%;
+  margin: 40px 0 0 0;
+  background-color: #f7f9fd;
+  border-top: 2px solid #dbe3f3;
+  border-bottom: 1px dashed #dbe3f3;
+}
+.errorD_second_container {
+  padding: 0 0 0 36px;
+}
+.errIndex_container {
+  padding: 20px 0 12px 24px;
+}
+.err_projectName {
+  margin: 0 0 0 20px;
+  width: 100px;
+}
+
+.errIndex_container a {
+  text-decoration: underline;
+  display: inline-block;
+  color: #4a23d4;
+  font-size: 16px;
+  font-weight: 400;
+  width: 100px;
 }

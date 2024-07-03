@@ -17,7 +17,7 @@ html
 
     body
         .wrapper
-            aside#sidebar
+            aside#sidebar.expand
                 .d-flex
                     button.toggle-btn(type='button')
                         img.side_bar_icon(src='/img/icon_white_64.png')
@@ -51,144 +51,145 @@ html
                     .sidebar-footer
                         a.sidebar-link.logout_btn(href='#')
                             i.lni.lni-exit
-                            span Logout
-            .main.p-3      
-                main.main This is an error detail page
-                    .timeStampStat(data-time = `${timeStamp}`)
-                    .iPtimeStamp(data-iptime=`${ipTimeStamp}`)
-                    .requestInfo(data-request= `${latestErr.filteredReqObj}`)
-                    .errTitle_container    
-                        .errIndex_container
-                            a(href=`/a/${accountName}/prj/${prjName}`)
-                                .err_projectName= `> ${prjName} `
-                            .errDetail_errorTitle #{errTitle}
-                            .errDetail_errorTime 
-                                .firstError
-                                    | First: #{firstToTimeDiff} ago
-                                    .firstDate #{firstDate}
-                                .latestError
-                                    | Latest: #{latestToTimeDiff} ago
-                                    .latestDate #{latestDate}
-                                .errorTotal Total: #{all.length}
-                    .errTrends_container Occurrences 
-                        .graph_container
-                            .past1hGraph Last hour
-                            .past1hSum
-                            #past1hour 
-                        .graph_container
-                            .past1dGraph Last day
-                            .past1dSum
-                            #past1day
-                        .graph_container
-                            .past1wGraph Last week 
-                            .past1wSum
-                            #past1week
-                    .errTrends_container Affected IPs  
-                        .graph_container 
-                            .past1hIpGraph Last hour
-                            .past1hIpSum 
-                            #past1hourIpCount
-                        .graph_container 
-                            .past1dIpGraph Last day
-                            .past1dIpSum
-                            #past1dIpCount
-                        .graph_container 
-                            .past1wIpGraph Last week
-                            .past1wIpSum
-                            #past1wIpCount
+                            span Logout     
+            main.main
+                .timeStampStat(data-time = `${timeStamp}`)
+                .iPtimeStamp(data-iptime=`${ipTimeStamp}`)
+                .requestInfo(data-request= `${latestErr.filteredReqObj}`)
+                .errorD_first_container 
+                    .errIndex_container
+                        a(href=`/a/${accountName}/prj/${prjName}`)
+                            .err_projectName= `${prjName} `
+                        .errDetail_errorTitle #{errTitle}
+                .errorD_second_container
+                    .errDetail_errorTime 
+                        .firstError
+                            | First: #{firstToTimeDiff} ago
+                            .firstDate #{firstDate}
+                        .latestError
+                            | Latest: #{latestToTimeDiff} ago
+                            .latestDate #{latestDate}
+                        .errorTotal Total: #{all.length}   
+                    
+                .errTrends_container Occurrences 
+                    .graph_container
+                        .past1hGraph Last hour
+                        .past1hSum
+                        #past1hour 
+                    .graph_container
+                        .past1dGraph Last day
+                        .past1dSum
+                        #past1day
+                    .graph_container
+                        .past1wGraph Last week 
+                        .past1wSum
+                        #past1week
+                .errTrends_container Affected IPs  
+                    .graph_container 
+                        .past1hIpGraph Last hour
+                        .past1hIpSum 
+                        #past1hourIpCount
+                    .graph_container 
+                        .past1dIpGraph Last day
+                        .past1dIpSum
+                        #past1dIpCount
+                    .graph_container 
+                        .past1wIpGraph Last week
+                        .past1wIpSum
+                        #past1wIpCount
 
-                    .errDetail_container
-                        .errStackTrace_container
-                            .errDetail_stackTrace 
-                                .stackTraceTitle Stack Trace
-                                .stackTitle= `${errTitle.split().join()}`
-                                .stackTrace Most Recent Call 
-                                pre
-                                    .firstTrace at (#{firstStack})
-                                    .codeContainer
-                                        pre
-                                            each line, index in errCode
-                                                if index === 2
-                                                    span.line(style='display: inline-block; background-color: yellow')= line
-                                                    br(style='color: red; font-weight: bold;')
-                                                else
-                                                    span.line(style='display: inline-block;')= line
-                                                    br
-                                    .otherTrace #{otherStack.length} non-project frames
-                                        .dropdown
-                                        button(onclick="toggleFrames()") Show/Hide Non-Project Frames
-                                        each line in otherStack 
-                                            .non-project-frame(style= "display: none;") #{line}
-                        .errorParamsContainer 
-                            .errorParamsTitle Latest Request Params
-                            .params_container
-                                .params_pair_container
-                                    .req_h request.browser
-                                    .req_value= `${latestErr.deviceInfo.browser.name} ${latestErr.deviceInfo.browser.version}`
-                                .params_pair_container
-                                    .req_h request.os
-                                    .req_value= `${latestErr.deviceInfo.os.name} ${latestErr.deviceInfo.os.version}`
-                                .params_pair_container
-                                    .req_h request.device
-                                    .req_value= `${latestErr.deviceInfo.device.model || 'unknown'}`
-                                .params_pair_container
-                                    .req_h request.headers.user-agent 
-                                    .req_value #{latestErr.filteredReqObj.userAgent}
-                                .params_pair_container
-                                    .req_h request.headers.accept 
-                                    .req_value #{latestErr.filteredReqObj.accept}
-                                .params_pair_container
-                                    .req_h request.headers.accept-encoding
-                                    .req_value #{latestErr.filteredReqObj.headers['Accept-Encoding']}
-                                .params_pair_container
-                                    .req_h request.headers.accept-language 
-                                    .req_value #{latestErr.filteredReqObj.headers['Accept-Language']}
-                                .params_pair_container
-                                    .req_h request.headers.connection 
-                                    .req_value #{latestErr.filteredReqObj.headers.Connection}
-                                .params_pair_container
-                                    .req_h request.headers.host 
-                                    .req_value #{latestErr.filteredReqObj.headers.Host}
-                                .params_pair_container
-                                    .req_h request.method 
-                                    .req_value #{latestErr.filteredReqObj.method}
-                                .params_pair_container
-                                    .req_h request.url 
-                                    .req_value #{latestErr.filteredReqObj.fullUrl}
-                                .params_pair_container
-                                    .req_h request.userIp 
-                                    .req_value #{latestErr.filteredReqObj.requestIp}
-                                .params_pair_container
-                                    .req_h server.argv 
-                                    .req_value= `[${latestErr.processArgs}]`
-                                        
-                                .params_pair_container
-                                    .req_h server.pid 
-                                    .req_value #{latestErr.processPid}
-                        .summary_container 
-                            .errorParamsTitle Summary
+                .errDetail_container
+                    .errStackTrace_container
+                        .errDetail_stackTrace 
+                            .stackTraceTitle Stack Trace
+                            .stackTitle= `${errTitle.split().join()}`
+                            .stackTrace Most Recent Call 
+                            pre
+                                .firstTrace at (#{firstStack})
+                                .codeContainer
+                                    pre
+                                        each line, index in errCode
+                                            if index === 2
+                                                span.line(style='display: inline-block; background-color: yellow')= line
+                                                br(style='color: red; font-weight: bold;')
+                                            else
+                                                span.line(style='display: inline-block;')= line
+                                                br
+                                .otherTrace #{otherStack.length} non-project frames
+                                    .dropdown
+                                    button(onclick="toggleFrames()") Show/Hide Non-Project Frames
+                                    each line in otherStack 
+                                        .non-project-frame(style= "display: none;") #{line}
+                    .errorParamsContainer 
+                        .errorParamsTitle Latest Request Params
+                        .params_container
                             .params_pair_container
-                                .summary_title Request user IP
-                                .keyValue_container
-                                    each pair in ipPercentage
-                                        div
-                                            .key #{pair[0]} #{pair[1]}%
+                                .req_h request.browser
+                                .req_value= `${latestErr.deviceInfo.browser.name} ${latestErr.deviceInfo.browser.version}`
+                            .params_pair_container
+                                .req_h request.os
+                                .req_value= `${latestErr.deviceInfo.os.name} ${latestErr.deviceInfo.os.version}`
+                            .params_pair_container
+                                .req_h request.device
+                                .req_value= `${latestErr.deviceInfo.device.model || 'unknown'}`
+                            .params_pair_container
+                                .req_h request.headers.user-agent 
+                                .req_value #{latestErr.filteredReqObj.userAgent}
+                            .params_pair_container
+                                .req_h request.headers.accept 
+                                .req_value #{latestErr.filteredReqObj.accept}
+                            .params_pair_container
+                                .req_h request.headers.accept-encoding
+                                .req_value #{latestErr.filteredReqObj.headers['Accept-Encoding']}
+                            .params_pair_container
+                                .req_h request.headers.accept-language 
+                                .req_value #{latestErr.filteredReqObj.headers['Accept-Language']}
+                            .params_pair_container
+                                .req_h request.headers.connection 
+                                .req_value #{latestErr.filteredReqObj.headers.Connection}
+                            .params_pair_container
+                                .req_h request.headers.host 
+                                .req_value #{latestErr.filteredReqObj.headers.Host}
+                            .params_pair_container
+                                .req_h request.method 
+                                .req_value #{latestErr.filteredReqObj.method}
+                            .params_pair_container
+                                .req_h request.url 
+                                .req_value #{latestErr.filteredReqObj.fullUrl}
+                            .params_pair_container
+                                .req_h request.userIp 
+                                .req_value #{latestErr.filteredReqObj.requestIp}
+                            .params_pair_container
+                                .req_h server.argv 
+                                .req_value= `[${latestErr.processArgs}]`
                                     
-                                            br
                             .params_pair_container
-                                .summary_title Browser
-                                .keyValue_container
-                                    each pair in browserPercentage
-                                        div
-                                            .key #{pair[0]} #{pair[1]}%
-                                            br
-                            .params_pair_container
-                                .summary_title OS
-                                .keyValue_container
-                                    each pair in osPercentage
-                                        div
-                                            .key #{pair[0]} #{pair[1]}% 
-                                            br
+                                .req_h server.pid 
+                                .req_value #{latestErr.processPid}
+                    .summary_container 
+                        .errorParamsTitle Summary
+                        .params_pair_container
+                            .summary_title Request user IP
+                            .keyValue_container
+                                each pair in ipPercentage
+                                    div
+                                        .key #{pair[0]} #{pair[1]}%
+                                
+                                        br
+                        .params_pair_container
+                            .summary_title Browser
+                            .keyValue_container
+                                each pair in browserPercentage
+                                    div
+                                        .key #{pair[0]} #{pair[1]}%
+                                        br
+                        .params_pair_container
+                            .summary_title OS
+                            .keyValue_container
+                                each pair in osPercentage
+                                    div
+                                        .key #{pair[0]} #{pair[1]}% 
+                                        br
 
 
         script.
