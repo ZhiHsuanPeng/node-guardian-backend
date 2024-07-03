@@ -25,7 +25,7 @@ html
                         a(href='#') NodeGuardian
                 ul.sidebar-nav
                     li.sidebar-item
-                        a.sidebar-link(href='#')
+                        a.sidebar-link(href=`/a/${accountName}/profile`)
                             i.lni.lni-user
                             span Profile
                     li.sidebar-item
@@ -53,13 +53,13 @@ html
                             i.lni.lni-exit
                             span Logout
             .main                  
-                main.main This is a project base page
+                main.main 
                 
                     .errTitle(data-error= `${errorMessageArr}`)
                     .projectToken(data-token = `${projectToken}`)
                     .errorLogsContainer
                         .containerBar
-                            .title Error Message 
+                            .title Error Message
                             .oneDayTrends 24hr Trend
                             .count Total 
                             .last Last
