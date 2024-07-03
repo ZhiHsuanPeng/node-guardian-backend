@@ -54,9 +54,9 @@ const past1d = () => {
     type: 'bar',
     hovertemplate: '%{y}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)',
+      color: '#8f9fbf',
       line: {
-        color: 'rgba(31, 119, 180, 1)',
+        color: '#8f9fbf',
         width: 1,
       },
     },
@@ -67,24 +67,27 @@ const past1d = () => {
 
   const layout = {
     xaxis: {
-      tickvals: [0, Math.floor(hours.length / 2), hours.length - 1],
+      tickvals: [2, Math.floor(hours.length / 2), hours.length - 1],
       ticktext: [
-        hours[0],
+        hours[2],
         hours[Math.floor(hours.length / 2)],
         hours[hours.length - 1],
       ],
       hoverformat: '%H:00',
+      linecolor: '#848484',
       showgrid: false,
       tickangle: 0,
+      ticklen: 3,
+      tickcolor: '#848484',
     },
     yaxis: {
       range: yaxisRange,
       showline: true,
-      linecolor: 'black',
-      linewidth: 1,
+      linecolor: '#848484',
+      ticklen: 3,
+      tickcolor: '#848484',
     },
     hovermode: 'x',
-    autosize: true,
     width: 270,
     height: 150,
     margin: {
@@ -97,6 +100,7 @@ const past1d = () => {
 
   const config = {
     displayModeBar: false,
+    responsive: true,
   };
 
   Plotly.newPlot('past1day', [trace], layout, config);
@@ -154,9 +158,9 @@ const past1h = () => {
     type: 'bar',
     hovertemplate: '%{y}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)',
+      color: '#8f9fbf',
       line: {
-        color: 'rgba(31, 119, 180, 1)',
+        color: '#8f9fbf',
         width: 1,
       },
     },
@@ -167,24 +171,28 @@ const past1h = () => {
 
   const layout = {
     xaxis: {
-      tickvals: [0, Math.floor(minutes.length / 2), minutes.length - 1],
+      tickvals: [2, Math.floor(minutes.length / 2), minutes.length - 1],
       ticktext: [
-        minutes[0],
+        minutes[2],
         minutes[Math.floor(minutes.length / 2)],
         minutes[minutes.length - 1],
       ],
       hoverformat: '%M:00',
       showgrid: false,
       tickangle: 0,
+      linecolor: '#848484',
+      showgrid: false,
+      tickangle: 0,
+      ticklen: 3,
+      tickcolor: '#848484',
     },
     yaxis: {
       range: yaxisRange,
       showline: true,
-      linecolor: 'black',
-      linewidth: 1,
+      linecolor: '#848484',
+      tickcolor: '#848484',
     },
     hovermode: 'x',
-    autosize: true,
     width: 270,
     height: 150,
     margin: {
@@ -197,6 +205,7 @@ const past1h = () => {
 
   const config = {
     displayModeBar: false,
+    responsive: true,
   };
 
   Plotly.newPlot('past1hour', [trace], layout, config);
@@ -229,9 +238,9 @@ const past1w = () => {
     width: 0.3,
     hovertemplate: '%{y}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)',
+      color: '#8f9fbf',
       line: {
-        color: 'rgba(31, 119, 180, 1)',
+        color: '#8f9fbf',
         width: 1,
       },
     },
@@ -252,15 +261,19 @@ const past1w = () => {
       hoverformat: '%m/%d',
       showgrid: false,
       tickangle: 0,
+      linecolor: '#848484',
+      showgrid: false,
+      tickangle: 0,
+      ticklen: 3,
+      tickcolor: '#848484',
     },
     yaxis: {
       range: yaxisRange,
       showline: true,
-      linecolor: 'black',
-      linewidth: 1,
+      linecolor: '#848484',
+      tickcolor: '#848484',
     },
     hovermode: 'x',
-    autosize: true,
     width: 270,
     height: 150,
     margin: {
@@ -273,6 +286,7 @@ const past1w = () => {
 
   const config = {
     displayModeBar: false,
+    responsive: true,
   };
 
   Plotly.newPlot('past1week', [trace], layout, config);
@@ -333,9 +347,9 @@ const past1hIpCount = () => {
     type: 'bar',
     hovertemplate: '%{y}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)',
+      color: '#8f9fbf',
       line: {
-        color: 'rgba(31, 119, 180, 1)',
+        color: '#8f9fbf',
         width: 1,
       },
     },
@@ -346,24 +360,28 @@ const past1hIpCount = () => {
 
   const layout = {
     xaxis: {
-      tickvals: [0, Math.floor(minutes.length / 2), minutes.length - 1],
+      tickvals: [2, Math.floor(minutes.length / 2), minutes.length - 1],
       ticktext: [
-        minutes[0],
+        minutes[2],
         minutes[Math.floor(minutes.length / 2)],
         minutes[minutes.length - 1],
       ],
       hoverformat: '%M:00',
       showgrid: false,
       tickangle: 0,
+      linecolor: '#848484',
+      showgrid: false,
+      tickangle: 0,
+      ticklen: 3,
+      tickcolor: '#848484',
     },
     yaxis: {
       range: yaxisRange,
       showline: true,
-      linecolor: 'black',
-      linewidth: 1,
+      linecolor: '#848484',
+      tickcolor: '#848484',
     },
     hovermode: 'x',
-    autosize: true,
     width: 270,
     height: 150,
     margin: {
@@ -376,6 +394,7 @@ const past1hIpCount = () => {
 
   const config = {
     displayModeBar: false,
+    responsive: true,
   };
 
   Plotly.newPlot('past1hourIpCount', [trace], layout, config);
@@ -430,9 +449,9 @@ const past1dIpCount = () => {
     type: 'bar',
     hovertemplate: '%{y}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)',
+      color: '#8f9fbf',
       line: {
-        color: 'rgba(31, 119, 180, 1)',
+        color: '#8f9fbf',
         width: 1,
       },
     },
@@ -443,24 +462,28 @@ const past1dIpCount = () => {
 
   const layout = {
     xaxis: {
-      tickvals: [0, Math.floor(hours.length / 2), hours.length - 1],
+      tickvals: [2, Math.floor(hours.length / 2), hours.length - 1],
       ticktext: [
-        hours[0],
+        hours[2],
         hours[Math.floor(hours.length / 2)],
         hours[hours.length - 1],
       ],
       hoverformat: '%H:00',
       showgrid: false,
       tickangle: 0,
+      linecolor: '#848484',
+      showgrid: false,
+      tickangle: 0,
+      ticklen: 3,
+      tickcolor: '#848484',
     },
     yaxis: {
       range: yaxisRange,
       showline: true,
-      linecolor: 'black',
-      linewidth: 1,
+      linecolor: '#848484',
+      tickcolor: '#848484',
     },
     hovermode: 'x',
-    autosize: true,
     width: 270,
     height: 150,
     margin: {
@@ -473,6 +496,7 @@ const past1dIpCount = () => {
 
   const config = {
     displayModeBar: false,
+    responsive: true,
   };
 
   Plotly.newPlot('past1dIpCount', [trace], layout, config);
@@ -517,9 +541,9 @@ const past1wIpCount = () => {
     width: 0.3,
     hovertemplate: '%{y}<extra></extra>',
     marker: {
-      color: 'rgba(26, 118, 186, 0.8)',
+      color: '#8f9fbf',
       line: {
-        color: 'rgba(31, 119, 180, 1)',
+        color: '#8f9fbf',
         width: 1,
       },
     },
@@ -540,15 +564,19 @@ const past1wIpCount = () => {
       hoverformat: '%m/%d',
       showgrid: false,
       tickangle: 0,
+      linecolor: '#848484',
+      showgrid: false,
+      tickangle: 0,
+      ticklen: 3,
+      tickcolor: '#848484',
     },
     yaxis: {
       range: yaxisRange,
       showline: true,
-      linecolor: 'black',
-      linewidth: 1,
+      linecolor: '#848484',
+      tickcolor: '#848484',
     },
     hovermode: 'x',
-    autosize: true,
     width: 270,
     height: 150,
     margin: {
@@ -561,6 +589,7 @@ const past1wIpCount = () => {
 
   const config = {
     displayModeBar: false,
+    responsive: true,
   };
 
   Plotly.newPlot('past1wIpCount', [trace], layout, config);

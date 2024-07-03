@@ -69,34 +69,39 @@ html
                         .latestError
                             | Latest: #{latestToTimeDiff} ago
                             .latestDate #{latestDate}
-                        .errorTotal Total: #{all.length}   
-                    
-                .errTrends_container Occurrences 
-                    .graph_container
-                        .past1hGraph Last hour
-                        .past1hSum
-                        #past1hour 
-                    .graph_container
-                        .past1dGraph Last day
-                        .past1dSum
-                        #past1day
-                    .graph_container
-                        .past1wGraph Last week 
-                        .past1wSum
-                        #past1week
-                .errTrends_container Affected IPs  
-                    .graph_container 
-                        .past1hIpGraph Last hour
-                        .past1hIpSum 
-                        #past1hourIpCount
-                    .graph_container 
-                        .past1dIpGraph Last day
-                        .past1dIpSum
-                        #past1dIpCount
-                    .graph_container 
-                        .past1wIpGraph Last week
-                        .past1wIpSum
-                        #past1wIpCount
+                        .errorTotal Total: #{all.length} 
+
+                .errTrends_big_container   
+                    .errTrends_container 
+                        .trends_title Occurrences
+                        .small_container
+                            .graph_container 
+                                .past1hGraph Last hour
+                                .past1hSum
+                                #past1hour 
+                            .graph_container
+                                .past1dGraph Last day
+                                .past1dSum
+                                #past1day
+                            .graph_container
+                                .past1wGraph Last week 
+                                .past1wSum
+                                #past1week
+                    .errTrends_container  
+                        .trends_title Affected IP
+                        .small_container
+                            .graph_container 
+                                .past1hIpGraph Last hour
+                                .past1hIpSum 
+                                #past1hourIpCount
+                            .graph_container 
+                                .past1dIpGraph Last day
+                                .past1dIpSum
+                                #past1dIpCount
+                            .graph_container 
+                                .past1wIpGraph Last week
+                                .past1wIpSum
+                                #past1wIpCount
 
                 .errDetail_container
                     .errStackTrace_container

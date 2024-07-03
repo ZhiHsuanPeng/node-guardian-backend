@@ -94,24 +94,31 @@ img.mute {
 .req_h {
   margin: 0 0 10px 0;
 }
+.errTrends_big_container {
+  width: 100%;
+  padding: 0 38px 0 38px;
+}
 
 .errTrends_container {
   display: flex;
+  flex-direction: column;
+  width: 100%;
   background-color: #f7f9fd;
   justify-content: center;
-  margin: 0 46px 0 46px;
   border-radius: 3px;
   padding: 15px 0 0 0;
 }
-
-.graph_container {
-  display: column;
+.trends_title {
+  padding: 0 0 0 20px;
+}
+.small_container {
+  display: flex;
 }
 
 .graph_container {
   margin: 20px 15px;
   padding: 10px;
-  border: 2px solid rgb(181, 195, 241);
+  border: 2px solid #dbe3f3;
   border-radius: 8px;
   background-color: white;
 }
@@ -1669,3 +1676,10 @@ img.logo {
   font-weight: 400;
   width: 100px;
 }
+
+/* #past1hour,
+#past1day,
+#past1week {
+  width: 100%;
+  height: 100%;
+} */

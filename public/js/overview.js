@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const accessToken = tokenInput.value;
 
     if (!projectName || !token) {
-      showAlert('error', 'A project must have a name and token.');
+      alert('Please fill out both fields.');
       return;
     }
 
@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
+      console.log(result);
 
       if (response.ok) {
         showAlert('success', 'Create project success!');
