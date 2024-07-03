@@ -24,7 +24,7 @@ reactivate.forEach(function (re) {
       }),
     });
     if (response.ok) {
-      showAlert('success', 'resolve success');
+      showAlert('success', 'resolve setting success');
     }
   });
 });

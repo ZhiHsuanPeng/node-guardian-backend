@@ -42,11 +42,11 @@ html {
 
 .errorContainer .errRecent {
   width: 80px;
-  margin: 0 43px 0 0;
+  margin: 0 24px 0 0;
 }
 .errorContainer .errCount {
   width: 70px;
-  margin: 0 43px 0 0;
+  margin: 0 59px 0 0;
 }
 
 .errorContainer .mute_container {
@@ -219,7 +219,7 @@ img.mute {
 }
 
 .login__heading {
-  margin: 0rem 0 4rem 0;
+  margin: 0rem 0 36px 0;
 }
 
 .nav,
@@ -247,7 +247,7 @@ img.mute {
 
 .login-form,
 .signup-form {
-  margin: 20px auto;
+  margin: 20px 0;
   font-size: 16px;
   width: 550px;
   background-color: #fff;
@@ -259,8 +259,8 @@ img.mute {
 .form__label {
   display: block;
   font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 10px;
 }
 
 .form__input {
@@ -283,7 +283,7 @@ img.mute {
 }
 
 .form__group:not(:last-child) {
-  margin-bottom: 2.5rem;
+  margin-bottom: 26px;
 }
 
 .form__link {
@@ -296,13 +296,14 @@ img.mute {
 
 .alert {
   position: fixed;
-  top: 0;
+  top: 20px;
   left: 50%;
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
   z-index: 9999;
   color: #fff;
-  font-size: 1.8rem;
+  font-size: 26px;
+  letter-spacing: 1.5px;
   font-weight: 400;
   text-align: center;
   border-bottom-left-radius: 5px;
@@ -315,7 +316,7 @@ img.mute {
   background-color: #20bf6b;
 }
 .alert--error {
-  background-color: #eb4d4b;
+  background-color: #eb7270;
 }
 
 .campaign-search-button {
@@ -930,13 +931,15 @@ input#userEmail {
   text-decoration: none;
   position: relative;
   transition: all 0.4s;
-  background-color: rgb(222, 221, 221);
+  background-color: #272f40;
+  color: white;
   font-weight: 400;
   border: none;
   cursor: pointer;
 }
 .btn:hover {
-  background-color: rgb(150, 150, 150);
+  background-color: #505f80;
+  color: white;
 }
 .specialSignUpBtn {
   display: inline-block;
@@ -1503,4 +1506,30 @@ select.mutedropdown {
 .mute_container:hover .tooltip {
   visibility: visible;
   opacity: 1;
+}
+
+.main.nopadding {
+  padding: 0;
+  background-color: #272f40;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.logo_container {
+  display: flex;
+  width: 550px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+}
+img.logo {
+  width: 96px;
+  height: 96px;
+}
+.logo_title {
+  color: white;
+  font-size: 48px;
+  font-weight: 600;
+  letter-spacing: 1.8px;
 }
