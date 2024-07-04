@@ -120,15 +120,15 @@ const past1d = () => {
   if (occurrencesMap.size === 0 || allZeroes) {
     const defaultData = Array(24)
       .fill(0)
-      .map((_, index) => Math.floor(Math.random() * 10));
+      .map((_, index) => Math.floor(Math.random() * 5));
 
     const defaultTrace = {
       x: hours,
       y: defaultData,
       type: 'bar',
       marker: {
-        color: 'rgba(255, 99, 71, 0.1)',
-        opacity: 0.4,
+        color: 'rgb(186, 201, 222)',
+        opacity: 0.3,
       },
 
       showlegend: false,
@@ -206,6 +206,7 @@ const past1d = () => {
         showticklabels: false,
         showgrid: false,
         zeroline: false,
+        range: [0, 15],
       },
       hovermode: false,
       autosize: true,
