@@ -11,6 +11,11 @@ html {
   position: relative;
   padding: 8px 0px;
 }
+.params_big_container {
+  margin: 15px 15px 0 15px;
+  border: 1px solid #c8cfdd;
+  border-radius: 5px;
+}
 
 .containerBar {
   display: flex;
@@ -91,12 +96,9 @@ img.mute {
   margin-right: auto;
 }
 
-.req_h {
-  margin: 0 0 10px 0;
-}
 .errTrends_big_container {
   width: 100%;
-  padding: 0 38px 0 38px;
+  padding: 0 32px 0 32px;
 }
 
 .errTrends_container {
@@ -175,7 +177,7 @@ img.mute {
 
 .errDetail_container {
   background: white;
-  padding: 0 38px 0 38px;
+  padding: 0 32px 0 32px;
 }
 
 .errorParamsContainer,
@@ -183,6 +185,13 @@ img.mute {
 .project_container {
   background-color: #f7f9fd;
   padding: 30px;
+  margin: 40px auto;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.errorParamsContainer {
+  padding: 20px 0 0 0;
   margin: 40px auto;
   border-radius: 8px;
   width: 100%;
@@ -201,8 +210,10 @@ img.mute {
   padding: 20px 0;
   margin: 35px 0 0 0;
 }
-.stackTraceTitle {
-  margin: 0 0 0 45px;
+.clue {
+  margin: 0 5px 0 20px;
+  width: 16px;
+  height: 16px;
 }
 .stackTrace_column {
   border: 1px solid black;
@@ -263,28 +274,52 @@ img.mute {
 .params_pair_container {
   display: flex;
   justify-content: space-between;
-  margin: 25px 0;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #c8cfdd;
+}
+.params_pair_container.first {
+  padding: 8px 0;
+  font-weight: 500;
+  font-size: 16px;
+}
+.req_h {
+  margin: 0 0 0 50px;
+  color: rgb(52 63 85);
+  width: 350px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .req_value,
 .key {
   letter-spacing: 1px;
   font-size: 12px;
-  width: 600px;
+  width: 500px;
   word-wrap: break-word;
-  padding: 0 40px 0 0;
+  padding: 0 20px 0 0;
+  color: rgb(94 109 140);
 }
 
-.errorParamsTitle {
-  font-size: 24px;
-  font-weight: 600;
+@media (min-width: 1320px) {
+  .req_value,
+  .key {
+    letter-spacing: 1px;
+    font-size: 12px;
+    width: 650px;
+    word-wrap: break-word;
+    padding: 0 20px 0 0;
+    margin: 0 120px 0 0;
+  }
+  .req_h {
+    margin: 0 0 0 240px;
+  }
 }
 
 .errTrends_container {
   font-weight: 600;
 }
 
-.errorParamsTitle,
 .stackTraceTitle {
   font-size: 20px;
   font-weight: 500;
@@ -311,6 +346,10 @@ img.mute {
   border: 1px solid rgb(199, 213, 231);
   border-radius: 4px;
   margin: 0 0 10px 0;
+}
+.clue_img {
+  display: flex;
+  align-items: center;
 }
 
 .keyValue_container {
@@ -1777,4 +1816,20 @@ img.logo {
   font-size: 16px;
   font-weight: 400;
   width: 100px;
+}
+.req_h.first,
+.req_value.first {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0;
+  color: rgb(94 109 140);
+}
+.req_h.env {
+  font-weight: 600;
+}
+.params_pair_container.section {
+  background-color: rgb(236 241 249);
+}
+.params_pair_container.env {
+  background-color: white;
 }

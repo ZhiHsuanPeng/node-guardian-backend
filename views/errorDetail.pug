@@ -116,8 +116,10 @@ html
                                 .section_title_container
                                     img.detail_png(src='/img/magnifying-glass.png')
                                     .section_title Detail
-                            .stackTrace_container
-                                .stackTraceTitle Stack Trace
+                            .stackTrace_container 
+                                .clue_img
+                                    img.clue(src='/img/clue.png')
+                                    .stackTraceTitle Stack Trace        
                                 .stackTrace_column
                                     .stackTrace_column_title_container
                                         .stackTitle= `${errTitle.split().join()}`
@@ -141,8 +143,26 @@ html
                                             each line in otherStack 
                                                 .non-project-frame(style= "display: none;") #{line}
                     .errorParamsContainer 
-                        .errorParamsTitle Latest Request Params
-                        .params_container
+                        .clue_img
+                                    img.clue(src='/img/clue.png')
+                                    .stackTraceTitle Latest Request Params   
+                        .params_big_container 
+                            .params_pair_container.first
+                                .req_h.first Key
+                                .req_value.first Value
+                            .params_pair_container.section
+                                .req_h.env environment
+                            .params_pair_container.env
+                                .req_h framework 
+                                .req_value node-js
+                            .params_pair_container.env
+                                .req_h language 
+                                .req_value javascript
+                            .params_pair_container.env
+                                .req_h level
+                                .req_value error
+                            .params_pair_container.section
+                                .req_h.env request.*
                             .params_pair_container
                                 .req_h request.browser
                                 .req_value= `${latestErr.deviceInfo.browser.name} ${latestErr.deviceInfo.browser.version}`
@@ -169,23 +189,31 @@ html
                                 .req_value #{latestErr.filteredReqObj.headers.Connection}
                             .params_pair_container
                                 .req_h request.headers.host 
-                                .req_value #{latestErr.filteredReqObj.headers.Host}
+                                .req_value #{latestErr.publicIp.ip}
                             .params_pair_container
                                 .req_h request.method 
                                 .req_value #{latestErr.filteredReqObj.method}
                             .params_pair_container
                                 .req_h request.url 
-                                .req_value #{latestErr.filteredReqObj.fullUrl}
+                                .req_value= `${latestErr.filteredReqObj.protocol}://${latestErr.publicIp.ip}:${latestErr.filteredReqObj.port}${latestErr.filteredReqObj.originalUrl}`
                             .params_pair_container
-                                .req_h request.userIp 
+                                .req_h request.user_ip 
                                 .req_value #{latestErr.filteredReqObj.requestIp}
+                            .params_pair_container.section
+                                .req_h.env server.*
                             .params_pair_container
                                 .req_h server.argv 
-                                .req_value= `[${latestErr.processArgs}]`
-                                    
+                                .req_value= `[${latestErr.processArgs}]`         
                             .params_pair_container
                                 .req_h server.pid 
                                 .req_value #{latestErr.processPid}
+                            .params_pair_container 
+                                .req_h timestamp
+                                .req_value #{latestErr.timestamp}
+                            .params_pair_container 
+                                .req_h server.ip
+                                .req_value #{latestErr.serverIp}
+                            
                     .summary_container 
                         .errorParamsTitle Summary
                         .params_pair_container
