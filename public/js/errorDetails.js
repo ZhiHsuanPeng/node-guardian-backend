@@ -2,6 +2,7 @@ const timeStamp = [];
 document.querySelectorAll('.timeStampStat').forEach((element) => {
   timeStamp.push(element.dataset.time);
 });
+console.log(timeStamp);
 
 const ipTimeStamp = [];
 document.querySelectorAll('.iPtimeStamp').forEach((element) => {
@@ -86,10 +87,11 @@ const past1d = () => {
       linecolor: '#848484',
       ticklen: 3,
       tickcolor: '#848484',
+      linewidth: 2,
     },
     hovermode: 'x',
-    width: 270,
-    height: 150,
+    // width: 270,
+    // height: 150,
     margin: {
       l: 30,
       r: 30,
@@ -135,6 +137,7 @@ const past1h = () => {
             gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
           );
           const minute = gmtPlus8Timestamp.getUTCMinutes();
+
           const index = minutes.findIndex((m) =>
             m.endsWith(minute.toString().padStart(2, '0')),
           );
@@ -145,6 +148,7 @@ const past1h = () => {
       }
     }
   });
+  // console.log(occurrences);
 
   const sum = occurrences.reduce((acc, val) => acc + val, 0);
   const sumInPug = document.querySelector('.past1hSum');
@@ -191,10 +195,12 @@ const past1h = () => {
       showline: true,
       linecolor: '#848484',
       tickcolor: '#848484',
+      linewidth: 2,
     },
     hovermode: 'x',
-    width: 270,
-    height: 150,
+    // autosize: true,
+    // width: 270,
+    // height: 150,
     margin: {
       l: 30,
       r: 30,
@@ -272,10 +278,11 @@ const past1w = () => {
       showline: true,
       linecolor: '#848484',
       tickcolor: '#848484',
+      linewidth: 2,
     },
     hovermode: 'x',
-    width: 270,
-    height: 150,
+    // width: 270,
+    // height: 150,
     margin: {
       l: 30,
       r: 30,
@@ -380,10 +387,11 @@ const past1hIpCount = () => {
       showline: true,
       linecolor: '#848484',
       tickcolor: '#848484',
+      linewidth: 2,
     },
     hovermode: 'x',
-    width: 270,
-    height: 150,
+    // width: 270,
+    // height: 150,
     margin: {
       l: 30,
       r: 30,
@@ -482,10 +490,11 @@ const past1dIpCount = () => {
       showline: true,
       linecolor: '#848484',
       tickcolor: '#848484',
+      linewidth: 2,
     },
     hovermode: 'x',
-    width: 270,
-    height: 150,
+    // width: 270,
+    // height: 150,
     margin: {
       l: 30,
       r: 30,
@@ -515,25 +524,18 @@ const past1wIpCount = () => {
   });
 
   ipTimeStamp.forEach((timestamps) => {
-    const uniqueDays = new Set();
+    const uniqueDays = [];
     timestamps[0].split(',').forEach((timestamp) => {
       const ts = Number(timestamp);
-      const gmtTimestamp = new Date(ts);
-      const gmtPlus8Timestamp = new Date(
-        gmtTimestamp.getTime() + 8 * 60 * 60 * 1000,
-      );
-      const day = gmtPlus8Timestamp.getUTCDate();
-
-      if (!uniqueDays.has(day)) {
-        uniqueDays.add(day);
-
-        const dayDiff = Math.floor((now - ts) / (24 * 60 * 60 * 1000));
-        if (dayDiff >= 0 && dayDiff < 7) {
-          occurrences[6 - dayDiff]++;
-        }
+      const nowTs = now.getTime();
+      const dayDiff = Math.floor((nowTs - ts) / (24 * 60 * 60 * 1000));
+      if (!uniqueDays.includes(dayDiff)) {
+        uniqueDays.push(dayDiff);
+        occurrences[6 - dayDiff]++;
       }
     });
   });
+
   const trace = {
     x: days,
     y: occurrences,
@@ -575,10 +577,11 @@ const past1wIpCount = () => {
       showline: true,
       linecolor: '#848484',
       tickcolor: '#848484',
+      linewidth: 2,
     },
     hovermode: 'x',
-    width: 270,
-    height: 150,
+    // width: 270,
+    // height: 150,
     margin: {
       l: 30,
       r: 30,

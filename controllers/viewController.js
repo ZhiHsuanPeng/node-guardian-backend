@@ -446,7 +446,8 @@ exports.renderBasicProjectPage = async (req, res) => {
       err,
       count: errorMessageAndCount[err],
       timeStamp,
-      recentTime: recentTime[index],
+      recentTime:
+        recentTime[index] === 'NaN days' ? 'gt 30 days' : recentTime[index],
       projectToken,
     }));
     for (const error of errObj) {
@@ -507,7 +508,9 @@ exports.renderErrorDetailPage = async (req, res) => {
     ).slice(1);
     const otherStack = latestErr.err.split('\n').slice(2);
     const ipPercentage = Object.entries(countIpPercent(all));
+
     const ipTimeStamp = Object.values(extractIpTimeStamp(all));
+    // console.log(extractIpTimeStamp(all));
     const errCode = formatString(latestErr.code);
     const browserPercentage = Object.entries(
       Object.values(countDevicePercentage(all))[0],

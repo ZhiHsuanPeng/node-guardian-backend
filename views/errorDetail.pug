@@ -76,32 +76,38 @@ html
                         .trends_title Occurrences
                         .small_container
                             .graph_container 
-                                .past1hGraph Last hour
-                                .past1hSum
-                                #past1hour 
+                                .graph_title_container
+                                    .past1hGraph Last hour
+                                    .past1hSum
+                                #past1hour(style='width: 100%; height: 163px')
                             .graph_container
-                                .past1dGraph Last day
-                                .past1dSum
-                                #past1day
-                            .graph_container
-                                .past1wGraph Last week 
-                                .past1wSum
-                                #past1week
+                                .graph_title_container
+                                    .past1dGraph Last day
+                                    .past1dSum
+                                #past1day(style='width: 100%; height: 163px')
+                            .graph_container    
+                                .graph_title_container
+                                    .past1wGraph Last week 
+                                    .past1wSum
+                                #past1week(style='width: 100%; height: 163px')
                     .errTrends_container  
                         .trends_title Affected IP
                         .small_container
+                            .graph_container    
+                                .graph_title_container
+                                    .past1hIpGraph Last hour
+                                    .past1hIpSum 
+                                #past1hourIpCount(style='width: 100%; height: 163px')
                             .graph_container 
-                                .past1hIpGraph Last hour
-                                .past1hIpSum 
-                                #past1hourIpCount
+                                .graph_title_container
+                                    .past1dIpGraph Last day
+                                    .past1dIpSum
+                                #past1dIpCount(style='width: 100%; height: 163px')
                             .graph_container 
-                                .past1dIpGraph Last day
-                                .past1dIpSum
-                                #past1dIpCount
-                            .graph_container 
-                                .past1wIpGraph Last week
-                                .past1wIpSum
-                                #past1wIpCount
+                                .graph_title_container
+                                    .past1wIpGraph Last week
+                                    .past1wIpSum
+                                #past1wIpCount(style='width: 100%; height: 163px')
 
                 .errDetail_container
                     .errStackTrace_container
