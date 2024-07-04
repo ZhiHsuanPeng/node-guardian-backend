@@ -423,16 +423,25 @@ exports.renderBasicProjectPage = async (req, res) => {
         err,
         24,
       );
-      return { err, timeStamp };
+      const allTimeWithIn30d = await errorLog.getErrorTimeStampFilteredByTime(
+        projectToken,
+        err,
+        720,
+      );
+      return { err, timeStamp, allTimeWithIn30d };
     });
 
     const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
+
     const recentTime = errorsTimeStampArray.map((ts) => {
       const recentTs = new Date(
-        ts.timeStamp.sort((a, b) => a - b)[ts.timeStamp.length - 1],
+        ts.allTimeWithIn30d.sort((a, b) => a - b)[
+          ts.allTimeWithIn30d.length - 1
+        ],
       );
       return transformUNIXtoDiff(recentTs);
     });
+
     const errObj = errorsTimeStampArray.map(({ err, timeStamp }, index) => ({
       err,
       count: errorMessageAndCount[err],
