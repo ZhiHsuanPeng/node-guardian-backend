@@ -112,25 +112,32 @@ html
                 .errDetail_container
                     .errStackTrace_container
                         .errDetail_stackTrace 
-                            .stackTraceTitle Stack Trace
-                            .stackTitle= `${errTitle.split().join()}`
-                            .stackTrace Most Recent Call 
-                            pre
-                                .firstTrace at (#{firstStack})
-                                .codeContainer
+                            .section_bar_container
+                                .section_title_container
+                                    img.detail_png(src='/img/magnifying-glass.png')
+                                    .section_title Detail
+                            .stackTrace_container
+                                .stackTraceTitle Stack Trace
+                                .stackTrace_column
+                                    .stackTrace_column_title_container
+                                        .stackTitle= `${errTitle.split().join()}`
+                                        .stackTrace (Most recent call first)
                                     pre
-                                        each line, index in errCode
-                                            if index === 2
-                                                span.line(style='display: inline-block; background-color: yellow')= line
-                                                br(style='color: red; font-weight: bold;')
-                                            else
-                                                span.line(style='display: inline-block;')= line
-                                                br
-                                .otherTrace #{otherStack.length} non-project frames
-                                    .dropdown
-                                    button(onclick="toggleFrames()") Show/Hide Non-Project Frames
-                                    each line in otherStack 
-                                        .non-project-frame(style= "display: none;") #{line}
+                                        .firstTrace at (#{firstStack})
+                                        .codeContainer
+                                            pre
+                                                each line, index in errCode
+                                                    if index === 2
+                                                        span.line(style='display: inline-block; background-color: yellow')= line
+                                                        br(style='color: red; font-weight: bold;')
+                                                    else
+                                                        span.line(style='display: inline-block;')= line
+                                                        br
+                                        .otherTrace #{otherStack.length} non-project frames
+                                            .dropdown
+                                            button(onclick="toggleFrames()") Show/Hide Non-Project Frames
+                                            each line in otherStack 
+                                                .non-project-frame(style= "display: none;") #{line}
                     .errorParamsContainer 
                         .errorParamsTitle Latest Request Params
                         .params_container

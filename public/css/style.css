@@ -129,6 +129,14 @@ img.mute {
   border-radius: 8px;
   background-color: white;
 }
+.past1hSum,
+.past1dSum,
+.past1wSum,
+.past1hIpSum,
+.past1dIpSum,
+.past1wIpSum {
+  margin: 0 5px 0 0;
+}
 
 .errDetail_errorTime {
   display: flex;
@@ -165,18 +173,83 @@ img.mute {
   display: block;
 }
 
-.errStackTrace_container,
+.errDetail_container {
+  background: white;
+  padding: 0 38px 0 38px;
+}
+
 .errorParamsContainer,
 .summary_container,
 .project_container {
-  background-color: #dbe3f3;
+  background-color: #f7f9fd;
   padding: 30px;
   margin: 40px auto;
   border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
 }
+.errStackTrace_container {
+  padding: 0px;
+  margin: 40px auto;
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.stackTrace_container {
+  background-color: #f7f9fd;
+  border-radius: 5px;
+  padding: 20px 0;
+  margin: 35px 0 0 0;
+}
+.stackTraceTitle {
+  margin: 0 0 0 45px;
+}
+.stackTrace_column {
+  border: 1px solid black;
+  padding: 10px 0;
+  margin: 15px 15px 0 15px;
+  border-radius: 5px;
+  border: 1px solid #c8cfdd;
+}
+.stackTrace {
+  font-size: 12px;
+}
+.stackTitle,
+.stackTrace {
+  letter-spacing: 1px;
+  color: rgb(94 109 140);
+}
 
+.section_bar_container {
+  background-color: white;
+  border-bottom: 1px solid rgb(199, 213, 231);
+}
+.stackTrace_column_title_container {
+  border-bottom: 1px solid rgb(199, 213, 231);
+  padding: 0 0 8px 20px;
+}
+.section_title_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 25px 5px 18px;
+  width: 100px;
+  border-radius: 3px;
+  background-color: white;
+  border-top: 1px solid rgb(199, 213, 231);
+  border-left: 1px solid rgb(199, 213, 231);
+  border-right: 1px solid rgb(199, 213, 231);
+  border-bottom: 1px solid white;
+}
+.section_title {
+  color: rgb(41, 42, 48);
+  font-size: 15px;
+  padding: 0 0 0 5px;
+}
+.detail_png {
+  width: 16px;
+  height: 16px;
+}
 .params_pair_container {
   display: flex;
   justify-content: space-between;
@@ -203,9 +276,9 @@ img.mute {
 
 .errorParamsTitle,
 .stackTraceTitle {
-  font-size: 24px;
-  font-weight: 600;
-  margin: 0 0 40px 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgb(39, 46, 60);
 }
 
 .codeContainer {
