@@ -123,12 +123,14 @@ html
                                         .stackTitle= `${errTitle.split().join()}`
                                         .stackTrace (Most recent call first)
                                     pre
-                                        .firstTrace at (#{firstStack})
+                                        .firstTrace_container
+                                            .firstTrace - at 
+                                            .firstStack (#{firstStack})
                                         .codeContainer
                                             pre
                                                 each line, index in errCode
                                                     if index === 2
-                                                        span.line(style='display: inline-block; background-color: yellow')= line
+                                                        span.line.errline(style='display: inline-block; background-color: #fff6c5; font-weight: 800') #{line}
                                                         br(style='color: red; font-weight: bold;')
                                                     else
                                                         span.line(style='display: inline-block;')= line

@@ -219,6 +219,16 @@ img.mute {
   letter-spacing: 1px;
   color: rgb(94 109 140);
 }
+.firstTrace_container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  height: 40px;
+  padding: 0 0 0 30px;
+}
+.firstStack {
+  color: rgb(67 56 202);
+}
 
 .section_bar_container {
   background-color: white;
@@ -282,13 +292,25 @@ img.mute {
 }
 
 .codeContainer {
-  width: 900px;
   border-radius: 8px;
-  background-color: aliceblue;
+  background-color: #f7f9fd;
 }
 .line {
+  height: 22px;
   width: 100%;
-  margin: 4px 0;
+  padding: 0 2px 2px 25px;
+}
+.otherTrace {
+  padding: 0 0 0 30px;
+}
+.non-project-frame {
+  height: 22px;
+  color: rgb(67 56 202);
+}
+.otherTrace button {
+  border: 1px solid rgb(199, 213, 231);
+  border-radius: 4px;
+  margin: 0 0 10px 0;
 }
 
 .keyValue_container {
