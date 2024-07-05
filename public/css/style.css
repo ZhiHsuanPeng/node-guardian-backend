@@ -419,6 +419,7 @@ img.mute {
 .browser_summary,
 .os_summary {
   font-size: 12px;
+  font-weight: 700;
 }
 .summary_value_container {
   padding: 14px 0;
