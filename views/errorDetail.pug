@@ -113,10 +113,14 @@ html
                     .errStackTrace_container
                         .errDetail_stackTrace 
                             .section_bar_container
-                                .section_title_container
+                                .section_title_container_detail.tab_active
                                     img.detail_png(src='/img/magnifying-glass.png')
                                     .section_title Detail
-                            .stackTrace_container 
+                                .section_title_container_summary.tab_inactive
+                                    img.summary_png(src='/img/web.png')
+                                    .section_title Summary
+                                .section_title_container_whole
+                            .stackTrace_container
                                 .clue_img
                                     img.clue(src='/img/clue.png')
                                     .stackTraceTitle Stack Trace        
@@ -142,7 +146,7 @@ html
                                             button(onclick="toggleFrames()") Show/Hide Non-Project Frames
                                             each line in otherStack 
                                                 .non-project-frame(style= "display: none;") #{line}
-                    .errorParamsContainer 
+                    .errorParamsContainer
                         .clue_img
                                     img.clue(src='/img/clue.png')
                                     .stackTraceTitle Latest Request Params   
@@ -214,30 +218,63 @@ html
                                 .req_h server.ip
                                 .req_value #{latestErr.serverIp}
                             
-                    .summary_container 
-                        .errorParamsTitle Summary
-                        .params_pair_container
-                            .summary_title Request user IP
-                            .keyValue_container
-                                each pair in ipPercentage
-                                    div
-                                        .key #{pair[0]} #{pair[1]}%
+                    .summary_container.hide
+                        .clue_img
+                            img.clue(src='/img/clue.png')
+                            .stackTraceTitle Summary 
+                        .params_big_container 
+                            .params_pair_container.first
+                                .req_h.first Key
+                                .req_value.first Value
+                            .params_pair_container.section
+                                .req_h.env request.*
+                            .params_pair_container
+                                .req_h request.user.ip
+                                .req_value
+                                    each pair in ipPercentage
+                                        div
+                                            .key #{pair[0]} #{pair[1]}%
+                            .params_pair_container.section
+                                .req_h.env browser
+                            .params_pair_container
+                                .req_h browser
+                                .req_value
+                                    each pair in browserPercentage
+                                        div
+                                            .key #{pair[0]} #{pair[1]}%
+                            .params_pair_container.section
+                                .req_h.env os
+                            .params_pair_container
+                                .req_h os
+                                .req_value 
+                                    each pair in osPercentage
+                                        div
+                                            .key #{pair[0]} #{pair[1]}% 
+                                            br
                                 
-                                        br
-                        .params_pair_container
-                            .summary_title Browser
-                            .keyValue_container
-                                each pair in browserPercentage
-                                    div
-                                        .key #{pair[0]} #{pair[1]}%
-                                        br
-                        .params_pair_container
-                            .summary_title OS
-                            .keyValue_container
-                                each pair in osPercentage
-                                    div
-                                        .key #{pair[0]} #{pair[1]}% 
-                                        br
+                                        //- br
+                        //- .params_pair_container
+                        //-     .summary_title request.user.ip
+                        //-     .keyValue_container
+                        //-         each pair in ipPercentage
+                        //-             div
+                        //-                 .key #{pair[0]} #{pair[1]}%
+                                
+                        //-                 br
+                        //- .params_pair_container
+                        //-     .summary_title Browser
+                        //-     .keyValue_container
+                        //-         each pair in browserPercentage
+                        //-             div
+                        //-                 .key #{pair[0]} #{pair[1]}%
+                        //-                 br
+                        //- .params_pair_container
+                        //-     .summary_title OS
+                        //-     .keyValue_container
+                        //-         each pair in osPercentage
+                        //-             div
+                        //-                 .key #{pair[0]} #{pair[1]}% 
+                        //-                 br
 
 
         script.

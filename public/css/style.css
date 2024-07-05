@@ -181,7 +181,6 @@ img.mute {
 }
 
 .errorParamsContainer,
-.summary_container,
 .project_container {
   background-color: #f7f9fd;
   padding: 30px;
@@ -204,7 +203,8 @@ img.mute {
   width: 100%;
   box-sizing: border-box;
 }
-.stackTrace_container {
+.stackTrace_container,
+.summary_container {
   background-color: #f7f9fd;
   border-radius: 5px;
   padding: 20px 0;
@@ -242,32 +242,64 @@ img.mute {
 }
 
 .section_bar_container {
+  display: flex;
   background-color: white;
-  border-bottom: 1px solid rgb(199, 213, 231);
 }
 .stackTrace_column_title_container {
   border-bottom: 1px solid rgb(199, 213, 231);
   padding: 0 0 8px 20px;
 }
-.section_title_container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 25px 5px 18px;
-  width: 100px;
-  border-radius: 3px;
-  background-color: white;
+.tab_active {
   border-top: 1px solid rgb(199, 213, 231);
   border-left: 1px solid rgb(199, 213, 231);
   border-right: 1px solid rgb(199, 213, 231);
   border-bottom: 1px solid white;
 }
+.tab_inactive {
+  border-bottom: 1px solid rgb(199, 213, 231);
+  color: #6084bb;
+}
+.section_title_container_whole {
+  width: 100%;
+  border-bottom: 1px solid rgb(199, 213, 231);
+}
+.section_title_container_detail,
+.section_title_container_summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 22px 3px 18px;
+  width: 100px;
+  border-radius: 3px;
+  background-color: white;
+}
+.section_title_container_summary {
+  width: 125px;
+  padding: 5px 20px 3px 20px;
+}
+.section_title_container_detail:hover,
+.section_title_container_summary:hover {
+  cursor: pointer;
+}
 .section_title {
-  color: rgb(41, 42, 48);
-  font-size: 15px;
   padding: 0 0 0 5px;
 }
-.detail_png {
+.tab_active {
+  font-size: 15px;
+  font-weight: 500;
+  color: rgb(41, 42, 48);
+  border-top: 1px solid rgb(199, 213, 231);
+  border-left: 1px solid rgb(199, 213, 231);
+  border-right: 1px solid rgb(199, 213, 231);
+  border-bottom: 1px solid white;
+}
+.tab_inactive {
+  font-size: 15px;
+  border-bottom: 1px solid rgb(199, 213, 231);
+  color: #6084bb;
+}
+.detail_png,
+.summary_png {
   width: 16px;
   height: 16px;
 }
@@ -1619,10 +1651,6 @@ select.mutedropdown {
   background-color: #f8f9fc;
 }
 
-.hide {
-  display: none;
-}
-
 .tooltip {
   visibility: hidden;
   background-color: #224980;
@@ -1832,4 +1860,8 @@ img.logo {
 }
 .params_pair_container.env {
   background-color: white;
+}
+
+.hide {
+  display: none;
 }

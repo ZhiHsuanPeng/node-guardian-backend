@@ -2,12 +2,65 @@ const timeStamp = [];
 document.querySelectorAll('.timeStampStat').forEach((element) => {
   timeStamp.push(element.dataset.time);
 });
-console.log(timeStamp);
 
 const ipTimeStamp = [];
 document.querySelectorAll('.iPtimeStamp').forEach((element) => {
   ipTimeStamp.push([element.dataset.iptime]);
 });
+
+const detailTab = document.querySelector('.section_title_container_detail');
+const summaryTab = document.querySelector('.section_title_container_summary');
+const detailPic = document.querySelector('.detail_png');
+const summaryPic = document.querySelector('.summary_png');
+const errorStack = document.querySelector('.stackTrace_container');
+const errorParams = document.querySelector('.errorParamsContainer');
+const errorSummary = document.querySelector('.summary_container');
+
+if (detailTab && summaryTab) {
+  detailTab.addEventListener('click', () => {
+    if (detailTab.classList.contains('tab_inactive')) {
+      detailTab.classList.remove('tab_inactive');
+      detailTab.classList.add('tab_active');
+      detailPic.setAttribute('src', '/img/magnifying-glass.png');
+    }
+    if (summaryTab.classList.contains('tab_active')) {
+      summaryTab.classList.remove('tab_active');
+      summaryTab.classList.add('tab_inactive');
+      summaryPic.setAttribute('src', '/img/web.png');
+    }
+    if (errorStack.classList.contains('hide')) {
+      errorStack.classList.remove('hide');
+    }
+    if (errorParams.classList.contains('hide')) {
+      errorParams.classList.remove('hide');
+    }
+    if (!errorSummary.classList.contains('hide')) {
+      errorSummary.classList.add('hide');
+    }
+  });
+  summaryTab.addEventListener('click', () => {
+    console.log('click');
+    if (detailTab.classList.contains('tab_active')) {
+      detailTab.classList.remove('tab_active');
+      detailTab.classList.add('tab_inactive');
+      detailPic.setAttribute('src', '/img/magnifying-glass_blue.png');
+    }
+    if (summaryTab.classList.contains('tab_inactive')) {
+      summaryTab.classList.remove('tab_inactive');
+      summaryTab.classList.add('tab_active');
+      summaryPic.setAttribute('src', '/img/web_black.png');
+    }
+    if (!errorStack.classList.contains('hide')) {
+      errorStack.classList.add('hide');
+    }
+    if (!errorParams.classList.contains('hide')) {
+      errorParams.classList.add('hide');
+    }
+    if (errorSummary.classList.contains('hide')) {
+      errorSummary.classList.remove('hide');
+    }
+  });
+}
 
 const past1d = () => {
   const now = new Date();
