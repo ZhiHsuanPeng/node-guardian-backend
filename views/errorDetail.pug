@@ -229,7 +229,7 @@ html
                                 .req_summary Percentage
                             .params_pair_container.section
                                 .req_h.env.summary request.*
-                            .params_pair_container
+                            .params_pair_container.summary
                                 .req_h.summary request.user.ip
                                 .req_value.summary
                                     each pair in ipPercentage
@@ -238,10 +238,18 @@ html
                                 .req_summary 
                                     each pair in ipPercentage
                                         div 
-                                            .ip_summary #{pair[1]}%
+                                            if pair[1] > 80 && pair[1] <= 100
+                                                .summary_value_container
+                                                    .ip_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
+                                            if pair[1] > 50 && pair[1] <= 79
+                                                .summary_value_container
+                                                    .ip_summary(style = 'border-right: 2px solid rgb(253 200 11)') #{pair[1]}%
+                                            if pair[1] > 0 && pair[1] <= 49
+                                                .summary_value_container
+                                                    .ip_summary(style = 'border-right: 2px solid rgb(235 81 66)') #{pair[1]}%
                             .params_pair_container.section
                                 .req_h.env.summary browser
-                            .params_pair_container
+                            .params_pair_container.summary
                                 .req_h.summary browser
                                 .req_value.summary
                                     each pair in browserPercentage
@@ -250,19 +258,35 @@ html
                                 .req_summary 
                                     each pair in browserPercentage
                                         div 
-                                            .browser_summary #{pair[1]}%
+                                            if pair[1] > 80 && pair[1] <= 100
+                                                .summary_value_container
+                                                    .browser_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
+                                            if pair[1] > 50 && pair[1] <= 79
+                                                .summary_value_container
+                                                    .browser_summary(style = 'border-right: 2px solid rgb(253 200 11)') #{pair[1]}%
+                                            if pair[1] > 0 && pair[1] <= 49
+                                                .summary_value_container 
+                                                    .browser_summary(style = 'border-right: 2px solid rgb(235 81 66)') #{pair[1]}%
                             .params_pair_container.section
                                 .req_h.env.summary os
-                            .params_pair_container
+                            .params_pair_container.summary
                                 .req_h.summary os
                                 .req_value.summary 
                                     each pair in osPercentage
                                         div
-                                            .key #{pair[0]} #{pair[1]}% 
+                                            .key #{pair[0]}
                                 .req_summary 
                                     each pair in osPercentage
                                         div 
-                                            .os_summary #{pair[1]}%
+                                            if pair[1] > 80 && pair[1] <= 100
+                                                .summary_value_container
+                                                    .os_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
+                                            if pair[1] > 50 && pair[1] <= 79
+                                                .summary_value_container
+                                                    .os_summary(style = 'border-right: 2px solid rgb(253 200 11)') #{pair[1]}%
+                                            if pair[1] > 0 && pair[1] <= 49
+                                                .summary_value_container 
+                                                    .os_summary(style = 'border-right: 2px solid rgb(235 81 66)') #{pair[1]}%
                                 
                                 
                                         //- br

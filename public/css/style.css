@@ -315,6 +315,9 @@ img.mute {
   font-weight: 500;
   font-size: 16px;
 }
+.params_pair_container.summary {
+  align-items: flex-start;
+}
 .req_h {
   margin: 0 0 0 50px;
   color: rgb(52 63 85);
@@ -331,6 +334,13 @@ img.mute {
   word-wrap: break-word;
   padding: 0 20px 0 0;
   color: rgb(94 109 140);
+}
+
+.key {
+  width: 350px;
+}
+.params_pair_container.summary .req_h.summary {
+  padding: 12px 0;
 }
 
 @media (min-width: 1320px) {
@@ -401,9 +411,18 @@ img.mute {
   letter-spacing: 1px;
 }
 
-.key,
-.value {
+.key {
   margin: 0 5px;
+  padding: 14px 0;
+}
+.ip_summary,
+.browser_summary,
+.os_summary {
+  font-size: 12px;
+}
+.summary_value_container {
+  padding: 14px 0;
+  width: 65px;
 }
 
 .login__heading {
@@ -1867,6 +1886,7 @@ img.logo {
 }
 .req_summary {
   width: 85px;
+  margin: 0 100px 0 0;
 }
 .req_h.env {
   font-weight: 600;
