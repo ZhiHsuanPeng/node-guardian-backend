@@ -347,7 +347,19 @@ img.mute {
     margin: 0 0 0 240px;
   }
 }
-
+@media (min-width: 1320px) {
+  .req_value.summary,
+  .key.summary {
+    letter-spacing: 1px;
+    font-size: 12px;
+    width: 650px;
+    word-wrap: break-word;
+    margin: 0 120px 0 0;
+  }
+  .req_h.summary {
+    margin: 0 0 0 20px;
+  }
+}
 .errTrends_container {
   font-weight: 600;
 }
@@ -1846,11 +1858,15 @@ img.logo {
   width: 100px;
 }
 .req_h.first,
-.req_value.first {
+.req_value.first,
+.req_summary {
   font-weight: 500;
   font-size: 16px;
   letter-spacing: 0;
   color: rgb(94 109 140);
+}
+.req_summary {
+  width: 85px;
 }
 .req_h.env {
   font-weight: 600;

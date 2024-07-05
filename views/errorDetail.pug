@@ -222,35 +222,48 @@ html
                         .clue_img
                             img.clue(src='/img/clue.png')
                             .stackTraceTitle Summary 
-                        .params_big_container 
+                        .params_big_container
                             .params_pair_container.first
-                                .req_h.first Key
-                                .req_value.first Value
+                                .req_h.first.summary Key
+                                .req_value.first.summary Value
+                                .req_summary Percentage
                             .params_pair_container.section
-                                .req_h.env request.*
+                                .req_h.env.summary request.*
                             .params_pair_container
-                                .req_h request.user.ip
-                                .req_value
+                                .req_h.summary request.user.ip
+                                .req_value.summary
                                     each pair in ipPercentage
                                         div
-                                            .key #{pair[0]} #{pair[1]}%
+                                            .key #{pair[0]} 
+                                .req_summary 
+                                    each pair in ipPercentage
+                                        div 
+                                            .ip_summary #{pair[1]}%
                             .params_pair_container.section
-                                .req_h.env browser
+                                .req_h.env.summary browser
                             .params_pair_container
-                                .req_h browser
-                                .req_value
+                                .req_h.summary browser
+                                .req_value.summary
                                     each pair in browserPercentage
                                         div
-                                            .key #{pair[0]} #{pair[1]}%
+                                            .key #{pair[0]}
+                                .req_summary 
+                                    each pair in browserPercentage
+                                        div 
+                                            .browser_summary #{pair[1]}%
                             .params_pair_container.section
-                                .req_h.env os
+                                .req_h.env.summary os
                             .params_pair_container
-                                .req_h os
-                                .req_value 
+                                .req_h.summary os
+                                .req_value.summary 
                                     each pair in osPercentage
                                         div
                                             .key #{pair[0]} #{pair[1]}% 
-                                            br
+                                .req_summary 
+                                    each pair in osPercentage
+                                        div 
+                                            .os_summary #{pair[1]}%
+                                
                                 
                                         //- br
                         //- .params_pair_container

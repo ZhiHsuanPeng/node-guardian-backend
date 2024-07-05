@@ -73,7 +73,7 @@ const countIpPercent = (docs) => {
 
   const ipPercent = {};
   for (const [ip, count] of Object.entries(ipCount)) {
-    ipPercent[ip] = (count / totalDocs) * 100;
+    ipPercent[ip] = Math.round((count / totalDocs) * 100);
   }
 
   return ipPercent;
@@ -510,7 +510,6 @@ exports.renderErrorDetailPage = async (req, res) => {
     const ipPercentage = Object.entries(countIpPercent(all));
 
     const ipTimeStamp = Object.values(extractIpTimeStamp(all));
-    // console.log(extractIpTimeStamp(all));
     const errCode = formatString(latestErr.code);
     const browserPercentage = Object.entries(
       Object.values(countDevicePercentage(all))[0],
@@ -518,7 +517,6 @@ exports.renderErrorDetailPage = async (req, res) => {
     const osPercentage = Object.entries(
       Object.values(countDevicePercentage(all))[1],
     );
-    console.log(latestErr);
     return res.status(200).render('errorDetail', {
       projectsArr,
       accountName,
