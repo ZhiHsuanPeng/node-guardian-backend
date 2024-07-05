@@ -54,7 +54,7 @@ html
                             span Logout     
             main.main
                 .timeStampStat(data-time = `${timeStamp}`)
-                .iPtimeStamp(data-iptime=`${ipTimeStamp}`)
+                .iPtimeStamp(data-iptime=`${JSON.stringify(ipTimeStamp)}`)
                 .requestInfo(data-request= `${latestErr.filteredReqObj}`)
                 .errorD_first_container 
                     .errIndex_container

@@ -3,11 +3,15 @@ document.querySelectorAll('.timeStampStat').forEach((element) => {
   timeStamp.push(element.dataset.time);
 });
 
-const ipTimeStamp = [];
-document.querySelectorAll('.iPtimeStamp').forEach((element) => {
-  ipTimeStamp.push([element.dataset.iptime]);
-});
-
+// const ipTimeStamp = [];
+// document.querySelectorAll('.iPtimeStamp').forEach((element) => {
+//   ipTimeStamp.push([element.dataset.iptime]);
+// });
+const tsStr = document
+  .querySelector('[data-iptime]')
+  .getAttribute('data-iptime');
+const ipTimeStamp = JSON.parse(tsStr);
+console.log(ipTimeStamp);
 const detailTab = document.querySelector('.section_title_container_detail');
 const summaryTab = document.querySelector('.section_title_container_summary');
 const detailPic = document.querySelector('.detail_png');
@@ -372,7 +376,7 @@ const past1hIpCount = () => {
   });
   ipTimeStamp.forEach((timestamps) => {
     const uniqueMinutes = new Set();
-    timestamps[0].split(',').forEach((timestamp) => {
+    timestamps.forEach((timestamp) => {
       const ts = Number(timestamp);
       const gmtTimestamp = new Date(timestamp * 1);
       const gmtPlus8Timestamp = new Date(
@@ -475,7 +479,7 @@ const past1dIpCount = () => {
 
   ipTimeStamp.forEach((timestamps) => {
     const uniqueHours = new Set();
-    timestamps[0].split(',').forEach((timestamp) => {
+    timestamps.forEach((timestamp) => {
       const ts = Number(timestamp);
       const gmtTimestamp = new Date(timestamp * 1);
       const gmtPlus8Timestamp = new Date(
@@ -578,7 +582,7 @@ const past1wIpCount = () => {
 
   ipTimeStamp.forEach((timestamps) => {
     const uniqueDays = [];
-    timestamps[0].split(',').forEach((timestamp) => {
+    timestamps.forEach((timestamp) => {
       const ts = Number(timestamp);
       const nowTs = now.getTime();
       const dayDiff = Math.floor((nowTs - ts) / (24 * 60 * 60 * 1000));
@@ -588,6 +592,7 @@ const past1wIpCount = () => {
       }
     });
   });
+  console.log(occurrences);
 
   const trace = {
     x: days,
