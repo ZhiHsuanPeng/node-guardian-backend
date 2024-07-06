@@ -152,6 +152,19 @@ exports.renderSpecialSignUpForm = async (req, res) => {
   }
 };
 
+exports.renderHomePage = async (req, res) => {
+  try {
+    return res.status(200).render('home');
+  } catch (err) {
+    if (err instanceof Error) {
+      return res.status(400).json({ message: err.message });
+    }
+    return res
+      .status(500)
+      .json({ message: 'something went wrong, please try again!' });
+  }
+};
+
 exports.renderSignUpForm = async (req, res) => {
   try {
     return res.status(200).render('signUp');
@@ -517,7 +530,6 @@ exports.renderErrorDetailPage = async (req, res) => {
     const osPercentage = Object.entries(
       Object.values(countDevicePercentage(all))[1],
     );
-    console.log(ipTimeStamp);
     return res.status(200).render('errorDetail', {
       projectsArr,
       accountName,
