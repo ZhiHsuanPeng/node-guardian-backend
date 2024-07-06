@@ -41,13 +41,27 @@ body {
   font-family: 'Poppings', sans-serif;
   font-weight: 800;
 }
+.signInButton {
+  margin: 0 20px 0 auto;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 8px 40px;
+  text-align: center;
+  border-radius: 50px;
+  min-width: 80px;
+  font-family: 'DM sans', sans-serif;
+  border: 2px solid white;
+  background-color: #343f55;
+  color: white;
+  cursor: pointer;
+}
 .tryFreeBtn {
   font-size: 15px;
   font-weight: 600;
   padding: 8px 40px;
   text-align: center;
   border-radius: 50px;
-  min-width: 100px;
+  min-width: 80px;
   font-family: 'DM sans', sans-serif;
   background-color: #54ed9f;
   color: #343f55;
@@ -96,4 +110,34 @@ body {
   color: white;
   text-align: center;
   font-family: 'Poppins', sans-serif;
+}
+
+.desription_container {
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+}
+.product_description_title {
+  font-weight: 700;
+  font-size: 28px;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  margin-bottom: 18px;
+}
+.desription_text_container {
+  width: 430px;
+}
+.product_description_content {
+  font-size: 16px;
+  line-height: 26px;
+  color: white;
+  font-family: 'DM sans', sans-serif;
+}
+.description_image_container {
+  margin: 0 0 0 80px;
+}
+.description_image {
+  width: 480px;
+  height: 200px;
+  border-radius: 5px;
 }

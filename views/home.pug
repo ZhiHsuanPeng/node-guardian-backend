@@ -21,7 +21,8 @@ html
                 .logo_container
                     img.logo(src='/img/icon_big.png')
                     .project_name NodeGuardian
-                .tryFreeBtn Try Free
+                .signInButton Sign In
+                .tryFreeBtn Sign Up
             .home_hero_container 
                 .content 
                     .content_1 Monitor, manage, and 
@@ -29,10 +30,14 @@ html
                         .content_1 resolve errors 
                         .content_1.gradient fast
                 .tryForFreeBtn Try For Free
-                .sub_content Find and Fix Errors in Your Apps
+                .sub_content Find and Fix Errors in Your Code
             .home_product_container 
-                .product_description 
-    
+                .desription_container
+                    .desription_text_container
+                        .product_description_title Organize Error Logs With Ease
+                        p.product_description_content Our centralized error logs management system simplifies the process the process of tracking and resolving issues in your apps. With our intuitive interface and powerful features, you can easily identify and fix errors, ensuring a seamless user experience.  
+                    .description_image_container
+                        img(class= 'description_image' src= '/img/error_demo_1.png')
 
         script(src="https://code.jquery.com/jquery-3.6.0.min.js")
         script(src='/js/home.js' type="module")
