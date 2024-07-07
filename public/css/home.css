@@ -240,3 +240,18 @@ body::after {
 .comment_content {
   padding-top: 20px;
 }
+.footer {
+  width: 85%;
+  border-top: 2px solid #6b94f3;
+  margin: 40px auto;
+  text-align: center;
+}
+.footer_logo {
+  width: 120px;
+  height: 120px;
+  padding: 50px 0 0 0;
+}
+.footer__copyright {
+  color: white;
+  font-family: 'DM sans', sans-serif;
+}
