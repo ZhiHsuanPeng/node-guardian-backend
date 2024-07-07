@@ -6,7 +6,7 @@ body {
 body::after {
   position: absolute;
   background: url('/img/background_2.svg') center no-repeat;
-  margin-left: 300px;
+  margin-left: 50%;
   margin-top: -1000px;
   width: 800px;
   height: 500px;

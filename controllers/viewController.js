@@ -530,6 +530,8 @@ exports.renderErrorDetailPage = async (req, res) => {
     const osPercentage = Object.entries(
       Object.values(countDevicePercentage(all))[1],
     );
+    console.log(latestErr);
+    console.log(browserPercentage);
     return res.status(200).render('errorDetail', {
       projectsArr,
       accountName,

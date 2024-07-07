@@ -193,19 +193,17 @@ html
                                 .req_value #{latestErr.filteredReqObj.headers.Connection}
                             .params_pair_container
                                 .req_h request.headers.host 
-                                if latestErr.publicIp
+                                .req_value #{latestErr.filteredReqObj.host}
+                            if latestErr.publicIp
+                                .params_pair_container
+                                    .req_h request.host.ip
                                     .req_value #{latestErr.publicIp.ip}
-                                else 
-                                    .req_value #{latestErr.filteredReqObj.host}
                             .params_pair_container
                                 .req_h request.method 
                                 .req_value #{latestErr.filteredReqObj.method}
                             .params_pair_container
                                 .req_h request.url 
-                                if latestErr.publicIp
-                                    .req_value= `${latestErr.filteredReqObj.protocol}://${latestErr.publicIp.ip}:${latestErr.filteredReqObj.port}${latestErr.filteredReqObj.originalUrl}`
-                                else 
-                                    .req_value #{latestErr.filteredReqObj.fullUrl}
+                                .req_value #{latestErr.filteredReqObj.fullUrl}
                             .params_pair_container
                                 .req_h request.user_ip 
                                 .req_value #{latestErr.filteredReqObj.requestIp}
@@ -247,7 +245,7 @@ html
                                             if pair[1] > 80 && pair[1] <= 100
                                                 .summary_value_container
                                                     .ip_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
-                                            if pair[1] > 50 && pair[1] <= 79
+                                            if pair[1] >= 50 && pair[1] <= 79
                                                 .summary_value_container
                                                     .ip_summary(style = 'border-right: 2px solid rgb(253 200 11)') #{pair[1]}%
                                             if pair[1] > 0 && pair[1] <= 49
@@ -267,7 +265,7 @@ html
                                             if pair[1] > 80 && pair[1] <= 100
                                                 .summary_value_container
                                                     .browser_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
-                                            if pair[1] > 50 && pair[1] <= 79
+                                            if pair[1] >= 50 && pair[1] <= 79
                                                 .summary_value_container
                                                     .browser_summary(style = 'border-right: 2px solid rgb(253 200 11)') #{pair[1]}%
                                             if pair[1] > 0 && pair[1] <= 49
@@ -287,7 +285,7 @@ html
                                             if pair[1] > 80 && pair[1] <= 100
                                                 .summary_value_container
                                                     .os_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
-                                            if pair[1] > 50 && pair[1] <= 79
+                                            if pair[1] >= 50 && pair[1] <= 79
                                                 .summary_value_container
                                                     .os_summary(style = 'border-right: 2px solid rgb(253 200 11)') #{pair[1]}%
                                             if pair[1] > 0 && pair[1] <= 49
