@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
-      console.log(result);
       if (response.ok) {
         showAlert('success', 'Invitation sent!');
       }

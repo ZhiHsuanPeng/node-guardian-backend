@@ -39,12 +39,25 @@ exports.getAllUserInProject = async (token) => {
   return result[0];
 };
 
-exports.getAllUserByProjectName = async (projectName) => {
+exports.getOwnerByProjectNameAndAccountName = async (
+  projectName,
+  accountName,
+) => {
   const result = await pool.query(
-    `SELECT u.name, u.email FROM projects AS p
+    `SELECT p.id AS projectId, u.name, u.email FROM projects AS p
     INNER JOIN access AS a ON a.projectId = p.id
-    INNER JOIN users AS u ON u.id = a.userId WHERE p.name = ?`,
-    [projectName],
+    INNER JOIN users AS u ON u.id = a.userId WHERE p.name = ? AND u.name = ?`,
+    [projectName, accountName],
+  );
+  return result[0];
+};
+
+exports.getOtherUsers = async (projectId) => {
+  const result = await pool.query(
+    `SELECT u.* FROM access  AS a
+    INNER JOIN users AS u ON u.id = a.userId
+    WHERE a.projectId = ?`,
+    [projectId],
   );
   return result[0];
 };

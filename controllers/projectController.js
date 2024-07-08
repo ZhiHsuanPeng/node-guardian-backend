@@ -120,7 +120,6 @@ exports.modifyProjectMembersSettings = async (req, res) => {
     }
 
     const signUpUrl = `${url}/signup/${token}`;
-    console.log(signUpUrl);
 
     await mail.sendProjectInvitationAndSignUp(
       email,

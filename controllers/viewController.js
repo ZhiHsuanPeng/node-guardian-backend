@@ -334,7 +334,11 @@ exports.renderSettingMemeberPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
-    const users = await userModel.getAllUserByProjectName(prjName);
+    const data = await userModel.getOwnerByProjectNameAndAccountName(
+      prjName,
+      accountName,
+    );
+    const users = await userModel.getOtherUsers(data[0].projectId);
     const projectsArr = Object.entries(
       await projectModel.getAllProjectByUserId(userId),
     );
