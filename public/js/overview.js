@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log(result);
         showAlert('error', result.message || 'Unknown error occurred');
       }
-      // window.setTimeout(() => {
-      //   location.reload();
-      // }, 1000);
+      window.setTimeout(() => {
+        location.reload();
+      }, 1000);
     } catch (error) {
       showAlert('error', error.message);
     }
