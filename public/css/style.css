@@ -192,6 +192,7 @@ img.mute {
 .errorParamsContainer {
   padding: 20px 0 0 0;
   margin: 40px auto;
+  height: 1275px;
   border-radius: 8px;
   width: 100%;
   box-sizing: border-box;
