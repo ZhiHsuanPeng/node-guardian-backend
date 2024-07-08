@@ -49,18 +49,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
-      console.log(result);
 
       if (response.ok) {
         showAlert('success', 'Create project success!');
       } else {
+        console.log('123');
+        console.log(result);
         showAlert('error', result.message || 'Unknown error occurred');
       }
-      window.setTimeout(() => {
-        location.reload();
-      }, 1000);
+      // window.setTimeout(() => {
+      //   location.reload();
+      // }, 1000);
     } catch (error) {
-      console.log(error);
       showAlert('error', error.message);
     }
   });

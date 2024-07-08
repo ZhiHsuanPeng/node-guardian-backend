@@ -25,7 +25,7 @@ exports.createProject = async (req, res) => {
 
     if (invalidCharacters.test(projectName)) {
       return res.status(400).json({
-        error:
+        message:
           'Project name invalid, the name of the project should not contain any spcial characters.',
       });
     }
@@ -37,11 +37,10 @@ exports.createProject = async (req, res) => {
     await elasticSearchClient.indices.create({
       index: accessToken,
     });
-    res.status(200).json({ message: 'create project success' });
+    return res.status(200).json({ message: 'create project success' });
   } catch (err) {
     if (err instanceof Error) {
-      res.status(400).json({ message: err.message });
-      return;
+      return res.status(400).json({ message: err.message });
     }
     res.status(500).json({ message: 'create project failed' });
   }
@@ -89,7 +88,6 @@ exports.modifyProjectAlertSettings = async (req, res) => {
 
     return res.status(200).json({ message: 'change setting success' });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
     }
