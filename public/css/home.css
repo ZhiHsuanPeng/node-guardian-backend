@@ -213,6 +213,7 @@ body::after {
   margin: 0 0 50px 0;
   text-align: left;
   font-family: 'DM sans', sans-serif;
+  margin: 0 15px;
 }
 .comment_container {
   display: flex;
