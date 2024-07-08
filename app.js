@@ -13,9 +13,9 @@ dotenv.config();
 
 const app = express();
 
-// app.get('/', (req, res) => {
-//   return res.redirect('/home');
-// });
+app.get('/', (req, res) => {
+  return res.redirect('/home');
+});
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
