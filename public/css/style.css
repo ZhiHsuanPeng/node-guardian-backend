@@ -897,6 +897,9 @@ a.sidebar-link:hover {
 .sidebar-item {
   position: relative;
 }
+a.sidebar-link.sublink {
+  padding: 0 0 0 46px;
+}
 
 #sidebar:not(.expand) .sidebar-item .sidebar-dropdown {
   position: absolute;
