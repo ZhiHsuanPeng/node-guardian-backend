@@ -99,8 +99,14 @@ const countDevicePercentage = (docs) => {
   const osCounts = {};
 
   for (const doc of docs) {
-    const browser = doc.deviceInfo.browser.name;
-    const os = doc.deviceInfo.os.name;
+    let browser = doc.deviceInfo.browser.name;
+    if (!browser) {
+      browser = 'unknown';
+    }
+    let os = doc.deviceInfo.os.name;
+    if (!os) {
+      os = 'unknown';
+    }
 
     if (browserCounts[browser]) {
       browserCounts[browser].push(doc.timestamp);

@@ -169,10 +169,16 @@ html
                                 .req_h.env request.*
                             .params_pair_container
                                 .req_h request.browser
-                                .req_value= `${latestErr.deviceInfo.browser.name} ${latestErr.deviceInfo.browser.version}`
+                                if latestErr.deviceInfo.browser.name
+                                    .req_value= `${latestErr.deviceInfo.browser.name} ${latestErr.deviceInfo.browser.version}`
+                                else 
+                                    .req_value unknown
                             .params_pair_container
                                 .req_h request.os
-                                .req_value= `${latestErr.deviceInfo.os.name} ${latestErr.deviceInfo.os.version}`
+                                if latestErr.deviceInfo.os.name
+                                    .req_value= `${latestErr.deviceInfo.os.name} ${latestErr.deviceInfo.os.version}`
+                                else 
+                                    .req_value unknown
                             .params_pair_container
                                 .req_h request.device
                                 .req_value= `${latestErr.deviceInfo.device.model || 'unknown'}`
