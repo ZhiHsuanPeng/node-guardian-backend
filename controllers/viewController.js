@@ -364,7 +364,7 @@ exports.renderOverViewPage = async (req, res) => {
     const { accountName } = req.params;
     const userId = res.locals.userId;
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
-      throw Error('page not found');
+      return res.status(404).render('404');
     }
     const projects = await projectModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
@@ -430,7 +430,7 @@ exports.renderBasicProjectPage = async (req, res) => {
     const userId = res.locals.userId;
 
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
-      throw Error('page not found');
+      return res.status(404).render('404');
     }
     const projects = await projectModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
@@ -512,7 +512,7 @@ exports.renderErrorDetailPage = async (req, res) => {
     const { err, accountName, prjName } = req.params;
     const userId = res.locals.userId;
     if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
-      throw Error('page not found');
+      return res.status(404).render('404');
     }
 
     const projects = await projectModel.getAllProjectByUserId(userId);
@@ -540,8 +540,6 @@ exports.renderErrorDetailPage = async (req, res) => {
     const osPercentage = Object.entries(
       Object.values(countDevicePercentage(all))[1],
     );
-    console.log(latestErr);
-    console.log(browserPercentage);
     return res.status(200).render('errorDetail', {
       projectsArr,
       accountName,

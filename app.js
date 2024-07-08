@@ -29,7 +29,7 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/projects', projectRouter);
 
 app.all('*', (req, res) => {
-  return res.redirect('/home');
+  return res.status(404).render('404');
 });
 
 app.use(errorHandler);
