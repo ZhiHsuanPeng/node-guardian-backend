@@ -1902,3 +1902,7 @@ img.logo {
 .hide {
   display: none;
 }
+
+.form_default > :not(:first-child) {
+  padding-top: 10px;
+}
