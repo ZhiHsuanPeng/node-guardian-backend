@@ -183,7 +183,7 @@ body::after {
 }
 
 .home_product_container > :not(:first-child) {
-  padding-top: 100px;
+  padding-top: 140px;
 }
 .description_image_3 {
   width: 600px;
@@ -254,4 +254,9 @@ body::after {
 .footer__copyright {
   color: white;
   font-family: 'DM sans', sans-serif;
+}
+
+.description_image_2 {
+  width: 580px;
+  height: auto;
 }
