@@ -13,6 +13,10 @@ dotenv.config();
 
 const app = express();
 
+app.get('/', (req, res) => {
+  return res.redirect('/home');
+});
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,6 +27,10 @@ app.use('/', viewRouter);
 app.use('/api/v1/logs', logRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/projects', projectRouter);
+
+app.all('*', (req, res) => {
+  return res.redirect('/home');
+});
 
 app.use(errorHandler);
 
