@@ -29,7 +29,8 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/projects', projectRouter);
 
 app.all('*', (req, res) => {
-  return res.status(404).render('404');
+  const url = '/home';
+  return res.status(404).render('404', { url });
 });
 
 app.use(errorHandler);
