@@ -286,7 +286,6 @@ exports.renderSettingNotificationEmailsPage = async (req, res) => {
       userId,
       prjName,
     );
-    console.log(projectRules);
     return res.status(200).render('notification_emails', {
       prjName,
       accountName,
@@ -308,7 +307,6 @@ exports.renderSettingNotificationPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
-    const users = await userModel.getAllUserByProjectName(prjName);
     const projectsArr = Object.entries(
       await projectModel.getAllProjectByUserId(userId),
     );
@@ -316,7 +314,6 @@ exports.renderSettingNotificationPage = async (req, res) => {
     return res.status(200).render('setting_notifications', {
       prjName,
       accountName,
-      users,
       userId,
       projectsArr,
     });
@@ -363,9 +360,13 @@ exports.renderOverViewPage = async (req, res) => {
   try {
     const { accountName } = req.params;
     const userId = res.locals.userId;
-    if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
-      return res.status(404).render('404');
+    const user = await userModel.getUserInfoById(userId);
+
+    if (!(user[0].name === accountName)) {
+      const url = `/a/${user[0].name}`;
+      return res.status(404).render('404', { url });
     }
+
     const projects = await projectModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
     const projectTimeStamp = {};
@@ -429,9 +430,13 @@ exports.renderBasicProjectPage = async (req, res) => {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
 
-    if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
-      return res.status(404).render('404');
+    const user = await userModel.getUserInfoById(userId);
+
+    if (!(user[0].name === accountName)) {
+      const url = `/a/${user[0].name}`;
+      return res.status(404).render('404', { url });
     }
+
     const projects = await projectModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
 
@@ -511,8 +516,11 @@ exports.renderErrorDetailPage = async (req, res) => {
   try {
     const { err, accountName, prjName } = req.params;
     const userId = res.locals.userId;
-    if (!(await userModel.isUserIdAndNameMatched(accountName, userId))) {
-      return res.status(404).render('404');
+    const user = await userModel.getUserInfoById(userId);
+
+    if (!(user[0].name === accountName)) {
+      const url = `/a/${user[0].name}`;
+      return res.status(404).render('404', { url });
     }
 
     const projects = await projectModel.getAllProjectByUserId(userId);
