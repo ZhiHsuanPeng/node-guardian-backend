@@ -193,7 +193,7 @@ body::after {
 }
 
 .user_comment_container {
-  padding-top: 100px;
+  padding-top: 160px;
   text-align: center;
 }
 .comment_section_title {
@@ -244,7 +244,8 @@ body::after {
 .footer {
   width: 85%;
   border-top: 2px solid #6b94f3;
-  margin: 40px auto;
+  margin: 0px auto;
+  margin-top: 160px;
   text-align: center;
 }
 .footer_logo {
