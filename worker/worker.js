@@ -88,6 +88,7 @@ const connectAndConsume = async () => {
   const queue = 'job';
   const conn = await amqplib.connect(rabbitmqServer);
   const ch = await conn.createChannel();
+  ch.prefetch(20);
   await ch.assertQueue(queue);
   try {
     ch.consume(queue, async (msg) => {

@@ -55,6 +55,7 @@ const connectAndConsume = async () => {
   const ch = await conn.createChannel();
   await ch.assertQueue(queue);
   console.log('Listening for alert...');
+  ch.prefetch(20);
   try {
     ch.consume(queue, async (msg) => {
       if (msg !== null) {
