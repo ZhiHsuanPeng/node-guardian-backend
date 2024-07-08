@@ -89,7 +89,7 @@ img.mute {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: 100px 0 60px 0;
+  margin: 10px 0 60px 0;
 }
 
 .containerBar .title {
@@ -1773,8 +1773,8 @@ img.logo {
 .containerBar .mute_option::before {
   content: '';
   position: absolute;
-  right: 160px;
-  top: 125px;
+  right: 162px;
+  top: 111px;
   transform: translateY(-50%);
   width: 17px;
   height: 17px;
@@ -1787,7 +1787,7 @@ img.logo {
   content: '';
   position: absolute;
   right: 16px;
-  top: 124px;
+  top: 111px;
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
@@ -1906,4 +1906,11 @@ img.logo {
 
 .form_default > :not(:first-child) {
   padding-top: 10px;
+}
+
+.project_base_title {
+  padding: 45px 40px 5px 40px;
+  border-bottom: 3px solid #ecf1f9;
+  font-size: 16px;
+  font-weight: 500;
 }
