@@ -25,19 +25,20 @@ const stopInstances = (params) => {
     if (err) {
       console.log('Error', err);
     } else if (data) {
-      console.log('Success', data.StartingInstances);
+      console.log('Success, Closing!');
     }
   });
 };
 
-const checkInstances = (params) => {
-  ec2.describeInstances(params, (err, data) => {
-    if (err) {
-      console.log('Error', err.stack);
-    } else {
-      return data.Reservations[0].Instances[0].State.Name;
-    }
-  });
+const checkInstances = async (params) => {
+  try {
+    const data = await ec2.describeInstances(params).promise();
+    const state = data.Reservations[0].Instances[0].State.Name;
+    return state;
+  } catch (err) {
+    console.log('Error', err.stack);
+    throw err;
+  }
 };
 
 module.exports = { startInstances, stopInstances, checkInstances };

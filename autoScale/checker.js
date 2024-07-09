@@ -21,15 +21,13 @@ const instance = { InstanceIds: [process.env.WORKER1_ID] };
   setInterval(async () => {
     try {
       const stat = await ch.checkQueue(queue);
-      if (
-        stat.messageCount > 100 &&
-        auto.checkInstances(instance) === 'stopping'
-      ) {
+      const status = await auto.checkInstances(instance);
+      console.log(stat);
+      if (stat.messageCount >= 100 && status === 'stopped') {
+        console.log('Starting groups...');
         auto.startInstances(instance);
-      } else if (
-        stat.messageCount < 100 &&
-        auto.checkInstances(instance) === 'running'
-      ) {
+      } else if (stat.messageCount < 100 && status === 'running') {
+        console.log('Closing groups...');
         auto.stopInstances(instance);
       }
     } catch (err) {
