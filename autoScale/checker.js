@@ -1,8 +1,6 @@
 const amqplib = require('amqplib');
 const dotenv = require('dotenv');
-const autoStart = require('./startEC2');
-const autoCheck = require('./status');
-const autoStop = require('./stopEC2');
+const auto = require('./auto');
 
 dotenv.config();
 
@@ -25,14 +23,14 @@ const instance = { InstanceIds: [process.env.WORKER1_ID] };
       const stat = await ch.checkQueue(queue);
       if (
         stat.messageCount > 100 &&
-        autoCheck.checkEC2(instance) === 'stopping'
+        auto.checkInstances(instance) === 'stopping'
       ) {
-        autoStart(instance);
+        auto.startInstances(instance);
       } else if (
         stat.messageCount < 100 &&
-        autoCheck.checkEC2(instance) === 'running'
+        auto.checkInstances(instance) === 'running'
       ) {
-        autoStop(instance);
+        auto.stopInstances(instance);
       }
     } catch (err) {
       console.log(err);
