@@ -248,7 +248,7 @@ html
                                 .req_summary 
                                     each pair in ipPercentage
                                         div 
-                                            if pair[1] > 80 && pair[1] <= 100
+                                            if pair[1] >= 80 && pair[1] <= 100
                                                 .summary_value_container
                                                     .ip_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
                                             if pair[1] >= 50 && pair[1] <= 79
@@ -268,7 +268,7 @@ html
                                 .req_summary 
                                     each pair in browserPercentage
                                         div 
-                                            if pair[1] > 80 && pair[1] <= 100
+                                            if pair[1] >= 80 && pair[1] <= 100
                                                 .summary_value_container
                                                     .browser_summary(style = 'border-right: 2px solid rgb(30 192 134)') #{pair[1]}%
                                             if pair[1] >= 50 && pair[1] <= 79
