@@ -11,7 +11,7 @@ const heartbeatInterval = 60;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}?heartbeat=${heartbeatInterval}`;
 const instance = { InstanceIds: [process.env.WORKER1_ID] };
 
-(async () => {
+const checkAndScale = async () => {
   console.log('Checking message numbers in queues...');
   const queue = 'job';
   const conn = await amqplib.connect(rabbitmqServer);
@@ -34,4 +34,15 @@ const instance = { InstanceIds: [process.env.WORKER1_ID] };
       console.log(err);
     }
   }, 1000);
-})();
+  conn.on('error', (err) => {
+    console.error('Connection error:', err);
+    setTimeout(checkAndScale, 5000);
+  });
+
+  conn.on('close', () => {
+    console.error('Connection closed, retrying...');
+    setTimeout(checkAndScale, 5000);
+  });
+};
+
+checkAndScale();
