@@ -36,8 +36,7 @@ export const signup = async (name, email, password) => {
     } else {
       // Handle non-successful response status (e.g., 4xx or 5xx errors)
       const errorData = await response.json();
-      console.log(errorData);
-      showAlert('error', errorData.errors);
+      showAlert('error', errorData.message);
     }
   } catch (err) {
     showAlert('error', err.message);

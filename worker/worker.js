@@ -94,6 +94,7 @@ const connectAndConsume = async () => {
     ch.consume(queue, async (msg) => {
       if (msg !== null) {
         const payLoad = JSON.parse(msg.content.toString());
+        console.log(payLoad);
         const headersObj = {};
         for (let i = 0; i < payLoad.filteredReqObj.headers.length; i += 2) {
           headersObj[payLoad.filteredReqObj.headers[i]] =
