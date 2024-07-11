@@ -29,11 +29,9 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
     if (rows[0].alertFirst === 'off') {
       return;
     }
-
-    const checkIsFirstError = await client.search({
+    const checkIsFirstError = await client.count({
       index: payLoad.accessToken,
       body: {
-        size: 100,
         query: {
           bool: {
             must: [
@@ -47,7 +45,7 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
         },
       },
     });
-    const docNum = checkIsFirstError.hits.total.value;
+    const docNum = checkIsFirstError.count;
     if (docNum !== 0) {
       return;
     }
@@ -80,6 +78,7 @@ const storeData = async (payLoad) => {
     index: payLoad.accessToken,
     body: payLoad,
   });
+
   console.log('Worker just process 1 log');
 };
 
@@ -90,10 +89,12 @@ const connectAndConsume = async () => {
   const ch = await conn.createChannel();
   ch.prefetch(20);
   await ch.assertQueue(queue);
+
   try {
     ch.consume(queue, async (msg) => {
       if (msg !== null) {
         const payLoad = JSON.parse(msg.content.toString());
+        console.time('Single processing time');
         console.log(payLoad);
         const headersObj = {};
         for (let i = 0; i < payLoad.filteredReqObj.headers.length; i += 2) {
@@ -105,6 +106,7 @@ const connectAndConsume = async () => {
         await checkIsFirstAndSetAlert(payLoad);
         await insertAlertQueue(ch, payLoad);
         await storeData(payLoad);
+        console.timeEnd('Single processing time');
         ch.ack(msg);
       } else {
         console.log('Consumer cancelled by server');
