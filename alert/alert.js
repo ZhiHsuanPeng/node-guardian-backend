@@ -59,58 +59,58 @@ const connectAndConsume = async () => {
   try {
     ch.consume(queue, async (msg) => {
       if (msg !== null) {
-        // const payLoad = JSON.parse(msg.content.toString());
-        // const data = await getEmailAndProjectRules(payLoad.accessToken);
-        // if (!data[0]) {
-        //   console.log('Project has been deleted!');
-        //   console.log('Alert worker just process one alert');
-        //   ch.ack(msg);
-        //   return;
-        // }
-        // if (data[0].notification === 'off') {
-        //   console.log('Notification function not on!');
-        //   console.log('Alert worker just process one alert');
-        //   ch.ack(msg);
-        //   return;
-        // }
+        const payLoad = JSON.parse(msg.content.toString());
+        const data = await getEmailAndProjectRules(payLoad.accessToken);
+        if (!data[0]) {
+          console.log('Project has been deleted!');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
+        if (data[0].notification === 'off') {
+          console.log('Notification function not on!');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
 
-        // const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
+        const key = `${payLoad.accessToken}-${payLoad.errMessage}`;
 
-        // if (await isMute(key)) {
-        //   console.log('this error is muted');
-        //   console.log('Alert worker just process one alert');
-        //   ch.ack(msg);
-        //   return;
-        // }
+        if (await isMute(key)) {
+          console.log('this error is muted');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
 
-        // if (await isResolve(key)) {
-        //   if (data[0].reactivate === 'off') {
-        //     console.log('Reactivate function not on!');
-        //   } else {
-        //     console.log('Reactivate resolved error!');
-        // await redis.set(key, 0, 'EX', 60);
-        //     for (const row of data) {
-        //       await mail.sendReactivateEmail(row, payLoad);
-        //       console.log('sending');
-        //     }
-        //     ch.ack(msg);
-        //     return;
-        //   }
-        // }
+        if (await isResolve(key)) {
+          if (data[0].reactivate === 'off') {
+            console.log('Reactivate function not on!');
+          } else {
+            console.log('Reactivate resolved error!');
+            await redis.set(key, 0, 'EX', 60);
+            for (const row of data) {
+              await mail.sendReactivateEmail(row, payLoad);
+              console.log('sending');
+            }
+            ch.ack(msg);
+            return;
+          }
+        }
 
-        // if (data[0].timeWindow === 'off') {
-        //   console.log('Anamoly detection function not on!');
-        //   console.log('Alert worker just process one alert');
-        //   ch.ack(msg);
-        //   return;
-        // }
-        // const isExcess = await isExcessQuota(key, data[0]);
-        // if (isExcess) {
-        //   for (const row of data) {
-        //     await mail.sendAnomalyEmail(row, payLoad);
-        //     console.log('sending');
-        //   }
-        // }
+        if (data[0].timeWindow === 'off') {
+          console.log('Anamoly detection function not on!');
+          console.log('Alert worker just process one alert');
+          ch.ack(msg);
+          return;
+        }
+        const isExcess = await isExcessQuota(key, data[0]);
+        if (isExcess) {
+          for (const row of data) {
+            await mail.sendAnomalyEmail(row, payLoad);
+            console.log('sending');
+          }
+        }
 
         console.log('Alert worker just process one alert');
         ch.ack(msg);
