@@ -88,7 +88,7 @@ const connectAndConsume = async () => {
         //     console.log('Reactivate function not on!');
         //   } else {
         //     console.log('Reactivate resolved error!');
-        //     await redis.set(key, 0, 'EX', 60);
+        // await redis.set(key, 0, 'EX', 60);
         //     for (const row of data) {
         //       await mail.sendReactivateEmail(row, payLoad);
         //       console.log('sending');

@@ -23,10 +23,10 @@ const checkAndScale = async () => {
       const stat = await ch.checkQueue(queue);
       const status = await auto.checkInstances(instance);
       console.log(stat);
-      if (stat.messageCount >= 100 && status === 'stopped') {
+      if (stat.messageCount >= 8000 && status === 'stopped') {
         console.log('Starting groups...');
         auto.startInstances(instance);
-      } else if (stat.messageCount < 100 && status === 'running') {
+      } else if (stat.messageCount === 0 && status === 'running') {
         console.log('Closing groups...');
         auto.stopInstances(instance);
       }

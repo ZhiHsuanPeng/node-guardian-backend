@@ -29,6 +29,7 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
     if (rows[0].alertFirst === 'off') {
       return;
     }
+
     const checkIsFirstError = await client.count({
       index: payLoad.accessToken,
       body: {
@@ -45,7 +46,9 @@ const checkIsFirstAndSetAlert = async (payLoad) => {
         },
       },
     });
+
     const docNum = checkIsFirstError.count;
+    console.log(docNum);
     if (docNum !== 0) {
       return;
     }
@@ -83,19 +86,18 @@ const storeData = async (payLoad) => {
 };
 
 const connectAndConsume = async () => {
-  console.log('Listening for jobs...');
   const queue = 'job';
   const conn = await amqplib.connect(rabbitmqServer);
   const ch = await conn.createChannel();
   ch.prefetch(20);
   await ch.assertQueue(queue);
+  console.log('Listening...');
 
   try {
     ch.consume(queue, async (msg) => {
       if (msg !== null) {
         const payLoad = JSON.parse(msg.content.toString());
-        console.time('Single processing time');
-        console.log(payLoad);
+
         const headersObj = {};
         for (let i = 0; i < payLoad.filteredReqObj.headers.length; i += 2) {
           headersObj[payLoad.filteredReqObj.headers[i]] =
@@ -106,7 +108,6 @@ const connectAndConsume = async () => {
         await checkIsFirstAndSetAlert(payLoad);
         await insertAlertQueue(ch, payLoad);
         await storeData(payLoad);
-        console.timeEnd('Single processing time');
         ch.ack(msg);
       } else {
         console.log('Consumer cancelled by server');
