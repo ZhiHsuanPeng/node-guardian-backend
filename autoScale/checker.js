@@ -9,7 +9,9 @@ const amqpPassword = process.env.AMQP_PASSWORD;
 const serverIp = process.env.AMQP_SERVERIP;
 const heartbeatInterval = 60;
 const rabbitmqServer = `amqp://${amqpUser}:${amqpPassword}@${serverIp}?heartbeat=${heartbeatInterval}`;
-const instance = { InstanceIds: [process.env.WORKER1_ID] };
+const instance = {
+  InstanceIds: [process.env.WORKER1_ID, process.env.WORKER2_ID],
+};
 
 const checkAndScale = async () => {
   console.log('Checking message numbers in queues...');

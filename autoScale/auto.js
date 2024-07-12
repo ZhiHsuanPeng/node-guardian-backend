@@ -41,7 +41,4 @@ const checkInstances = async (params) => {
   }
 };
 
-const instance = { InstanceIds: ['i-0cf9144ddd16786b5'] };
-startInstances(instance);
-
 module.exports = { startInstances, stopInstances, checkInstances };

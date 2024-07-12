@@ -9,9 +9,14 @@ html
         script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
 
     body
-        main.main
+        main.main.nopadding
             .token(data-token = `${token}`)
+            .logo_container 
+                .logo_title NodeGuardian
+                img(src='/img/icon_blue_big.png').logo
             .signup-form
+                #token-access
+                h2.login__heading Sign Up Now
                 form.form
                     .form__group
                         label.form__label(for='name') Name
