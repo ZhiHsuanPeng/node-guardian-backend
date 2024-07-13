@@ -1,13 +1,16 @@
-extends base
-
-block content 
-  main.main
-    .error
-      .error__title
-        h2.heading-secondary.heading-secondary--error Uh oh! Something went wrong!   
-        h2.error__emoji 😢🤯
+doctype html 
+html 
+    head    
         
-      .error__msg= msg
-      if redirectUrl
-        p You will be redirected in 3 seconds. If not, click 
-            a(href=redirectUrl) here. 
+        meta(charset='UTF-8')
+        meta(name='viewport' content='width=device-width, initial-scale=1.0')
+        title NodeGuardian
+        link(rel='stylesheet' href='/css/404.css')
+        link(rel='icon' href='/img/icon_blue.png' type='image/png')
+    
+    body
+        p.zoom-area
+        section.error-container
+            span.error You are not logged in.
+        .link-container
+            a.more-link(href=`${redirectUrl}`) Sign In
