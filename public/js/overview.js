@@ -32,7 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const accessToken = tokenInput.value;
 
     if (!projectName || !token) {
-      alert('Please fill out both fields.');
+      showAlert('error', 'Please fill out both fields.');
+      return;
+    }
+    if (projectName.length >= 20) {
+      alert('Project name should not be longer than 20 words.');
       return;
     }
 
@@ -52,14 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         showAlert('success', 'Create project success!');
+        window.setTimeout(() => {
+          location.reload();
+        }, 1000);
       } else {
-        console.log('123');
-        console.log(result);
         showAlert('error', result.message || 'Unknown error occurred');
       }
-      window.setTimeout(() => {
-        location.reload();
-      }, 1000);
     } catch (error) {
       showAlert('error', error.message);
     }
