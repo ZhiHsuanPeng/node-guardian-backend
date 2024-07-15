@@ -19,7 +19,7 @@ const authenticate = async (req, res, next) => {
     if (err instanceof Error) {
       const redirectUrl = `${
         process.env.DEV_URL || process.env.LOCAL_URL
-      }signin`;
+      }/signin`;
 
       res.status(401).render('error', {
         msg: err.message,

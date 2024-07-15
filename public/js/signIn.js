@@ -31,7 +31,6 @@ export const signin = async (email, password) => {
       console.log(responseData);
     } else {
       const errorData = await response.json();
-      console.log(errorData.message);
       showAlert('error', errorData.message);
     }
   } catch (err) {
