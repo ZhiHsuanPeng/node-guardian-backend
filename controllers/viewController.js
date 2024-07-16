@@ -429,7 +429,14 @@ exports.renderBasicProjectPage = async (req, res) => {
     const userId = res.locals.userId;
 
     const user = await userModel.getUserInfoById(userId);
-
+    const project = await projectModel.getProjectByUserIdAndProjectName(
+      userId,
+      prjName,
+    );
+    if (!project) {
+      const url = `/a/${user[0].name}`;
+      return res.status(404).render('404', { url });
+    }
     if (!(user[0].name === accountName)) {
       const url = `/a/${user[0].name}`;
       return res.status(404).render('404', { url });
@@ -515,6 +522,14 @@ exports.renderErrorDetailPage = async (req, res) => {
     const { err, accountName, prjName } = req.params;
     const userId = res.locals.userId;
     const user = await userModel.getUserInfoById(userId);
+    const project = await projectModel.getProjectByUserIdAndProjectName(
+      userId,
+      prjName,
+    );
+    if (!project) {
+      const url = `/a/${user[0].name}`;
+      return res.status(404).render('404', { url });
+    }
 
     if (!(user[0].name === accountName)) {
       const url = `/a/${user[0].name}`;
@@ -569,7 +584,8 @@ exports.renderErrorDetailPage = async (req, res) => {
     });
   } catch (err) {
     if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
+      const url = '/home';
+      return res.status(404).render('404', { url });
     }
     return res
       .status(500)
