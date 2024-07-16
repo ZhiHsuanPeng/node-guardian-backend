@@ -42,7 +42,7 @@ exports.createProject = async (req, res) => {
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
     }
-    res.status(500).json({ message: 'create project failed' });
+    return res.status(500).json({ message: 'create project failed' });
   }
 };
 

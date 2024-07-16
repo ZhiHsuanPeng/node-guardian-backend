@@ -11,7 +11,6 @@ const tsStr = document
   .querySelector('[data-iptime]')
   .getAttribute('data-iptime');
 const ipTimeStamp = JSON.parse(tsStr);
-console.log(ipTimeStamp);
 const detailTab = document.querySelector('.section_title_container_detail');
 const summaryTab = document.querySelector('.section_title_container_summary');
 const detailPic = document.querySelector('.detail_png');
@@ -43,7 +42,6 @@ if (detailTab && summaryTab) {
     }
   });
   summaryTab.addEventListener('click', () => {
-    console.log('click');
     if (detailTab.classList.contains('tab_active')) {
       detailTab.classList.remove('tab_active');
       detailTab.classList.add('tab_inactive');
@@ -205,7 +203,6 @@ const past1h = () => {
       }
     }
   });
-  // console.log(occurrences);
 
   const sum = occurrences.reduce((acc, val) => acc + val, 0);
   const sumInPug = document.querySelector('.past1hSum');
@@ -374,6 +371,7 @@ const past1hIpCount = () => {
       minuteAdjusted.toString().padStart(2, '0')
     );
   });
+
   ipTimeStamp.forEach((timestamps) => {
     const uniqueMinutes = new Set();
     timestamps.forEach((timestamp) => {
@@ -592,7 +590,6 @@ const past1wIpCount = () => {
       }
     });
   });
-  console.log(occurrences);
 
   const trace = {
     x: days,

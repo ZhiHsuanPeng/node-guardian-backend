@@ -209,7 +209,6 @@ exports.renderProfilePage = async (req, res) => {
       .status(200)
       .render('profile', { projectsArr, accountName, userInfo });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
     }
@@ -235,7 +234,6 @@ exports.renderSettingTokenPage = async (req, res) => {
       projectsArr,
     });
   } catch (err) {
-    console.log(err);
     if (err instanceof Error) {
       return res.status(400).json({ message: err.message });
     }
