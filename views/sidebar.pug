@@ -1,0 +1,35 @@
+aside#sidebar.expand
+    .d-flex
+        button.toggle-btn(type='button')
+            img.side_bar_icon(src='/img/icon_white_64.png')
+        .sidebar-logo
+            a(href=`/a/${accountName}`) NodeGuardian
+    ul.sidebar-nav
+        li.sidebar-item
+            a.sidebar-link(href=`/a/${accountName}/profile`)
+                i.lni.lni-user
+                span Profile
+        li.sidebar-item
+            a.sidebar-link(href=`/a/${accountName}`)
+                i.lni.lni-agenda
+                    span Dashboard
+        li.sidebar-item
+            a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
+                i.lni.lni-radio-button
+                span Projects
+            ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
+                each project in projectsArr
+                    li.sidebar-item
+                        a.sidebar-link.sublink(href=`/a/${accountName}/prj/${project[0]}`) #{project[0]} 
+        li.sidebar-item
+            a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
+                i.lni.lni-cog
+                span Project Settings
+            ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
+                each project in projectsArr
+                    li.sidebar-item
+                        a.sidebar-link.sublink(href=`/a/${accountName}/${project[0]}/settings/general`) #{project[0]}
+        .sidebar-footer
+            a.sidebar-link.logout_btn(href='#')
+                i.lni.lni-exit
+                span Logout    
