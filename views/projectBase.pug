@@ -1,99 +1,48 @@
-doctype html 
-html 
-    head    
-        
-        meta(charset='UTF-8')
-        meta(name='viewport' content='width=device-width, initial-scale=1.0')
-        title All items
-        link(rel='stylesheet' href='/css/style.css')
-        script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
-        link(rel='icon' href='/img/icon_blue.png' type='image/png')
-        link(href='https://cdn.lineicons.com/4.0/lineicons.css' rel='stylesheet')
-        link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ' crossorigin='anonymous')
-        link(rel="preconnect" href="https://fonts.googleapis.com")
-        link(rel='stylesheet' href='/css/style.css')
-        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
-        link(href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet")
+extends template   
 
-    body
-        .wrapper
-            aside#sidebar.expand
-                .d-flex
-                    button.toggle-btn(type='button')
-                        img.side_bar_icon(src='/img/icon_white_64.png')
-                    .sidebar-logo
-                        a(href=`/a/${accountName}`) NodeGuardian
-                ul.sidebar-nav
-                    li.sidebar-item
-                        a.sidebar-link(href=`/a/${accountName}/profile`)
-                            i.lni.lni-user
-                            span Profile
-                    li.sidebar-item
-                        a.sidebar-link(href=`/a/${accountName}`)
-                            i.lni.lni-agenda
-                            span Dashboard
-                    li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
-                            i.lni.lni-radio-button
-                            span Projects
-                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            each project in projectsArr
-                                li.sidebar-item
-                                    a.sidebar-link.sublink(href=`/a/${accountName}/prj/${project[0]}`) #{project[0]} 
-                    li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
-                            i.lni.lni-cog
-                            span Project Settings
-                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            each project in projectsArr
-                                li.sidebar-item
-                                    a.sidebar-link.sublink(href=`/a/${accountName}/${project[0]}/settings/general`) #{project[0]}
-                    .sidebar-footer
-                        a.sidebar-link.logout_btn(href='#')
-                            i.lni.lni-exit
-                            span Logout
-            .main                  
-                main.main 
-                
-                    .errTitle(data-error= `${errorMessageArr}`)
-                    .projectToken(data-token = `${projectToken}`)
-                    .errorLogsContainer
-                        .project_base_title_container
-                            .project_base_title= `Items for ${prjName}`
-                        .containerBar
-                            .title Error Message
-                            .oneDayTrends 24hr Trend
-                            .count Total 
-                            .last Last
-                            .mute_option Mute
-                            .resolved_option Resolved
-                        each error in errObj
-                            .errorContainer
-                                .timeStampStat(data-time = `${error.timeStamp}`)      
-                                a.errorTitle(href=`/a/${accountName}/prj/${prjName}/err/${error.err}`) #{error.err}
-                                div.errGraph(id=`${error.err}`)
-                                .errCount Count: #{error.count} 
-                                .errRecent #{error.recentTime}
-                                .mute_container
-                                    if error.mute === true  
-                                        img.mute(src='/img/mute.png') 
-                                        select.mutedropdown.hide(data-error=`mute_${error.err}_${error.muteTime}`)
-                                        .tooltip= `This error is muted for ${error.muteTime} hours`
-                                    else    
-                                        select.mutedropdown(data-error=`mute_${error.err}_${error.muteTime}`)
-                                            option(value="0") none
-                                            option(value="3600") 1 hour
-                                            option(value="10800") 3 hours 
-                                            option(value="21600") 6 hours 
-                                            option(value="43200") 12 hours  
-                                            option(value="86400") 24 hours
-                                .resolved_container 
-                                    if error.resolve === true
-                                        input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}` checked)
-                                    else  
-                                        input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}`)
+block content
+    block sidebarContent 
+        .main                  
+            main.main 
+                .errTitle(data-error= `${errorMessageArr}`)
+                .projectToken(data-token = `${projectToken}`)
+                .errorLogsContainer
+                    .project_base_title_container
+                        .project_base_title= `Items for ${prjName}`
+                    .containerBar
+                        .title Error Message
+                        .oneDayTrends 24hr Trend
+                        .count Total 
+                        .last Last
+                        .mute_option Mute
+                        .resolved_option Resolved
+                    each error in errObj
+                        .errorContainer
+                            .timeStampStat(data-time = `${error.timeStamp}`)      
+                            a.errorTitle(href=`/a/${accountName}/prj/${prjName}/err/${error.err}`) #{error.err}
+                            div.errGraph(id=`${error.err}`)
+                            .errCount Count: #{error.count} 
+                            .errRecent #{error.recentTime}
+                            .mute_container
+                                if error.mute === true  
+                                    img.mute(src='/img/mute.png') 
+                                    select.mutedropdown.hide(data-error=`mute_${error.err}_${error.muteTime}`)
+                                    .tooltip= `This error is muted for ${error.muteTime} hours`
+                                else    
+                                    select.mutedropdown(data-error=`mute_${error.err}_${error.muteTime}`)
+                                        option(value="0") none
+                                        option(value="3600") 1 hour
+                                        option(value="10800") 3 hours 
+                                        option(value="21600") 6 hours 
+                                        option(value="43200") 12 hours  
+                                        option(value="86400") 24 hours
+                            .resolved_container 
+                                if error.resolve === true
+                                    input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}` checked)
+                                else  
+                                    input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}`)
         script(src='/js/projectPage.js' type="module")
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
         script(src='/js/sidebar.js' type="module")
         script(src='/js/logout.js' type="module")
-            
+        
