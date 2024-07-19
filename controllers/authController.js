@@ -51,31 +51,26 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
-exports.specialSignUp = async (req, res) => {
-  try {
-    const { token, name, email, password } = req.body;
+exports.specialSignUp = catchAsync(async (req, res) => {
+  const { token, name, email, password } = req.body;
 
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-    const data = await redis.get(hashedToken);
-    if (!data) {
-      return res.status(400).json({
-        message:
-          'something went wrong, please ask for the invitation email again!',
-      });
-    }
-
-    const userId = await userModel.createUser(name, email, password);
-    if (await projectModel.isGrandAccessSuccess(data * 1, userId)) {
-      return signTokenAndSendCookie(res, userId, name, email);
-    }
-    return new Error('Something went wrong! Please try again!');
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ errors: 'sign up failed' });
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  const data = await redis.get(hashedToken);
+  if (!data) {
+    throw new Error(
+      'something is wrong with the invitation! please ask for it again!',
+    );
   }
-};
+  const userId = await userModel.createUser(name, email, password);
+  if (await projectModel.isGrandAccessSuccess(data * 1, userId)) {
+    await redis.del(hashedToken);
+    return signTokenAndSendCookie(res, userId, name, email);
+  }
+  await redis.del(hashedToken);
+  throw new Error(
+    'something is wrong with the invitation! please ask for it again!',
+  );
+});
 
 exports.logout = (req, res) => {
   res.cookie('jwt', 'loggout', {

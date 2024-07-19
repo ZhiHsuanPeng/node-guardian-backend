@@ -23,21 +23,17 @@ const signup = async (name, email, password, token) => {
         password,
       }),
     });
-    console.log(response);
     if (response.ok) {
       const responseData = await response.json();
-      console.log(responseData);
       showAlert(
         'success',
         `Hello! ${responseData.data.user.name}! <br> Please confirm this is your email: ${responseData.data.user.email}`,
-      ); // Assuming your backend returns a message
+      );
       window.setTimeout(() => {
         location.assign(`/a/${name}`);
       }, 1000);
     } else {
-      // Handle non-successful response status (e.g., 4xx or 5xx errors)
       const errorData = await response.json();
-      console.log(errorData);
       showAlert('error', errorData.errors);
     }
   } catch (err) {

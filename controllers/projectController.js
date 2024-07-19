@@ -127,7 +127,7 @@ exports.modifyProjectMembersSettings = async (req, res) => {
       projectName,
       signUpUrl,
     );
-    await redis.set(hashedToken, projectId);
+    await redis.set(hashedToken, projectId, 'EX', 3600);
     return res.status(200).json({ message: 'invitation sent!' });
   } catch (err) {
     console.log(err);
