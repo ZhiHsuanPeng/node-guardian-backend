@@ -91,48 +91,42 @@ exports.modifyProjectSettings = catchAsync(async (req, res, next) => {
   return res.status(200).json({ message: 'change setting success' });
 });
 
-exports.modifyProjectMembersSettings = async (req, res) => {
-  try {
-    const { email, projectOwner, projectName, ownerId } = req.body;
-    const url = process.env.DEV_URL || 'http://localhost:3000';
+exports.modifyProjectMembersSettings = catchAsync(async (req, res) => {
+  const { email, projectOwner, projectName, ownerId } = req.body;
+  const url = process.env.DEV_URL || 'http://localhost:3000';
 
-    const user = await userModel.findUserByEmail(email);
-    const projectId = await projectModel.getProjectId(ownerId, projectName);
+  const user = await userModel.findUserByEmail(email);
+  const projectId = await projectModel.getProjectId(ownerId, projectName);
 
-    const token = crypto.randomBytes(16).toString('hex');
-    const confirmUrl = `${url}/api/v1/projects/access/${token}`;
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  const token = crypto.randomBytes(16).toString('hex');
+  const confirmUrl = `${url}/api/v1/projects/access/${token}`;
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
 
-    if (user) {
-      await mail.sendProjectInvitation(
-        user.email,
-        user.name,
-        projectOwner,
-        projectName,
-        confirmUrl,
-      );
-      await redis.set(hashedToken, `${projectId},${user.id},${user.name}`);
-      return res.status(200).json({ message: 'invitation sent!' });
-    }
-
-    const signUpUrl = `${url}/signup/${token}`;
-
-    await mail.sendProjectInvitationAndSignUp(
-      email,
+  // For registered user
+  if (user) {
+    await mail.sendProjectInvitation(
+      user.email,
+      user.name,
       projectOwner,
       projectName,
-      signUpUrl,
+      confirmUrl,
     );
-    await redis.set(hashedToken, projectId, 'EX', 3600);
+    await redis.set(hashedToken, `${projectId},${user.id},${user.name}`);
     return res.status(200).json({ message: 'invitation sent!' });
-  } catch (err) {
-    console.log(err);
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ message: 'modified project failed' });
   }
-};
+
+  // For unregistered user
+  const signUpUrl = `${url}/signup/${token}`;
+
+  await mail.sendProjectInvitationAndSignUp(
+    email,
+    projectOwner,
+    projectName,
+    signUpUrl,
+  );
+  await redis.set(hashedToken, projectId, 'EX', 3600);
+  return res.status(200).json({ message: 'invitation sent!' });
+});
 
 exports.grandAccessToMembers = async (req, res) => {
   try {
