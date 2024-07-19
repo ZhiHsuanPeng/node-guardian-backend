@@ -19,11 +19,8 @@ router
     validator.handleResult,
     authenticate,
     projectController.createProject,
-  ]);
-
-router
-  .route('/')
-  .patch(authenticate, projectController.modifyProjectAlertSettings);
+  ])
+  .patch(authenticate, projectController.modifyProjectSettings);
 
 router
   .route('/access')

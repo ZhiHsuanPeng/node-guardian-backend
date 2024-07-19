@@ -43,54 +43,53 @@ exports.createProject = catchAsync(async (req, res, next) => {
   return res.status(200).json({ message: 'create project success' });
 });
 
-exports.modifyProjectAlertSettings = async (req, res) => {
-  try {
-    const {
-      userId,
-      prjId,
-      newProjectName,
-      accountName,
-      projectName,
-      notification,
-      alertFirst,
-      timeWindow,
-      quota,
-      reactivate,
-    } = req.body;
+exports.modifyProjectSettings = catchAsync(async (req, res, next) => {
+  const {
+    userId,
+    prjId,
+    newProjectName,
+    accountName,
+    projectName,
+    notification,
+    alertFirst,
+    timeWindow,
+    quota,
+    reactivate,
+  } = req.body;
 
-    if (newProjectName && prjId) {
-      await projectModel.changeProjectName(prjId, newProjectName);
-      return res
-        .status(200)
-        .json({ message: 'Change Project Name Successfully!' });
-    }
-
-    if (quota * 1 !== 0 && timeWindow === 'off') {
-      throw Error('You cannot set quota without setting time window!');
-    }
-
-    await projectModel.changeProjectSettings(
-      notification,
-      alertFirst,
-      timeWindow,
-      quota,
-      accountName,
-      projectName,
-      reactivate,
-    );
-
-    const token = await projectModel.getProjectToken(userId, projectName);
-
-    await resetAlert(token);
-
-    return res.status(200).json({ message: 'change setting success' });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ message: 'modified project failed' });
+  if (newProjectName && prjId) {
+    await projectModel.changeProjectName(prjId, newProjectName);
+    return res
+      .status(200)
+      .json({ message: 'Change Project Name Successfully!' });
   }
-};
+
+  if (quota * 1 !== 0 && timeWindow === 'off') {
+    return next(
+      ValidationError('You cannot set quota without setting the time window!'),
+    );
+  }
+
+  await projectModel.changeProjectSettings(
+    notification,
+    alertFirst,
+    timeWindow,
+    quota,
+    accountName,
+    projectName,
+    reactivate,
+  );
+
+  const token = await projectModel.getProjectToken(userId, projectName);
+
+  if (timeWindow === 'off' && quota * 1 === 0) {
+    await redis.del(token);
+  }
+
+  await resetAlert(token);
+
+  return res.status(200).json({ message: 'change setting success' });
+});
 
 exports.modifyProjectMembersSettings = async (req, res) => {
   try {
