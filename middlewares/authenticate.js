@@ -11,7 +11,6 @@ const authenticate = async (req, res, next) => {
     if (!token) {
       throw Error('You are not logged in!');
     }
-
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRETS);
     res.locals.userId = decoded.id;
     next();

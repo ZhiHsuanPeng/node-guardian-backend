@@ -170,77 +170,52 @@ exports.renderSignInForm = catchAsync(async (req, res) => {
 exports.renderProfilePage = catchAsync(async (req, res) => {
   const { accountName } = req.params;
   const userId = res.locals.userId;
+  const projectsArr = res.locals.project;
   const userInfo = await userModel.getUserInfoById(userId);
-  const projectsArr = Object.entries(
-    await projectModel.getAllProjectByUserId(userId),
-  );
+
   return res
     .status(200)
     .render('profile', { projectsArr, accountName, userInfo });
 });
 
-exports.renderSettingTokenPage = async (req, res) => {
-  try {
-    const { accountName, prjName } = req.params;
-    const userId = res.locals.userId;
-    const token = await projectModel.getProjectToken(userId, prjName);
-    const projectsArr = Object.entries(
-      await projectModel.getAllProjectByUserId(userId),
-    );
-    return res.status(200).render('setting_token', {
-      accountName,
-      prjName,
-      userId,
-      token,
-      projectsArr,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+exports.renderSettingTokenPage = catchAsync(async (req, res) => {
+  const { accountName, prjName } = req.params;
+  const userId = res.locals.userId;
+  const projectsArr = res.locals.project;
+  const token = await projectModel.getProjectToken(userId, prjName);
 
-exports.renderSettingGeneralPage = async (req, res) => {
-  try {
-    const { accountName, prjName } = req.params;
-    const userId = res.locals.userId;
-    const projectInfo = await projectModel.getProjectInfoByUserIdAndPrjName(
-      userId,
-      prjName,
-    );
-    const { id } = projectInfo;
-    const prjId = id;
-    const projectsArr = Object.entries(
-      await projectModel.getAllProjectByUserId(userId),
-    );
-    return res.status(200).render('setting_general', {
-      prjName,
-      accountName,
-      userId,
-      prjId,
-      projectsArr,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+  return res.status(200).render('setting_token', {
+    accountName,
+    prjName,
+    userId,
+    token,
+    projectsArr,
+  });
+});
+
+exports.renderSettingGeneralPage = catchAsync(async (req, res) => {
+  const { accountName, prjName } = req.params;
+  const userId = res.locals.userId;
+  const projectsArr = res.locals.project;
+  const projectInfo = await projectModel.getProjectInfoByUserIdAndPrjName(
+    userId,
+    prjName,
+  );
+  const prjId = projectInfo.id;
+  return res.status(200).render('setting_general', {
+    prjName,
+    accountName,
+    userId,
+    prjId,
+    projectsArr,
+  });
+});
 
 exports.renderSettingNotificationEmailsPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
-    const projectsArr = Object.entries(
-      await projectModel.getAllProjectByUserId(userId),
-    );
+    const projectsArr = res.locals.project;
     const projectRules = await projectModel.getProjectByUserIdAndProjectName(
       userId,
       prjName,
@@ -266,9 +241,7 @@ exports.renderSettingNotificationPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
-    const projectsArr = Object.entries(
-      await projectModel.getAllProjectByUserId(userId),
-    );
+    const projectsArr = res.locals.project;
 
     return res.status(200).render('setting_notifications', {
       prjName,
@@ -290,14 +263,12 @@ exports.renderSettingMemeberPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
+    const projectsArr = res.locals.project;
     const data = await userModel.getOwnerByProjectNameAndAccountName(
       prjName,
       accountName,
     );
     const users = await userModel.getOtherUsers(data[0].projectId);
-    const projectsArr = Object.entries(
-      await projectModel.getAllProjectByUserId(userId),
-    );
     return res.status(200).render('setting_members', {
       prjName,
       accountName,
@@ -388,6 +359,7 @@ exports.renderBasicProjectPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
+    const projectsArr = res.locals.project;
 
     const user = await userModel.getUserInfoById(userId);
     const project = await projectModel.getProjectByUserIdAndProjectName(
@@ -402,9 +374,6 @@ exports.renderBasicProjectPage = async (req, res) => {
       const url = `/a/${user[0].name}`;
       return res.status(404).render('404', { url });
     }
-
-    const projects = await projectModel.getAllProjectByUserId(userId);
-    const projectsArr = Object.entries(projects);
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(
@@ -482,6 +451,7 @@ exports.renderErrorDetailPage = async (req, res) => {
   try {
     const { err, accountName, prjName } = req.params;
     const userId = res.locals.userId;
+    const projectsArr = res.locals.project;
     const user = await userModel.getUserInfoById(userId);
     const project = await projectModel.getProjectByUserIdAndProjectName(
       userId,
@@ -496,9 +466,6 @@ exports.renderErrorDetailPage = async (req, res) => {
       const url = `/a/${user[0].name}`;
       return res.status(404).render('404', { url });
     }
-
-    const projects = await projectModel.getAllProjectByUserId(userId);
-    const projectsArr = Object.entries(projects);
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
     const { latest, first, errTitle, all, timeStamp, latestErr } =
