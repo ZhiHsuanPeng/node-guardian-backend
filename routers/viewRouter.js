@@ -1,6 +1,6 @@
 const express = require('express');
 const viewController = require('../controllers/viewController');
-const authenticate = require('../middleware/authenticate');
+const authenticate = require('../middlewares/authenticate');
 
 const router = express.Router();
 

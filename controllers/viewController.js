@@ -8,6 +8,8 @@ const errorLog = require('../models_Search/errorLog');
 const projectModel = require('../models_RDS/project');
 const userModel = require('../models_RDS/user');
 const redis = require('../utils/redis');
+const catchAsync = require('../utils/catchAsync');
+const { ValidationError } = require('../utils/errorHandler');
 
 const transformUNIXtoDiff = (unix) => {
   const timeStamp = new Date(unix);
@@ -137,86 +139,45 @@ const countDevicePercentage = (docs) => {
 
   return { browserPercentage, osPercentage };
 };
-exports.renderSpecialSignUpForm = async (req, res) => {
-  try {
-    const { token } = req.params;
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-    const data = await redis.get(hashedToken);
-    if (!data) {
-      throw Error(
-        'The link is not longer valid! Please ask the project owner to send invitations again!',
-      );
-    }
-    return res.status(200).render('specialSignUp', { token });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
+exports.renderSpecialSignUpForm = catchAsync(async (req, res) => {
+  const { token } = req.params;
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  const data = await redis.get(hashedToken);
+  if (!data) {
+    const redirectUrl = `${
+      process.env.DEV_URL || process.env.LOCAL_URL
+    }/signin`;
+    return res.status(404).render('error', {
+      message: 'Url expired or invalid! ask for invitations again!',
+      redirectUrl,
+    });
   }
-};
+  return res.status(200).render('specialSignUp', { token });
+});
 
-exports.renderHomePage = async (req, res) => {
-  try {
-    return res.status(200).render('home');
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+exports.renderHomePage = catchAsync(async (req, res) => {
+  return res.status(200).render('home');
+});
 
-exports.renderSignUpForm = async (req, res) => {
-  try {
-    return res.status(200).render('signUp');
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+exports.renderSignUpForm = catchAsync(async (req, res) => {
+  return res.status(200).render('signUp');
+});
 
-exports.renderSignInForm = async (req, res) => {
-  try {
-    return res.status(200).render('signIn');
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+exports.renderSignInForm = catchAsync(async (req, res) => {
+  return res.status(200).render('signIn');
+});
 
-exports.renderProfilePage = async (req, res) => {
-  try {
-    const { accountName } = req.params;
-    const userId = res.locals.userId;
-    const userInfo = await userModel.getUserInfoById(userId);
-    const projectsArr = Object.entries(
-      await projectModel.getAllProjectByUserId(userId),
-    );
-    return res
-      .status(200)
-      .render('profile', { projectsArr, accountName, userInfo });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+exports.renderProfilePage = catchAsync(async (req, res) => {
+  const { accountName } = req.params;
+  const userId = res.locals.userId;
+  const userInfo = await userModel.getUserInfoById(userId);
+  const projectsArr = Object.entries(
+    await projectModel.getAllProjectByUserId(userId),
+  );
+  return res
+    .status(200)
+    .render('profile', { projectsArr, accountName, userInfo });
+});
 
 exports.renderSettingTokenPage = async (req, res) => {
   try {

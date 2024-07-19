@@ -9,26 +9,28 @@ const authenticate = async (req, res, next) => {
     const tokenInHeaders = req.get('Authorization');
     const token = tokenInHeaders?.split(' ')[1] || req.cookies.jwt;
     if (!token) {
-      throw Error('You are not logged in! Please sign in to proceed!');
+      throw Error('You are not logged in!');
     }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRETS);
     res.locals.userId = decoded.id;
     next();
   } catch (err) {
-    if (err instanceof Error) {
-      const redirectUrl = `${
-        process.env.DEV_URL || process.env.LOCAL_URL
-      }/signin`;
+    const redirectUrl = `${
+      process.env.DEV_URL || process.env.LOCAL_URL
+    }/signin`;
 
-      res.status(401).render('error', {
-        msg: err.message,
+    if (err.name === 'JsonWebTokenError') {
+      return res.status(401).render('error', {
+        message: 'invalid credentials, please sign in again',
         redirectUrl,
       });
-
-      return;
     }
-    res.status(401).json({ errors: 'authenticate failed' });
+
+    return res.status(401).render('error', {
+      message: err.message,
+      redirectUrl,
+    });
   }
 };
 
