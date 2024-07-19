@@ -128,73 +128,48 @@ exports.modifyProjectMembersSettings = catchAsync(async (req, res) => {
   return res.status(200).json({ message: 'invitation sent!' });
 });
 
-exports.grandAccessToMembers = async (req, res) => {
-  try {
-    const { token } = req.params;
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-    const data = await redis.get(hashedToken);
-    if (!data) {
-      return res.status(400).json({
-        message: 'something went wrong, please ask for invitation email again!',
-      });
-    }
-    const projectId = data.split(',')[0];
-    const teamMate = data.split(',')[1];
-    const userName = data.split(',')[2];
-    if (await projectModel.isGrandAccessSuccess(projectId, teamMate)) {
-      return res.status(200).redirect(`/a/${userName}`);
-    }
-    return res.status(500).json({
-      message: 'Something went wrong!',
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ message: 'modified project failed' });
+exports.grandAccessToMembers = catchAsync(async (req, res, next) => {
+  const { token } = req.params;
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+  const data = await redis.get(hashedToken);
+  if (!data) {
+    return next(new ValidationError('please ask for invitation email again!'));
   }
-};
-
-exports.muteErrorAlert = async (req, res) => {
-  try {
-    const { projecToken, errMessage, mute } = req.body;
-    const value = await redis.get(`${projecToken}-${errMessage}`);
-    if (value === 'resolve') {
-      throw Error('Can not mute resolved error.');
-    }
-    if (mute === '0') {
-      await redis.set(`${projecToken}-${errMessage}`, 0);
-    } else {
-      await redis.set(
-        `${projecToken}-${errMessage}`,
-        `mute_${mute}`,
-        'EX',
-        mute * 1,
-      );
-    }
-
-    return res.status(200).json({ message: 'success' });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ message: 'modified project failed' });
+  const projectId = data.split(',')[0];
+  const teamMate = data.split(',')[1];
+  const userName = data.split(',')[2];
+  if (await projectModel.isGrandAccessSuccess(projectId, teamMate)) {
+    return res.status(200).redirect(`/a/${userName}`);
   }
-};
+  return next(new Error('something went wrong! please try again later'));
+});
 
-exports.resolveError = async (req, res) => {
-  try {
-    const { projecToken, errMessage, resolve } = req.body;
-    if (resolve === true) {
-      await redis.set(`${projecToken}-${errMessage}`, 'resolve');
-    } else {
-      await redis.set(`${projecToken}-${errMessage}`, 0);
-    }
-    return res.status(200).json({ message: 'success' });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ message: 'modified project failed' });
+exports.muteErrorAlert = catchAsync(async (req, res, next) => {
+  const { projecToken, errMessage, mute } = req.body;
+  const value = await redis.get(`${projecToken}-${errMessage}`);
+  if (value === 'resolve') {
+    return next(new ValidationError('cannot mute resolved error'));
   }
-};
+  if (mute === '0') {
+    await redis.set(`${projecToken}-${errMessage}`, 0);
+  } else {
+    await redis.set(
+      `${projecToken}-${errMessage}`,
+      `mute_${mute}`,
+      'EX',
+      mute * 1,
+    );
+  }
+
+  return res.status(200).json({ message: 'success' });
+});
+
+exports.resolveError = catchAsync(async (req, res) => {
+  const { projecToken, errMessage, resolve } = req.body;
+  if (resolve === true) {
+    await redis.set(`${projecToken}-${errMessage}`, 'resolve');
+  } else {
+    await redis.set(`${projecToken}-${errMessage}`, 0);
+  }
+  return res.status(200).json({ message: 'success' });
+});

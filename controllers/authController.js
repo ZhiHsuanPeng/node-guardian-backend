@@ -51,13 +51,13 @@ exports.signUp = async (req, res, next) => {
   }
 };
 
-exports.specialSignUp = catchAsync(async (req, res) => {
+exports.specialSignUp = catchAsync(async (req, res, next) => {
   const { token, name, email, password } = req.body;
 
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
   const data = await redis.get(hashedToken);
   if (!data) {
-    throw new Error('please ask for your invitation again!');
+    return next(new Error('please ask for your invitation again!'));
   }
 
   const userId = await userModel.createUser(name, email, password);
@@ -67,8 +67,11 @@ exports.specialSignUp = catchAsync(async (req, res) => {
   }
 
   await redis.del(hashedToken);
-  throw new Error(
-    'something is wrong with the invitation! please ask for it again!',
+
+  return next(
+    new Error(
+      'something is wrong with the invitation! please ask for it again!',
+    ),
   );
 });
 
