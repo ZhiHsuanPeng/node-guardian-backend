@@ -9,7 +9,6 @@ const projectModel = require('../models_RDS/project');
 const userModel = require('../models_RDS/user');
 const redis = require('../utils/redis');
 const catchAsync = require('../utils/catchAsync');
-const { ValidationError } = require('../utils/errorHandler');
 
 const transformUNIXtoDiff = (unix) => {
   const timeStamp = new Date(unix);
@@ -315,105 +314,101 @@ exports.renderOverViewPage = catchAsync(async (req, res) => {
     .render('overview', { projectsArr, accountName, timeStamp, past1dayErr });
 });
 
-exports.renderBasicProjectPage = async (req, res) => {
-  try {
-    const { accountName, prjName } = req.params;
-    const projectsArr = res.locals.project;
-    const projectToken = projectsArr.filter((project) => {
-      return project[0] === prjName;
-    })[0][1];
-    const errorMessageAndCount = await errorLog.countErrorByErrorMessage(
+exports.renderBasicProjectPage = catchAsync(async (req, res) => {
+  const { accountName, prjName } = req.params;
+  const projectsArr = res.locals.project;
+  const projectToken = projectsArr.filter((project) => {
+    return project[0] === prjName;
+  })[0][1];
+  const errorMessageAndCount = await errorLog.countErrorByErrorMessage(
+    projectToken,
+  );
+  const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
+  const errorsTimeStampPromises = errorMessageArr.map(async (err) => {
+    const timeStamp = await errorLog.getErrorTimeStampFilteredByTime(
       projectToken,
-    );
-    const errorMessageArr = Object.getOwnPropertyNames(errorMessageAndCount);
-    const errorsTimeStampPromises = errorMessageArr.map(async (err) => {
-      const timeStamp = await errorLog.getErrorTimeStampFilteredByTime(
-        projectToken,
-        err,
-        24,
-      );
-      const allTimeWithIn30d = await errorLog.getErrorTimeStampFilteredByTime(
-        projectToken,
-        err,
-        720,
-      );
-      return { err, timeStamp, allTimeWithIn30d };
-    });
-
-    const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
-
-    const recentTime = errorsTimeStampArray.map((ts) => {
-      const recentTs = new Date(
-        ts.allTimeWithIn30d.sort((a, b) => a - b)[
-          ts.allTimeWithIn30d.length - 1
-        ],
-      );
-      return transformUNIXtoDiff(recentTs);
-    });
-
-    const errObj = errorsTimeStampArray.map(({ err, timeStamp }, index) => ({
       err,
-      count: errorMessageAndCount[err],
-      timeStamp,
-      recentTime:
-        recentTime[index] === 'NaN days' ? 'gt 30 days' : recentTime[index],
+      24,
+    );
+    const allTimeWithIn30d = await errorLog.getErrorTimeStampFilteredByTime(
       projectToken,
-    }));
-    for (const error of errObj) {
-      const key = `${error.projectToken}-${error.err}`;
-      const muteStatus = await redis.get(key);
-      if (!isNaN(Number(muteStatus)) || !muteStatus || muteStatus === '0') {
-        error.mute = false;
-        error.muteTime = 0;
-      } else if (muteStatus === 'resolve') {
-        error.mute = false;
-        error.muteTime = 0;
-        error.resolve = true;
-      } else {
-        const muteTime = (muteStatus.split('_')[1] * 1) / 3600;
-        error.mute = true;
-        error.muteTime = muteTime;
-      }
+      err,
+      720,
+    );
+    return { err, timeStamp, allTimeWithIn30d };
+  });
+
+  const errorsTimeStampArray = await Promise.all(errorsTimeStampPromises);
+
+  const recentTime = errorsTimeStampArray.map((ts) => {
+    const recentTs = new Date(
+      ts.allTimeWithIn30d.sort((a, b) => a - b)[ts.allTimeWithIn30d.length - 1],
+    );
+    return transformUNIXtoDiff(recentTs);
+  });
+
+  const errObj = errorsTimeStampArray.map(({ err, timeStamp }, index) => ({
+    err,
+    count: errorMessageAndCount[err],
+    timeStamp,
+    recentTime:
+      recentTime[index] === 'NaN days' ? 'gt 30 days' : recentTime[index],
+    projectToken,
+  }));
+
+  // Get mute status and attatch it to individual error
+  for (const error of errObj) {
+    const key = `${error.projectToken}-${error.err}`;
+    const muteStatus = await redis.get(key);
+    if (!isNaN(Number(muteStatus)) || !muteStatus || muteStatus === '0') {
+      error.mute = false;
+      error.muteTime = 0;
+    } else if (muteStatus === 'resolve') {
+      error.mute = false;
+      error.muteTime = 0;
+      error.resolve = true;
+    } else {
+      const muteTime = (muteStatus.split('_')[1] * 1) / 3600;
+      error.mute = true;
+      error.muteTime = muteTime;
     }
-    return res.status(200).render('projectBase', {
-      errObj,
-      errorMessageArr,
-      accountName,
-      prjName,
-      projectToken,
-      projectsArr,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
   }
-};
+  return res.status(200).render('projectBase', {
+    errObj,
+    errorMessageArr,
+    accountName,
+    prjName,
+    projectToken,
+    projectsArr,
+  });
+});
 
 exports.renderErrorDetailPage = catchAsync(async (req, res) => {
   const { err, accountName, prjName } = req.params;
-  const userId = res.locals.userId;
   const projectsArr = res.locals.project;
 
-  const projectToken = await projectModel.getProjectToken(userId, prjName);
+  const projectToken = projectsArr.filter((project) => {
+    return project[0] === prjName;
+  })[0][1];
   const { latest, first, errTitle, all, timeStamp, latestErr } =
     await errorLog.getAllErrors(projectToken, err);
 
+  // Get time related data
   const latestToTimeDiff = transformUNIXtoDiff(latest);
   const firstToTimeDiff = transformUNIXtoDiff(first);
   const latestDate = transformUNIXtoDate(latest);
   const firstDate = transformUNIXtoDate(first);
+
+  // Get stack trace
   const firstStack = extractPathFromStackTrace(
     latestErr.err.split('\n')[1],
   ).slice(1);
   const otherStack = latestErr.err.split('\n').slice(2);
-  const ipPercentage = Object.entries(countIpPercent(all));
-
-  const ipTimeStamp = Object.values(extractIpTimeStamp(all));
   const errCode = formatString(latestErr.code);
+
+  // Get other related params
+  const ipPercentage = Object.entries(countIpPercent(all));
+  const ipTimeStamp = Object.values(extractIpTimeStamp(all));
   const browserPercentage = Object.entries(
     Object.values(countDevicePercentage(all))[0],
   );
