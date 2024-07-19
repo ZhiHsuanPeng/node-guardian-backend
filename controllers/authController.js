@@ -57,15 +57,15 @@ exports.specialSignUp = catchAsync(async (req, res) => {
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
   const data = await redis.get(hashedToken);
   if (!data) {
-    throw new Error(
-      'something is wrong with the invitation! please ask for it again!',
-    );
+    throw new Error('please ask for your invitation again!');
   }
+
   const userId = await userModel.createUser(name, email, password);
   if (await projectModel.isGrandAccessSuccess(data * 1, userId)) {
     await redis.del(hashedToken);
     return signTokenAndSendCookie(res, userId, name, email);
   }
+
   await redis.del(hashedToken);
   throw new Error(
     'something is wrong with the invitation! please ask for it again!',

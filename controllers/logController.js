@@ -1,6 +1,8 @@
 const amqplib = require('amqplib');
+const schema = require('../utils/logSchema');
 const projectModel = require('../models_RDS/project');
 const { ValidationError } = require('../utils/errorHandler');
+const catchAsync = require('../utils/catchAsync');
 
 let connection;
 let channel;
@@ -21,23 +23,30 @@ const getChannel = async () => {
   return channel;
 };
 
-exports.insertNewLogs = async (req, res) => {
-  try {
-    const { accessToken } = req.body;
-    if (!(await projectModel.findProject(accessToken))) {
-      throw ValidationError(
-        'Unable to send logs data to nodeguardian server because no project is found with that access token, please check again!',
-      );
-    }
-    const ch = await getChannel();
-    const requestBody = JSON.stringify(req.body);
-    ch.sendToQueue('job', Buffer.from(requestBody));
-
-    return res.status(200).json({ message: 'OK' });
-  } catch (err) {
-    if (err instanceof ValidationError) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ message: err.message });
+exports.insertNewLogs = catchAsync(async (req, res, next) => {
+  const { accessToken } = req.body;
+  console.log(req.body);
+  // Check if the log data has necessary field
+  const validateResult = schema.validate(req.body);
+  if (validateResult.error) {
+    return next(
+      new ValidationError('Invalid error log info, please check again'),
+    );
   }
-};
+
+  // Check if the project exists
+  if (!(await projectModel.findProject(accessToken))) {
+    return next(
+      new ValidationError(
+        `Unable to send logs data to nodeguardian server because no project 
+            is found with that access token, please check again!`,
+      ),
+    );
+  }
+
+  const ch = await getChannel();
+  const requestBody = JSON.stringify(req.body);
+  ch.sendToQueue('job', Buffer.from(requestBody));
+
+  return res.status(200).json({ message: 'OK' });
+});
