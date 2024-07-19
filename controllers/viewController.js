@@ -259,68 +259,61 @@ exports.renderSettingMemeberPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderOverViewPage = async (req, res) => {
-  try {
-    const { accountName } = req.params;
-    const userId = res.locals.userId;
+exports.renderOverViewPage = catchAsync(async (req, res) => {
+  const { accountName } = req.params;
+  const projectsArr = res.locals.project;
 
-    const projects = await projectModel.getAllProjectByUserId(userId);
-    const projectsArr = Object.entries(projects);
-    const projectTimeStamp = {};
-    for (const row of projectsArr) {
-      const ts = await errorLog.getAllProjectTimeStamp(row[1]);
-      projectTimeStamp[row[0]] = ts;
-    }
-    const timeStamp = Object.entries(projectTimeStamp);
-    const userList = {};
-    for (const project of projectsArr) {
-      userList[project[0]] = await userModel.getAllUserInProject(project[1]);
-    }
-    Object.values(userList).forEach((user, index) =>
-      projectsArr[index].push(user.length),
-    );
-    const yesterday = new Date().getTime() - 24 * 60 * 60 * 1000;
-    const theDayBeforeYesterday = new Date().getTime() - 48 * 60 * 60 * 1000;
-    const oneDayBeforeErr = timeStamp.map(([name, ts]) => {
-      return [
-        name,
-        ts.filter((s) => {
-          if (s <= yesterday && s >= theDayBeforeYesterday) {
-            return true;
-          }
-          return false;
-        }),
-      ];
-    });
-    const past1dayErr = timeStamp.map(([name, ts]) => {
-      return [name, ts.filter((s) => s >= yesterday)];
-    });
-    past1dayErr.forEach((arr, index) => {
-      let oneDayBefore = 0;
-      if (
-        !oneDayBeforeErr[index][1].length ||
-        oneDayBeforeErr[index][1].length === 0
-      ) {
-        oneDayBefore = 0;
-      } else {
-        oneDayBefore = oneDayBeforeErr[index][1].length;
-      }
-
-      const changes1DayBefore = arr[1].length - oneDayBefore;
-      arr.push(changes1DayBefore);
-    });
-    return res
-      .status(200)
-      .render('overview', { projectsArr, accountName, timeStamp, past1dayErr });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
+  const projectTimeStamp = {};
+  for (const row of projectsArr) {
+    const ts = await errorLog.getAllProjectTimeStamp(row[1]);
+    projectTimeStamp[row[0]] = ts;
   }
-};
+  const timeStamp = Object.entries(projectTimeStamp);
+
+  const userList = {};
+  for (const project of projectsArr) {
+    userList[project[0]] = await userModel.getAllUserInProject(project[1]);
+  }
+  Object.values(userList).forEach((user, index) =>
+    projectsArr[index].push(user.length),
+  );
+
+  // the following code are used to calculate differences between
+  // yesterday and the day before yesterday
+  const yesterday = new Date().getTime() - 24 * 60 * 60 * 1000;
+  const theDayBeforeYesterday = new Date().getTime() - 48 * 60 * 60 * 1000;
+  const oneDayBeforeErr = timeStamp.map(([name, ts]) => {
+    return [
+      name,
+      ts.filter((s) => {
+        if (s <= yesterday && s >= theDayBeforeYesterday) {
+          return true;
+        }
+        return false;
+      }),
+    ];
+  });
+  const past1dayErr = timeStamp.map(([name, ts]) => {
+    return [name, ts.filter((s) => s >= yesterday)];
+  });
+  past1dayErr.forEach((arr, index) => {
+    let oneDayBefore = 0;
+    if (
+      !oneDayBeforeErr[index][1].length ||
+      oneDayBeforeErr[index][1].length === 0
+    ) {
+      oneDayBefore = 0;
+    } else {
+      oneDayBefore = oneDayBeforeErr[index][1].length;
+    }
+
+    const changes1DayBefore = arr[1].length - oneDayBefore;
+    arr.push(changes1DayBefore);
+  });
+  return res
+    .status(200)
+    .render('overview', { projectsArr, accountName, timeStamp, past1dayErr });
+});
 
 exports.renderBasicProjectPage = async (req, res) => {
   try {
