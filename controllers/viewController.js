@@ -263,12 +263,6 @@ exports.renderOverViewPage = async (req, res) => {
   try {
     const { accountName } = req.params;
     const userId = res.locals.userId;
-    const user = await userModel.getUserInfoById(userId);
-
-    if (!(user[0].name === accountName)) {
-      const url = `/a/${user[0].name}`;
-      return res.status(404).render('404', { url });
-    }
 
     const projects = await projectModel.getAllProjectByUserId(userId);
     const projectsArr = Object.entries(projects);
@@ -333,20 +327,6 @@ exports.renderBasicProjectPage = async (req, res) => {
     const { accountName, prjName } = req.params;
     const userId = res.locals.userId;
     const projectsArr = res.locals.project;
-
-    const user = await userModel.getUserInfoById(userId);
-    const project = await projectModel.getProjectByUserIdAndProjectName(
-      userId,
-      prjName,
-    );
-    if (!project) {
-      const url = `/a/${user[0].name}`;
-      return res.status(404).render('404', { url });
-    }
-    if (!(user[0].name === accountName)) {
-      const url = `/a/${user[0].name}`;
-      return res.status(404).render('404', { url });
-    }
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(
@@ -425,20 +405,6 @@ exports.renderErrorDetailPage = async (req, res) => {
     const { err, accountName, prjName } = req.params;
     const userId = res.locals.userId;
     const projectsArr = res.locals.project;
-    const user = await userModel.getUserInfoById(userId);
-    const project = await projectModel.getProjectByUserIdAndProjectName(
-      userId,
-      prjName,
-    );
-    if (!project) {
-      const url = `/a/${user[0].name}`;
-      return res.status(404).render('404', { url });
-    }
-
-    if (!(user[0].name === accountName)) {
-      const url = `/a/${user[0].name}`;
-      return res.status(404).render('404', { url });
-    }
 
     const projectToken = await projectModel.getProjectToken(userId, prjName);
     const { latest, first, errTitle, all, timeStamp, latestErr } =
