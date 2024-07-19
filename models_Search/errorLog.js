@@ -20,13 +20,12 @@ exports.countErrorByErrorMessage = async (accessToken) => {
         errorMessages: {
           terms: {
             field: 'errMessage.keyword',
-            size: 100,
+            size: 10000,
           },
         },
       },
     },
   });
-
   const buckets = response.aggregations.errorMessages.buckets;
   const errorMessageAndCount = {};
   buckets.forEach((bucket) => {
@@ -49,7 +48,7 @@ exports.getErrorTimeStampFilteredByTime = async (
   const response = await elasticSearchClient.search({
     index: accessToken,
     body: {
-      size: 100,
+      size: 10000,
       query: {
         bool: {
           must: [
@@ -82,7 +81,7 @@ exports.getAllErrors = async (accessToken, err) => {
   const response = await elasticSearchClient.search({
     index: accessToken,
     body: {
-      size: 100,
+      size: 10000,
       query: {
         bool: {
           must: [
@@ -125,7 +124,7 @@ exports.getAllProjectTimeStamp = async (token) => {
   const response = await elasticSearchClient.search({
     index: token,
     body: {
-      size: 100,
+      size: 10000,
       query: {
         range: {
           timestamp: {
@@ -142,21 +141,3 @@ exports.getAllProjectTimeStamp = async (token) => {
   });
   return timeStamp;
 };
-
-// async function deleteAllDocuments(index) {
-//   try {
-//     const response = await elasticSearchClient.deleteByQuery({
-//       index,
-//       body: {
-//         query: {
-//           match_all: {},
-//         },
-//       },
-//     });
-//     console.log(response);
-//   } catch (error) {
-//     console.error('Error deleting documents:', error);
-//   }
-// }
-
-// deleteAllDocuments('v4nbn1nkiijglynre53pt');

@@ -15,6 +15,7 @@ router.route('/signin').get(viewController.renderSignInForm);
 router.use('/a/*', authenticate, fetchProjectsInfo);
 
 // middleware to check url value
+
 router.use('/a/:accountName*', validateUser);
 router.route('/a/:accountName/profile').get(viewController.renderProfilePage);
 router.route('/a/:accountName').get(viewController.renderOverViewPage);

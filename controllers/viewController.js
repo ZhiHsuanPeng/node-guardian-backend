@@ -318,10 +318,10 @@ exports.renderOverViewPage = catchAsync(async (req, res) => {
 exports.renderBasicProjectPage = async (req, res) => {
   try {
     const { accountName, prjName } = req.params;
-    const userId = res.locals.userId;
     const projectsArr = res.locals.project;
-
-    const projectToken = await projectModel.getProjectToken(userId, prjName);
+    const projectToken = projectsArr.filter((project) => {
+      return project[0] === prjName;
+    })[0][1];
     const errorMessageAndCount = await errorLog.countErrorByErrorMessage(
       projectToken,
     );
@@ -393,62 +393,52 @@ exports.renderBasicProjectPage = async (req, res) => {
   }
 };
 
-exports.renderErrorDetailPage = async (req, res) => {
-  try {
-    const { err, accountName, prjName } = req.params;
-    const userId = res.locals.userId;
-    const projectsArr = res.locals.project;
+exports.renderErrorDetailPage = catchAsync(async (req, res) => {
+  const { err, accountName, prjName } = req.params;
+  const userId = res.locals.userId;
+  const projectsArr = res.locals.project;
 
-    const projectToken = await projectModel.getProjectToken(userId, prjName);
-    const { latest, first, errTitle, all, timeStamp, latestErr } =
-      await errorLog.getAllErrors(projectToken, err);
+  const projectToken = await projectModel.getProjectToken(userId, prjName);
+  const { latest, first, errTitle, all, timeStamp, latestErr } =
+    await errorLog.getAllErrors(projectToken, err);
 
-    const latestToTimeDiff = transformUNIXtoDiff(latest);
-    const firstToTimeDiff = transformUNIXtoDiff(first);
-    const latestDate = transformUNIXtoDate(latest);
-    const firstDate = transformUNIXtoDate(first);
-    const firstStack = extractPathFromStackTrace(
-      latestErr.err.split('\n')[1],
-    ).slice(1);
-    const otherStack = latestErr.err.split('\n').slice(2);
-    const ipPercentage = Object.entries(countIpPercent(all));
+  const latestToTimeDiff = transformUNIXtoDiff(latest);
+  const firstToTimeDiff = transformUNIXtoDiff(first);
+  const latestDate = transformUNIXtoDate(latest);
+  const firstDate = transformUNIXtoDate(first);
+  const firstStack = extractPathFromStackTrace(
+    latestErr.err.split('\n')[1],
+  ).slice(1);
+  const otherStack = latestErr.err.split('\n').slice(2);
+  const ipPercentage = Object.entries(countIpPercent(all));
 
-    const ipTimeStamp = Object.values(extractIpTimeStamp(all));
-    const errCode = formatString(latestErr.code);
-    const browserPercentage = Object.entries(
-      Object.values(countDevicePercentage(all))[0],
-    );
-    const osPercentage = Object.entries(
-      Object.values(countDevicePercentage(all))[1],
-    );
-    return res.status(200).render('errorDetail', {
-      projectsArr,
-      accountName,
-      prjName,
-      latest,
-      latestToTimeDiff,
-      firstToTimeDiff,
-      latestDate,
-      firstDate,
-      all,
-      firstStack,
-      otherStack,
-      latestErr,
-      errCode,
-      errTitle,
-      timeStamp,
-      ipPercentage,
-      ipTimeStamp,
-      browserPercentage,
-      osPercentage,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      const url = '/home';
-      return res.status(404).render('404', { url });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+  const ipTimeStamp = Object.values(extractIpTimeStamp(all));
+  const errCode = formatString(latestErr.code);
+  const browserPercentage = Object.entries(
+    Object.values(countDevicePercentage(all))[0],
+  );
+  const osPercentage = Object.entries(
+    Object.values(countDevicePercentage(all))[1],
+  );
+  return res.status(200).render('errorDetail', {
+    projectsArr,
+    accountName,
+    prjName,
+    latest,
+    latestToTimeDiff,
+    firstToTimeDiff,
+    latestDate,
+    firstDate,
+    all,
+    firstStack,
+    otherStack,
+    latestErr,
+    errCode,
+    errTitle,
+    timeStamp,
+    ipPercentage,
+    ipTimeStamp,
+    browserPercentage,
+    osPercentage,
+  });
+});
