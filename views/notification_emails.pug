@@ -1,132 +1,71 @@
-doctype html
-html 
-    head
-        meta(charset='UTF-8')
-        meta(http-equiv='X-UA-Compatible' content='IE=edge')
-        meta(name='viewport' content='width=device-width, initial-scale=1.0')
-        title Settings
-        link(rel='icon' href='/img/icon_blue.png' type='image/png')
-        link(href='https://cdn.lineicons.com/4.0/lineicons.css' rel='stylesheet')
-        link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ' crossorigin='anonymous')
-        link(rel='stylesheet' href='/css/style.css')
-        link(rel="preconnect" href="https://fonts.googleapis.com")
-        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
-        link(href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet")
-        link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lineicons@2.0.0/dist/css/lineicons.css")
+extends template   
 
-    body
-        .wrapper
-            aside#sidebar
-                .d-flex
-                    button.toggle-btn(type='button')
-                        img.side_bar_icon(src='/img/icon_white_64.png')
-                    .sidebar-logo
-                        a(href=`/a/${accountName}`) NodeGuardian
-                ul.sidebar-nav
-                    li.sidebar-item
-                        a.sidebar-link(href=`/a/${accountName}/profile`)
-                            i.lni.lni-user
-                            span Profile
-                    li.sidebar-item
-                        a.sidebar-link(href=`/a/${accountName}`)
-                            i.lni.lni-agenda
-                            span Dashboard
-                    li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
-                            i.lni.lni-radio-button
-                            span Projects
-                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            each project in projectsArr
-                                li.sidebar-item
-                                    a.sidebar-link.sublink(href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}    
-                    li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
-                            i.lni.lni-cog
-                            span Project Settings
-                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            each project in projectsArr
-                                li.sidebar-item
-                                    a.sidebar-link.sublink(href=`/a/${accountName}/${project[0]}/settings/general`) #{project[0]}
-                    .sidebar-footer
-                        a.sidebar-link.logout_btn(href='#')
-                            i.lni.lni-exit
-                            span Logout
-            .sidebar_container                
-                .sidebar
-                    .sidebar2_title #{prjName} Settings
-                    .sidebar2_title.subtitle Basic Setup
-                    ul
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/general` class='nav-link') General
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/members` class='nav-link') Members
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/token` class='nav-link') Project Access Token
-                        li(class='nav-item')
-                            a(href=`/a/${accountName}/${prjName}/settings/notifications` class='nav-link') Notifications
-            .main.p-3
-                .project_owner(data-owner = `${accountName}`)
-                .project_name(data-prjname = `${prjName}`)
-                .project_ownerId(data-id = `${userId}`)
-                .timeWindow(data-timewindow = `${projectRules.timeWindow}`)
-                .quotaVal(data-quota = `${projectRules.quota}`)
-                .setting_container
-                    .notifications_title Emails
-                    .notifications_description This page allow you to configure rules settings, you can view rules and select your preferences.
-                    .notifications_container 
-                        .channel_column_container
-                            .switch_description Enabled/Disabled Emails Notifications
-                            if (projectRules.notification === 'on')
-                                input.switch(checked="true" type="checkbox") 
-                            else if (projectRules.notification === 'off')
-                                input.switch(type="checkbox")            
-                            .channel_title Notification Rules
-                            hr
-                            .rule_container
-                                .rule_group_container 
-                                    .rule_set_container 
-                                        .rule_name_description_container
-                                            .rule_name New Error 
-                                            .rule_description Send alert email whenever there is a new error
-                                        if (projectRules.alertFirst === 'on')
-                                            input.switch.new_error(checked="true" type="checkbox") 
-                                        else if (projectRules.alertFirst === 'off')
-                                            input.switch.new_error(type="checkbox") 
-                                    .rule_set_container
-                                        .rule_name_description_container
-                                            .rule_name Anomaly 
-                                            .rule_description Set threshold to detect anamoly
-                                            .anomaly_rule_window 
-                                                .anomaly_options
-                                                    .anomaly_timewindow Time window setting
-                                                        .anomaly_timewindow_description To set anomaly detection, you must choose a time window first
-                                                    select#windowDropdown
-                                                        option(value="60") 1 minute
-                                                        option(value="300") 5 minutes  
-                                                        option(value="1800") 30 minutes
-                                                        option(value="3600") 1 hour  
-                                                        option(value="10800") 3 hours
-                                                .anomaly_options
-                                                    .anomaly_quota Number of errors
-                                                        .anomaly_quota_description During the set time window, if the number of the same error exceeds this value, an email will be sent to notify you and your team
-                                                    label(for='numberInput')
-                                                    input(type='number' id='numberInput' name='numberInput' class='quota' min='1' max='100' step='1' value= "1")
-                                        if (projectRules.timeWindow === 'off')
-                                            input.switch.anomaly(type="checkbox")
-                                        else 
-                                            input.switch.anomaly(checked="true" type="checkbox")
-                                    .rule_set_container
-                                        .rule_name_description_container     
-                                            .rule_name Error Reactivate
-                                            .rule_description Send alert email when resolved error reactivate
-                                        if (projectRules.reactivate === 'off')
-                                            input.switch.reactivate(type="checkbox")
-                                        else 
-                                            input.switch.reactivate(checked="true" type="checkbox")
-                            button.rules_save_btn Save    
-                        
+block content
+    block sidebarContent 
+        include setting_sidebar
+        .main.p-3
+            .project_owner(data-owner = `${accountName}`)
+            .project_name(data-prjname = `${prjName}`)
+            .project_ownerId(data-id = `${userId}`)
+            .timeWindow(data-timewindow = `${projectRules.timeWindow}`)
+            .quotaVal(data-quota = `${projectRules.quota}`)
+            .setting_container
+                .notifications_title Emails
+                .notifications_description This page allow you to configure rules settings, you can view rules and select your preferences.
+                .notifications_container 
+                    .channel_column_container
+                        .switch_description Enabled/Disabled Emails Notifications
+                        if (projectRules.notification === 'on')
+                            input.switch(checked="true" type="checkbox") 
+                        else if (projectRules.notification === 'off')
+                            input.switch(type="checkbox")            
+                        .channel_title Notification Rules
+                        hr
+                        .rule_container
+                            .rule_group_container 
+                                .rule_set_container 
+                                    .rule_name_description_container
+                                        .rule_name New Error 
+                                        .rule_description Send alert email whenever there is a new error
+                                    if (projectRules.alertFirst === 'on')
+                                        input.switch.new_error(checked="true" type="checkbox") 
+                                    else if (projectRules.alertFirst === 'off')
+                                        input.switch.new_error(type="checkbox") 
+                                .rule_set_container
+                                    .rule_name_description_container
+                                        .rule_name Anomaly 
+                                        .rule_description Set threshold to detect anamoly
+                                        .anomaly_rule_window 
+                                            .anomaly_options
+                                                .anomaly_timewindow Time window setting
+                                                    .anomaly_timewindow_description To set anomaly detection, you must choose a time window first
+                                                select#windowDropdown
+                                                    option(value="60") 1 minute
+                                                    option(value="300") 5 minutes  
+                                                    option(value="1800") 30 minutes
+                                                    option(value="3600") 1 hour  
+                                                    option(value="10800") 3 hours
+                                            .anomaly_options
+                                                .anomaly_quota Number of errors
+                                                    .anomaly_quota_description During the set time window, if the number of the same error exceeds this value, an email will be sent to notify you and your team
+                                                label(for='numberInput')
+                                                input(type='number' id='numberInput' name='numberInput' class='quota' min='1' max='100' step='1' value= "1")
+                                    if (projectRules.timeWindow === 'off')
+                                        input.switch.anomaly(type="checkbox")
+                                    else 
+                                        input.switch.anomaly(checked="true" type="checkbox")
+                                .rule_set_container
+                                    .rule_name_description_container     
+                                        .rule_name Error Reactivate
+                                        .rule_description Send alert email when resolved error reactivate
+                                    if (projectRules.reactivate === 'off')
+                                        input.switch.reactivate(type="checkbox")
+                                    else 
+                                        input.switch.reactivate(checked="true" type="checkbox")
+                        button.rules_save_btn Save    
+                    
                             
-script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
-script(src='/js/sidebar.js' type="module")
-script(src='/js/notificationEmailSettings.js' type="module")
-script(src='/js/logout.js' type="module")
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
+    script(src='/js/sidebar.js' type="module")
+    script(src='/js/notificationEmailSettings.js' type="module")
+    script(src='/js/logout.js' type="module")

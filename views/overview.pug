@@ -1,322 +1,269 @@
-doctype html 
-html 
-    head    
-        
-        meta(charset='UTF-8')
-        meta(name='viewport' content='width=device-width, initial-scale=1.0')
-        title Overview
-        link(rel='stylesheet' href='/css/style.css')
-        link(rel='icon' href='/img/icon_blue.png' type='image/png')
-        script(src='https://cdn.plot.ly/plotly-2.32.0.min.js' charset="utf-8")
-        link(href='https://cdn.lineicons.com/4.0/lineicons.css' rel='stylesheet')
-        link(href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ' crossorigin='anonymous')
-        link(rel='stylesheet' href='/css/style.css')
-        link(rel="preconnect" href="https://fonts.googleapis.com")
-        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
-        link(href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet")
-        link(rel="preconnect" href="https://fonts.googleapis.com")
-        link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
-        link(href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet")
+extends template   
 
-    body
-        .wrapper
-            aside#sidebar.expand
-                .d-flex
-                    button.toggle-btn(type='button')
-                        img.side_bar_icon(src='/img/icon_white_64.png')
-                    .sidebar-logo
-                        a(href=`/a/${accountName}`) NodeGuardian
-                ul.sidebar-nav
-                    li.sidebar-item
-                        a.sidebar-link(href=`/a/${accountName}/profile`)
-                            i.lni.lni-user
-                            span Profile
-                    li.sidebar-item
-                        a.sidebar-link(href=`/a/${accountName}`)
-                            i.lni.lni-agenda
-                            span Dashboard
-                    li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
-                            i.lni.lni-radio-button
-                            span Projects
-                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            each project in projectsArr
-                                li.sidebar-item
-                                    a.sidebar-link.sublink(href=`/a/${accountName}/prj/${project[0]}`) #{project[0]} 
-                    li.sidebar-item
-                        a.sidebar-link.collapsed.has-dropdown(href='#' data-bs-toggle='collapse' data-bs-target='#auth' aria-expanded='false' aria-controls='auth')
-                            i.lni.lni-cog
-                            span Project Settings
-                        ul#auth.sidebar-dropdown.list-unstyled.collapse(data-bs-parent='#sidebar')
-                            each project in projectsArr
-                                li.sidebar-item
-                                    a.sidebar-link.sublink(href=`/a/${accountName}/${project[0]}/settings/general`) #{project[0]}
-                    .sidebar-footer
-                        a.sidebar-link.logout_btn(href='#')
-                            i.lni.lni-exit
-                            span Logout
-            .main.p-3
-                main.main
-                    .welcome
-                        .welcome_container
-                            .text
-                                .sub
-                                    .welcome_text Welcome to NodeGuardian!
-                                    .welcome_subtext Start catching and resolving errors fast.
-                                .quick_start Install SDK from NPM
-                                .SDK_setup_container
-                                    .sdk_code
-                                        span $
-                                        span.space 
-                                        span.space 
-                                        span.space 
-                                        span(style="color:rgb(130, 170, 255);") npm    
-                                        span.space
-                                        span(style="color:rgb(130, 170, 255);") install 
-                                        span.space
-                                        span --save
-                                        span.space
-                                        span.space
-                                        span node-guardian
-                                .quick_start Set Up NodeGuardian
-                                .SDK_setup_container.init
-                                    .sdk_code.comments
-                                        span //
-                                        span.space 
-                                        span.space 
-                                        span.space 
-                                        span import 
-                                        span.space
-                                        span and 
-                                        span.space
-                                        span initialize 
-                                        span.space
-                                        span the 
-                                        span.space
-                                        span node-guardian 
-                                        span.space
-                                        span library 
-                                        span.space
-                                        span with 
-                                        span.space
-                                        span your 
-                                        span.space
-                                        span access 
-                                        span.space
-                                        span token
-                                    .sdk_code.import
-                                        span.purple(style="color: #c586c0") import
-                                        span.space 
-                                        span.space 
-                                        span.space
-                                        span(style="color:rgb(130, 170, 255);") NodeGuardian
-                                        span.space 
-                                        span.space
-                                        span.space
-                                        span.purple(style="color: #c586c0;") from 
-                                        span.space 
-                                        span(style="color: #bb8a6b;letter-spacing: 0.5px;") " node-guardian " 
-                                        span ;
-                                    .sdk_code.init_pro 
-                                        span(style= "font-style: italic") var 
-                                        span.space
-                                        span(style= "color:rgb(130, 170, 255);") guard
-                                        span.space
-                                        span =
-                                        span.space 
-                                        span.space
-                                        span(style= "font-style: italic") new 
-                                        span.space 
-                                        span(style= "color:#4ec9b0;") NodeGuardian
-                                        span.space
-                                        span ( {
-                                        span.space
-                                        span.space
-                                        span.space
-                                        span(style= "color:rgb(130, 170, 255);") accessToken: 
-                                        span.space 
-                                        span(style="color: #bb8a6b") " < your project access token > "
-                                        span.space
-                                        span.space 
-                                        span } ) ;
-                                    .sdk_code.comments.two
-                                        span //
-                                        span.space
-                                        span.space
-                                        span.space
-                                        span catch 
-                                        span and 
-                                        span call 
-                                        span next 
-                                        span on 
-                                        span error  
-                                        span object 
-                                        span in 
-                                        span your 
-                                        span catch 
-                                        span block
-                                    .sdk_code
-                                        span(style="color: #c586c0;") catch ( 
-                                        span(style= "color:rgb(130, 170, 255);") error 
-                                        span(style="color: #c586c0;") ) {
-                                    .sdk_code 
-                                        span.space
-                                        span.space
-                                        span.space
-                                        span.space
-                                        span.space
-                                        span.space
-                                        span(style= "color:#dbd186;") next ( 
-                                        span(style= "color:rgb(130, 170, 255);") error 
-                                        span(style= "color:#dbd186;") )
-                                        span.space
-                                        span ;
-                                    .sdk_code 
-                                        span.space
-                                        span.space
-                                        span(style="color: #c586c0;") }
-                                    .sdk_code.comments.two
-                                        span //
-                                        span.space 
-                                        span.space 
-                                        span.space 
-                                        span use  
-                                        span it 
-                                        span in  
-                                        span express  
-                                        span framework 
-                                        span as 
-                                        span a 
-                                        span middleware
-                                    .sdk_code.comments
-                                        span //
-                                        span.space 
-                                        span.space
-                                        span.space
-                                        span this 
-                                        span will 
-                                        span send 
-                                        span erorr 
-                                        span information 
-                                        span and 
-                                        span contextual 
-                                        span data 
-                                        span to NodeGuardian 
-                                    .sdk_code
-                                        span(style= "color:rgb(130, 170, 255);") app
-                                        span .use
-                                        span.space
-                                        span (
-                                        span.space
-                                        span(style= "color:rgb(130, 170, 255);") guard.
-                                        span(style= "color:#dbd186;") handleError
-                                        span(style="color: #c586c0;") ( )
-                                        span.space
-                                        span )
-                                        span.space
-                                        span ;
-                            img(class='debug' src='/img/icon_blue_big.png')          
-
-
-
-                    each ts in timeStamp
-                        .timeStampStat(data-time = `${ts}`)
-                    .error_overview_graph
-                        .error_overview_graph_container
-                            .past1dOverviewGraph 
-                                .title Trends of Errors
-                                    .timeline
-                                        .value 24 hours
-                                .inspect_container
-                                    .inspect_text click to choose projects to inspect
-                            #past1day(style="width: 100%;")
-                            .dashboard_summary Summary 
-                            .trends_summary_container 
-                                .project_trends_title_container
-                                    .project_trends_title Project 
-                                    .project_trends_title_1 Total Errors Today
-                                    .project_trends_title_2 Compare to last day
-                                .project_trends_container 
-                                each ts in past1dayErr
-                                    .project_trends_i_container
-                                        .project_trends_i_title #{ts[0]}
-                                        .project_trends_i_total_container
-                                            .project_trends_i_total #{ts[1].length}
-                                        .project_trends_i_compare_container
-                                            if ts[2] > 0
-                                                .project_trends_i_compare_positive + #{ts[2]}
-                                            else if ts[2] < 0
-                                                .project_trends_i_compare_negative #{ts[2]}
-                                            else
-                                                .project_trends_i_compare_nochange ------
-                    .project_container 
-                        .project_container_header Project list
-                        if projectsArr.length >= 1
-                            .project_section_description 
-                                .firstLine_container
-                                    img.check(src='/img/green_check.png') 
+block content
+    block sidebarContent 
+        .main.p-3
+            main.main
+                .welcome
+                    .welcome_container
+                        .text
+                            .sub
+                                .welcome_text Welcome to NodeGuardian!
+                                .welcome_subtext Start catching and resolving errors fast.
+                            .quick_start Install SDK from NPM
+                            .SDK_setup_container
+                                .sdk_code
+                                    span $
+                                    span.space 
+                                    span.space 
+                                    span.space 
+                                    span(style="color:rgb(130, 170, 255);") npm    
+                                    span.space
+                                    span(style="color:rgb(130, 170, 255);") install 
+                                    span.space
+                                    span --save
+                                    span.space
+                                    span.space
+                                    span node-guardian
+                            .quick_start Set Up NodeGuardian
+                            .SDK_setup_container.init
+                                .sdk_code.comments
+                                    span //
+                                    span.space 
+                                    span.space 
+                                    span.space 
+                                    span import 
+                                    span.space
+                                    span and 
+                                    span.space
+                                    span initialize 
+                                    span.space
+                                    span the 
+                                    span.space
+                                    span node-guardian 
+                                    span.space
+                                    span library 
+                                    span.space
+                                    span with 
+                                    span.space
+                                    span your 
+                                    span.space
+                                    span access 
+                                    span.space
+                                    span token
+                                .sdk_code.import
+                                    span.purple(style="color: #c586c0") import
+                                    span.space 
+                                    span.space 
+                                    span.space
+                                    span(style="color:rgb(130, 170, 255);") NodeGuardian
+                                    span.space 
+                                    span.space
+                                    span.space
+                                    span.purple(style="color: #c586c0;") from 
+                                    span.space 
+                                    span(style="color: #bb8a6b;letter-spacing: 0.5px;") " node-guardian " 
+                                    span ;
+                                .sdk_code.init_pro 
+                                    span(style= "font-style: italic") var 
+                                    span.space
+                                    span(style= "color:rgb(130, 170, 255);") guard
+                                    span.space
+                                    span =
+                                    span.space 
+                                    span.space
+                                    span(style= "font-style: italic") new 
+                                    span.space 
+                                    span(style= "color:#4ec9b0;") NodeGuardian
+                                    span.space
+                                    span ( {
                                     span.space
                                     span.space
                                     span.space
-                                    .firstLine Your project is up and running! 
-                                .secondLine If you have not seen any error information in your project, please make sure you have installed and initialize the SDK properly.
-                        else 
-                            .project_section_description 
-                                .firstLine_container
-                                    img.check(src='/img/light.png') 
+                                    span(style= "color:rgb(130, 170, 255);") accessToken: 
+                                    span.space 
+                                    span(style="color: #bb8a6b") " < your project access token > "
+                                    span.space
+                                    span.space 
+                                    span } ) ;
+                                .sdk_code.comments.two
+                                    span //
                                     span.space
                                     span.space
                                     span.space
-                                    .firstLine Create your first project to get started! 
-                                .secondLine Start monitoring your apps using our error logging services, follow the instructions above to import and install our SDK.
-                        .create_button_container                          
-                            button#open-create-project + Create a Project
-                        if projectsArr
-                            .project_list_container
-                                .project_list_title
-                                    .project_title Project
-                                    .project_user Users
-                                    //- each project in projectsArr
-                                    //-     .project_overview_info_container
-                                    //-         a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}
-                                .project_list_project_container
-                                    each project in projectsArr
-                                        .project_overview_info_container  
-                                            a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}      
-                                            a(class= 'project_user_numbers' href=`/a/${accountName}/${project[0]}/settings/members`) #{project[2]}  
-                        
+                                    span catch 
+                                    span and 
+                                    span call 
+                                    span next 
+                                    span on 
+                                    span error  
+                                    span object 
+                                    span in 
+                                    span your 
+                                    span catch 
+                                    span block
+                                .sdk_code
+                                    span(style="color: #c586c0;") catch ( 
+                                    span(style= "color:rgb(130, 170, 255);") error 
+                                    span(style="color: #c586c0;") ) {
+                                .sdk_code 
+                                    span.space
+                                    span.space
+                                    span.space
+                                    span.space
+                                    span.space
+                                    span.space
+                                    span(style= "color:#dbd186;") next ( 
+                                    span(style= "color:rgb(130, 170, 255);") error 
+                                    span(style= "color:#dbd186;") )
+                                    span.space
+                                    span ;
+                                .sdk_code 
+                                    span.space
+                                    span.space
+                                    span(style="color: #c586c0;") }
+                                .sdk_code.comments.two
+                                    span //
+                                    span.space 
+                                    span.space 
+                                    span.space 
+                                    span use  
+                                    span it 
+                                    span in  
+                                    span express  
+                                    span framework 
+                                    span as 
+                                    span a 
+                                    span middleware
+                                .sdk_code.comments
+                                    span //
+                                    span.space 
+                                    span.space
+                                    span.space
+                                    span this 
+                                    span will 
+                                    span send 
+                                    span erorr 
+                                    span information 
+                                    span and 
+                                    span contextual 
+                                    span data 
+                                    span to NodeGuardian 
+                                .sdk_code
+                                    span(style= "color:rgb(130, 170, 255);") app
+                                    span .use
+                                    span.space
+                                    span (
+                                    span.space
+                                    span(style= "color:rgb(130, 170, 255);") guard.
+                                    span(style= "color:#dbd186;") handleError
+                                    span(style="color: #c586c0;") ( )
+                                    span.space
+                                    span )
+                                    span.space
+                                    span ;
+                        img(class='debug' src='/img/icon_blue_big.png')          
 
-                    .create-project-window.hidden
-                        .create-project-form-title
-                            .form_title Let's Create a Project!
-                            .form_description Error information in your NodeGuardian account is organized into Projects. Each project represents a single service or application.
-                            .form_default 
-                                .form_alert_setting_container
-                                    img.check(src='/img/light.png') 
-                                    .default_alert_setting.first A new project's default alert settings will send you a email whenever there is a new error.
-                                        .default_alert_setting.second You can turn off this setting after creating a project.
-                                .form_alert_setting_container
-                                    img.check(src='/img/light.png') 
-                                    .default_alert_setting.first Please notice that a project's name should not contain any special characters !
-                                        
-                        .create-project-form
-                            .value_contianer
-                                .form_group
-                                    label(for="projectName" class='form_projectName') PROJECT  NAME
-                                    input#projectName(type="text" name="projectName" required)
-                                .form_group
-                                    label(for="token" class='form_token') PROJECT  TOKEN
-                                    input#token(type="text" name="token" readonly)
-                                .form_group.form_group_button
-                                    span.space
-                                    button#generate-token Generate Token
-                                .form_button_group
-                                    button#submit-create-project Create Project
-                                    button.close_btn Cancel
-                        
 
 
-        script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
-        script(src='/js/sidebar.js' type="module")
-        script(src='/js/overview.js' type="module")
-        script(src='/js/logout.js' type="module")
+                each ts in timeStamp
+                    .timeStampStat(data-time = `${ts}`)
+                .error_overview_graph
+                    .error_overview_graph_container
+                        .past1dOverviewGraph 
+                            .title Trends of Errors
+                                .timeline
+                                    .value 24 hours
+                            .inspect_container
+                                .inspect_text click to choose projects to inspect
+                        #past1day(style="width: 100%;")
+                        .dashboard_summary Summary 
+                        .trends_summary_container 
+                            .project_trends_title_container
+                                .project_trends_title Project 
+                                .project_trends_title_1 Total Errors Today
+                                .project_trends_title_2 Compare to last day
+                            .project_trends_container 
+                            each ts in past1dayErr
+                                .project_trends_i_container
+                                    .project_trends_i_title #{ts[0]}
+                                    .project_trends_i_total_container
+                                        .project_trends_i_total #{ts[1].length}
+                                    .project_trends_i_compare_container
+                                        if ts[2] > 0
+                                            .project_trends_i_compare_positive + #{ts[2]}
+                                        else if ts[2] < 0
+                                            .project_trends_i_compare_negative #{ts[2]}
+                                        else
+                                            .project_trends_i_compare_nochange ------
+                .project_container 
+                    .project_container_header Project list
+                    if projectsArr.length >= 1
+                        .project_section_description 
+                            .firstLine_container
+                                img.check(src='/img/green_check.png') 
+                                span.space
+                                span.space
+                                span.space
+                                .firstLine Your project is up and running! 
+                            .secondLine If you have not seen any error information in your project, please make sure you have installed and initialize the SDK properly.
+                    else 
+                        .project_section_description 
+                            .firstLine_container
+                                img.check(src='/img/light.png') 
+                                span.space
+                                span.space
+                                span.space
+                                .firstLine Create your first project to get started! 
+                            .secondLine Start monitoring your apps using our error logging services, follow the instructions above to import and install our SDK.
+                    .create_button_container                          
+                        button#open-create-project + Create a Project
+                    if projectsArr
+                        .project_list_container
+                            .project_list_title
+                                .project_title Project
+                                .project_user Users
+                                //- each project in projectsArr
+                                //-     .project_overview_info_container
+                                //-         a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}
+                            .project_list_project_container
+                                each project in projectsArr
+                                    .project_overview_info_container  
+                                        a(class= 'project_name' href=`/a/${accountName}/prj/${project[0]}`) #{project[0]}      
+                                        a(class= 'project_user_numbers' href=`/a/${accountName}/${project[0]}/settings/members`) #{project[2]}  
+                    
+
+                .create-project-window.hidden
+                    .create-project-form-title
+                        .form_title Let's Create a Project!
+                        .form_description Error information in your NodeGuardian account is organized into Projects. Each project represents a single service or application.
+                        .form_default 
+                            .form_alert_setting_container
+                                img.check(src='/img/light.png') 
+                                .default_alert_setting.first A new project's default alert settings will send you a email whenever there is a new error.
+                                    .default_alert_setting.second You can turn off this setting after creating a project.
+                            .form_alert_setting_container
+                                img.check(src='/img/light.png') 
+                                .default_alert_setting.first Please notice that a project's name should not contain any special characters !
+                                    
+                    .create-project-form
+                        .value_contianer
+                            .form_group
+                                label(for="projectName" class='form_projectName') PROJECT  NAME
+                                input#projectName(type="text" name="projectName" required)
+                            .form_group
+                                label(for="token" class='form_token') PROJECT  TOKEN
+                                input#token(type="text" name="token" readonly)
+                            .form_group.form_group_button
+                                span.space
+                                button#generate-token Generate Token
+                            .form_button_group
+                                button#submit-create-project Create Project
+                                button.close_btn Cancel
+                    
+
+
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
+    script(src='/js/sidebar.js' type="module")
+    script(src='/js/overview.js' type="module")
+    script(src='/js/logout.js' type="module")

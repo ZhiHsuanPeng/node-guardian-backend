@@ -8,6 +8,7 @@ router.route('/home').get(viewController.renderHomePage);
 router.route('/signup').get(viewController.renderSignUpForm);
 router.route('/signup/:token').get(viewController.renderSpecialSignUpForm);
 router.route('/signin').get(viewController.renderSignInForm);
+// router.route('/a/*', authenticate);
 router
   .route('/a/:accountName/profile')
   .get(authenticate, viewController.renderProfilePage);
