@@ -5,6 +5,8 @@ const userModel = require('../models_RDS/user');
 const mail = require('../utils/mail');
 const elasticSearchClient = require('../models_Search/elasticSearch');
 const redis = require('../utils/redis');
+const catchAsync = require('../utils/catchAsync');
+const { ValidationError } = require('../utils/errorHandler');
 
 dotenv.config();
 
@@ -18,33 +20,28 @@ const resetAlert = async (token) => {
   await Promise.all(matchedKeys.map((key) => redis.set(key, 0)));
 };
 
-exports.createProject = async (req, res) => {
-  try {
-    const { projectName, accessToken } = req.body;
-    const invalidCharacters = /[\s!@#$%^&*()\-+=\[\]{}|\\:;"'<>,.?/~`]/;
+exports.createProject = catchAsync(async (req, res, next) => {
+  const { projectName, accessToken } = req.body;
+  const invalidCharacters = /[\s!@#$%^&*()\-+=\[\]{}|\\:;"'<>,.?/~`]/;
+  const userId = res.locals.userId;
 
-    if (invalidCharacters.test(projectName)) {
-      return res.status(400).json({
-        message:
-          'Project name invalid, the name of the project should not contain any spcial characters.',
-      });
-    }
-    const userId = res.locals.userId;
-    if (await projectModel.isProjectNameExist(userId, projectName)) {
-      throw Error('project name already exists!');
-    }
-    await projectModel.createProject(userId, projectName, accessToken);
-    await elasticSearchClient.indices.create({
-      index: accessToken,
-    });
-    return res.status(200).json({ message: 'create project success' });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ message: 'create project failed' });
+  if (invalidCharacters.test(projectName)) {
+    return next(
+      new ValidationError(
+        'Project name invalid, the name of the project should not contain any spcial characters.',
+      ),
+    );
   }
-};
+
+  if (await projectModel.isProjectNameExist(userId, projectName)) {
+    return next(new ValidationError('project name already exists!'));
+  }
+  await projectModel.createProject(userId, projectName, accessToken);
+  await elasticSearchClient.indices.create({
+    index: accessToken,
+  });
+  return res.status(200).json({ message: 'create project success' });
+});
 
 exports.modifyProjectAlertSettings = async (req, res) => {
   try {

@@ -25,7 +25,6 @@ const getChannel = async () => {
 
 exports.insertNewLogs = catchAsync(async (req, res, next) => {
   const { accessToken } = req.body;
-  console.log(req.body);
   // Check if the log data has necessary field
   const validateResult = schema.validate(req.body);
   if (validateResult.error) {
