@@ -1,7 +1,7 @@
 const express = require('express');
 const viewController = require('../controllers/viewController');
 const authenticate = require('../middlewares/authenticate');
-const fetchInfo = require('../middlewares/fetchInfo');
+const fetchProjectsInfo = require('../middlewares/fetchProjectsInfo');
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.route('/signup').get(viewController.renderSignUpForm);
 router.route('/signup/:token').get(viewController.renderSpecialSignUpForm);
 router.route('/signin').get(viewController.renderSignInForm);
 
-router.use('/a/*', authenticate, fetchInfo);
+router.use('/a/*', authenticate, fetchProjectsInfo);
 
 router.route('/a/:accountName/profile').get(viewController.renderProfilePage);
 router.route('/a/:accountName').get(viewController.renderOverViewPage);

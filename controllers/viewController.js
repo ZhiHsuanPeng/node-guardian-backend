@@ -211,80 +211,53 @@ exports.renderSettingGeneralPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderSettingNotificationEmailsPage = async (req, res) => {
-  try {
-    const { accountName, prjName } = req.params;
-    const userId = res.locals.userId;
-    const projectsArr = res.locals.project;
-    const projectRules = await projectModel.getProjectByUserIdAndProjectName(
-      userId,
-      prjName,
-    );
-    return res.status(200).render('notification_emails', {
-      prjName,
-      accountName,
-      userId,
-      projectRules,
-      projectsArr,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+exports.renderSettingNotificationEmailsPage = catchAsync(async (req, res) => {
+  const { accountName, prjName } = req.params;
+  const userId = res.locals.userId;
+  const projectsArr = res.locals.project;
+  const projectRules = await projectModel.getProjectByUserIdAndProjectName(
+    userId,
+    prjName,
+  );
+  return res.status(200).render('notification_emails', {
+    prjName,
+    accountName,
+    userId,
+    projectRules,
+    projectsArr,
+  });
+});
 
-exports.renderSettingNotificationPage = async (req, res) => {
-  try {
-    const { accountName, prjName } = req.params;
-    const userId = res.locals.userId;
-    const projectsArr = res.locals.project;
+exports.renderSettingNotificationPage = catchAsync(async (req, res) => {
+  const { accountName, prjName } = req.params;
+  const userId = res.locals.userId;
+  const projectsArr = res.locals.project;
 
-    return res.status(200).render('setting_notifications', {
-      prjName,
-      accountName,
-      userId,
-      projectsArr,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+  return res.status(200).render('setting_notifications', {
+    prjName,
+    accountName,
+    userId,
+    projectsArr,
+  });
+});
 
-exports.renderSettingMemeberPage = async (req, res) => {
-  try {
-    const { accountName, prjName } = req.params;
-    const userId = res.locals.userId;
-    const projectsArr = res.locals.project;
-    const data = await userModel.getOwnerByProjectNameAndAccountName(
-      prjName,
-      accountName,
-    );
-    const users = await userModel.getOtherUsers(data[0].projectId);
-    return res.status(200).render('setting_members', {
-      prjName,
-      accountName,
-      users,
-      userId,
-      projectsArr,
-    });
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res
-      .status(500)
-      .json({ message: 'something went wrong, please try again!' });
-  }
-};
+exports.renderSettingMemeberPage = catchAsync(async (req, res) => {
+  const { accountName, prjName } = req.params;
+  const userId = res.locals.userId;
+  const projectsArr = res.locals.project;
+  const owner = await userModel.getOwnerByProjectNameAndAccountName(
+    prjName,
+    accountName,
+  );
+  const users = await userModel.getOtherUsers(owner[0].projectId);
+  return res.status(200).render('setting_members', {
+    prjName,
+    accountName,
+    users,
+    userId,
+    projectsArr,
+  });
+});
 
 exports.renderOverViewPage = async (req, res) => {
   try {

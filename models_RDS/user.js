@@ -54,7 +54,7 @@ exports.getOwnerByProjectNameAndAccountName = async (
 
 exports.getOtherUsers = async (projectId) => {
   const result = await pool.query(
-    `SELECT u.* FROM access  AS a
+    `SELECT u.* FROM access AS a
     INNER JOIN users AS u ON u.id = a.userId
     WHERE a.projectId = ?`,
     [projectId],

@@ -1,6 +1,6 @@
 const projectModel = require('../models_RDS/project');
 
-const fetchInfo = async (req, res, next) => {
+const fetchProjectsInfo = async (req, res, next) => {
   const userId = res.locals.userId;
   const projectsArr = Object.entries(
     await projectModel.getAllProjectByUserId(userId),
@@ -9,4 +9,4 @@ const fetchInfo = async (req, res, next) => {
   next();
 };
 
-module.exports = fetchInfo;
+module.exports = fetchProjectsInfo;

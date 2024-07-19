@@ -18,8 +18,7 @@ const authenticate = async (req, res, next) => {
     const redirectUrl = `${
       process.env.DEV_URL || process.env.LOCAL_URL
     }/signin`;
-
-    if (err.name === 'JsonWebTokenError') {
+    if (err.name === 'JsonWebTokenError' || err.name === 'SyntaxError') {
       return res.status(401).render('error', {
         message: 'invalid credentials, please sign in again',
         redirectUrl,
