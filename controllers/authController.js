@@ -5,6 +5,8 @@ const argon2 = require('argon2');
 const userModel = require('../models_RDS/user');
 const projectModel = require('../models_RDS/project');
 const redis = require('../utils/redis');
+const catchAsync = require('../utils/catchAsync');
+const { ValidationError } = require('../utils/errorHandler');
 
 const signTokenAndSendCookie = (res, id, name, email) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRETS, {
@@ -24,24 +26,17 @@ const signTokenAndSendCookie = (res, id, name, email) => {
     .json({ message: 'cookie sent!', data: { user: { name, email } } });
 };
 
-exports.signIn = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await userModel.findUserByEmail(email);
-    if (!user) {
-      throw Error('user email does not exist!');
-    }
-    if (await argon2.verify(user.password, password)) {
-      return signTokenAndSendCookie(res, user.id, user.name, user.email);
-    }
-    throw Error('incorrect password');
-  } catch (err) {
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ errors: 'log in failed' });
+exports.signIn = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+  const user = await userModel.findUserByEmail(email);
+  if (!user) {
+    throw new ValidationError('user email does not exist!');
   }
-};
+  if (await argon2.verify(user.password, password)) {
+    return signTokenAndSendCookie(res, user.id, user.name, user.email);
+  }
+  throw new ValidationError('incorrect password!');
+});
 
 exports.signUp = async (req, res) => {
   try {

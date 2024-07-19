@@ -9,7 +9,7 @@ class ValidationError extends Error {
 const errorHandler = (err, req, res, next) => {
   console.error(err);
   if (err instanceof ValidationError) {
-    res.status(400).json({ errors: err.message });
+    res.status(400).json({ message: err.message });
     return;
   }
   if (err instanceof Error) {

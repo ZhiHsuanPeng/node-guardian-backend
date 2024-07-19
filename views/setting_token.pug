@@ -2,6 +2,7 @@ extends template
 
 block content
     block sidebarContent 
+        include setting_sidebar
         .main.p-3
             .setting_container
                 .project_owner(data-owner = `${accountName}`)

@@ -1,46 +1,45 @@
 extends template   
 
 block content
-    block sidebarContent 
-        .main                  
-            main.main 
-                .errTitle(data-error= `${errorMessageArr}`)
-                .projectToken(data-token = `${projectToken}`)
-                .errorLogsContainer
-                    .project_base_title_container
-                        .project_base_title= `Items for ${prjName}`
-                    .containerBar
-                        .title Error Message
-                        .oneDayTrends 24hr Trend
-                        .count Total 
-                        .last Last
-                        .mute_option Mute
-                        .resolved_option Resolved
-                    each error in errObj
-                        .errorContainer
-                            .timeStampStat(data-time = `${error.timeStamp}`)      
-                            a.errorTitle(href=`/a/${accountName}/prj/${prjName}/err/${error.err}`) #{error.err}
-                            div.errGraph(id=`${error.err}`)
-                            .errCount Count: #{error.count} 
-                            .errRecent #{error.recentTime}
-                            .mute_container
-                                if error.mute === true  
-                                    img.mute(src='/img/mute.png') 
-                                    select.mutedropdown.hide(data-error=`mute_${error.err}_${error.muteTime}`)
-                                    .tooltip= `This error is muted for ${error.muteTime} hours`
-                                else    
-                                    select.mutedropdown(data-error=`mute_${error.err}_${error.muteTime}`)
-                                        option(value="0") none
-                                        option(value="3600") 1 hour
-                                        option(value="10800") 3 hours 
-                                        option(value="21600") 6 hours 
-                                        option(value="43200") 12 hours  
-                                        option(value="86400") 24 hours
-                            .resolved_container 
-                                if error.resolve === true
-                                    input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}` checked)
-                                else  
-                                    input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}`)
+    block sidebarContent                   
+        main.main 
+            .errTitle(data-error= `${errorMessageArr}`)
+            .projectToken(data-token = `${projectToken}`)
+            .errorLogsContainer
+                .project_base_title_container
+                    .project_base_title= `Items for ${prjName}`
+                .containerBar
+                    .title Error Message
+                    .oneDayTrends 24hr Trend
+                    .count Total 
+                    .last Last
+                    .mute_option Mute
+                    .resolved_option Resolved
+                each error in errObj
+                    .errorContainer
+                        .timeStampStat(data-time = `${error.timeStamp}`)      
+                        a.errorTitle(href=`/a/${accountName}/prj/${prjName}/err/${error.err}`) #{error.err}
+                        div.errGraph(id=`${error.err}`)
+                        .errCount Count: #{error.count} 
+                        .errRecent #{error.recentTime}
+                        .mute_container
+                            if error.mute === true  
+                                img.mute(src='/img/mute.png') 
+                                select.mutedropdown.hide(data-error=`mute_${error.err}_${error.muteTime}`)
+                                .tooltip= `This error is muted for ${error.muteTime} hours`
+                            else    
+                                select.mutedropdown(data-error=`mute_${error.err}_${error.muteTime}`)
+                                    option(value="0") none
+                                    option(value="3600") 1 hour
+                                    option(value="10800") 3 hours 
+                                    option(value="21600") 6 hours 
+                                    option(value="43200") 12 hours  
+                                    option(value="86400") 24 hours
+                        .resolved_container 
+                            if error.resolve === true
+                                input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}` checked)
+                            else  
+                                input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}`)
         script(src='/js/projectPage.js' type="module")
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
         script(src='/js/sidebar.js' type="module")
