@@ -10,7 +10,7 @@ exports.createUser = async (name, email, password) => {
   if (results[0].insertId) {
     return results[0].insertId;
   }
-  throw Error('create user failed');
+  return Error('create user failed');
 };
 
 exports.findUserByEmail = async (email) => {

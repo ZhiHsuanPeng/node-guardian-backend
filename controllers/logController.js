@@ -1,5 +1,6 @@
 const amqplib = require('amqplib');
 const projectModel = require('../models_RDS/project');
+const { ValidationError } = require('../utils/errorHandler');
 
 let connection;
 let channel;
@@ -24,7 +25,7 @@ exports.insertNewLogs = async (req, res) => {
   try {
     const { accessToken } = req.body;
     if (!(await projectModel.findProject(accessToken))) {
-      throw Error(
+      throw ValidationError(
         'Unable to send logs data to nodeguardian server because no project is found with that access token, please check again!',
       );
     }
@@ -34,7 +35,7 @@ exports.insertNewLogs = async (req, res) => {
 
     return res.status(200).json({ message: 'OK' });
   } catch (err) {
-    if (err instanceof Error) {
+    if (err instanceof ValidationError) {
       return res.status(400).json({ message: err.message });
     }
     return res.status(500).json({ message: err.message });

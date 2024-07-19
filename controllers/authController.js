@@ -38,21 +38,19 @@ exports.signIn = catchAsync(async (req, res) => {
   throw new ValidationError('incorrect password!');
 });
 
-exports.signUp = async (req, res) => {
+exports.signUp = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     const userId = await userModel.createUser(name, email, password);
     return signTokenAndSendCookie(res, userId, name, email);
   } catch (err) {
-    if (err.sqlState === '23000') {
-      return res.status(400).json({ message: 'User email already exits!' });
+    if (err.code === 'ER_DUP_ENTRY') {
+      return next(new ValidationError('user email already exists!'));
     }
-    if (err instanceof Error) {
-      return res.status(400).json({ message: err.message });
-    }
-    return res.status(500).json({ errors: 'sign up failed' });
+    return next(Error('sign up fail! please try again later!'));
   }
 };
+
 exports.specialSignUp = async (req, res) => {
   try {
     const { token, name, email, password } = req.body;

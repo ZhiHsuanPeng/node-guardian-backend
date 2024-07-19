@@ -7,16 +7,14 @@ class ValidationError extends Error {
 }
 
 const errorHandler = (err, req, res, next) => {
-  console.error(err);
   if (err instanceof ValidationError) {
     res.status(400).json({ message: err.message });
     return;
   }
   if (err instanceof Error) {
-    res.status(500).json({ errors: err.message });
-    return;
+    console.error(err);
+    res.status(500).json({ message: 'something went wrong!' });
   }
-  res.status(500).send('Oops, unknown error');
 };
 
 module.exports = { ValidationError, errorHandler };
