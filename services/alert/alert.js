@@ -1,7 +1,7 @@
 const amqplib = require('amqplib');
 const dotenv = require('dotenv');
-const pool = require('../models_RDS/databasePool');
-const mail = require('../utils/mail');
+const pool = require('../../models_RDS/databasePool');
+const mail = require('../../utils/mail');
 const redis = require('./alert_redis');
 
 dotenv.config();
