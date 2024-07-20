@@ -22,10 +22,8 @@ export const signup = async (name, email, password) => {
         password,
       }),
     });
-    console.log(response);
     if (response.ok) {
       const responseData = await response.json();
-      console.log(responseData);
       showAlert(
         'success',
         `Hello! ${responseData.data.user.name}! <br> Please confirm this is your email: ${responseData.data.user.email}`,

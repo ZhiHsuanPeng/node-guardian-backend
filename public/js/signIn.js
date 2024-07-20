@@ -28,7 +28,6 @@ export const signin = async (email, password) => {
       window.setTimeout(() => {
         location.assign(`/a/${responseData.data.user.name}`);
       }, 1000);
-      console.log(responseData);
     } else {
       const errorData = await response.json();
       showAlert('error', errorData.message);

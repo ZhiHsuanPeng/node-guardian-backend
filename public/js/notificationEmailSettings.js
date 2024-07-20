@@ -68,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   windowDropdown.addEventListener('change', (event) => {
     const selectedValue = event.target.value;
-    console.log('Selected value:', selectedValue);
   });
 
   checkbox.addEventListener('change', () => {
@@ -95,7 +94,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const anomalySwitch = document.querySelector('.switch.anomaly').checked;
       const timeWindowVal = document.querySelector('#windowDropdown').value;
       const quotaVal = document.querySelector('.quota').value;
-      console.log(reactivateSwitch);
 
       const transformBoolean = (item) => {
         if (item === true) {
@@ -128,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        console.log(responseData);
         showAlert('success', 'New Rules Set Successfully!');
         window.setTimeout(() => {
           location.assign(
@@ -137,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
       }
     } catch (err) {
-      console.log(err);
       showAlert('error', err.message);
     }
   });

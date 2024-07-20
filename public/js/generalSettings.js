@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   saveBtn.addEventListener('click', async () => {
     try {
       const newProjectName = document.querySelector('#projectName').value;
-      console.log(newProjectName);
       const response = await fetch('/api/v1/projects', {
         method: 'PATCH',
         headers: {
@@ -34,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
       }
     } catch (err) {
-      console.log(err);
       showAlert('error', err.message);
     }
   });
