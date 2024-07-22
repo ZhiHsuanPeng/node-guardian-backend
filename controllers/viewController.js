@@ -51,7 +51,18 @@ const transformUNIXtoDate = (unix) => {
 const extractPathFromStackTrace = (stackTrace) => {
   const regex = /\/(?:[^\/]+\/)+[^\/]+\.[^\/]+/;
   const match = stackTrace.match(regex);
-  return match ? match[0] : '';
+  if (!match) {
+    return '';
+  }
+  // Check if it is UNIX system
+  if (match[0].slice(1, 2).toUpperCase() !== match[0].slice(1, 2)) {
+    return `/${match[0]}`;
+  }
+  // Check if it is Windows system
+  if (match[0].slice(2, 3) === ':') {
+    return match[0];
+  }
+  return match[0];
 };
 
 const formatString = (str) => {
@@ -401,14 +412,12 @@ const renderErrorDetailPage = catchAsync(async (req, res) => {
   const firstToTimeDiff = transformUNIXtoDiff(first);
   const latestDate = transformUNIXtoDate(latest);
   const firstDate = transformUNIXtoDate(first);
-
   // Get stack trace
   const firstStack = extractPathFromStackTrace(
     latestErr.err.split('\n')[1],
   ).slice(1);
   const otherStack = latestErr.err.split('\n').slice(2);
   const errCode = formatString(latestErr.code);
-
   // Get other related params
   const ipPercentage = Object.entries(countIpPercent(all));
   const ipTimeStamp = Object.values(extractIpTimeStamp(all));
@@ -456,4 +465,5 @@ module.exports = {
   renderErrorDetailPage,
   renderSettingNotificationEmailsPage,
   transformUNIXtoDiff,
+  extractPathFromStackTrace,
 };

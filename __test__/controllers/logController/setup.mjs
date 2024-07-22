@@ -1,4 +1,5 @@
 import { createRequire } from 'module';
+import amqplib from 'amqplib';
 const require = createRequire(import.meta.url);
 const pool = require('../../../models_RDS/databasePool');
 

@@ -1,10 +1,7 @@
 import { createRequire } from 'module';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 const require = createRequire(import.meta.url);
-const dotenv = require('dotenv');
 const { transformUNIXtoDiff } = require('../../../controllers/viewController');
-
-dotenv.config();
 
 describe('transformUNIXtoDiff', () => {
   const now = Date.now();
