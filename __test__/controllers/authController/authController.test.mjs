@@ -9,7 +9,11 @@ import {
   vi,
 } from 'vitest';
 import supertest from 'supertest';
-import { setupTestDatabase, teardownTestDatabase } from './setup';
+import {
+  setupTestDatabase,
+  teardownTestDatabase,
+  setupSpecialSignup,
+} from './setup';
 const require = createRequire(import.meta.url);
 const { app } = require('../../../app');
 
@@ -18,6 +22,12 @@ describe('signUp API', () => {
 
   beforeAll(async () => {
     await setupTestDatabase();
+    request = supertest(app);
+    // const newPorject = {
+    //   projectName: 'Stylish',
+    //   accessToken: '123456',
+    // };
+    // await request.post('/api/v1/projects').send(newPorject);
   });
 
   afterAll(async () => {
@@ -199,6 +209,45 @@ describe('signIn API', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         message: ['error: Password is required '],
+      }),
+    );
+  });
+});
+
+describe('special sign up API', () => {
+  let request;
+
+  beforeAll(async () => {
+    await setupSpecialSignup();
+  });
+
+  afterAll(async () => {
+    await teardownTestDatabase();
+  });
+
+  beforeEach(() => {
+    request = supertest(app);
+  });
+
+  it('should return 200 when successfully sign in', async () => {
+    const data = {
+      token: '123',
+      name: 'Jeremy',
+      email: 'jeremy@gmail.com',
+      password: 'jeremy',
+    };
+    const response = await request.post('/api/v1/users/signin').send(data);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        message: 'cookie sent!',
+        data: {
+          user: {
+            name: 'Jeremy',
+            email: 'jeremy@gmail.com',
+          },
+        },
       }),
     );
   });
