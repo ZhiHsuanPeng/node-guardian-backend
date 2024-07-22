@@ -7,3 +7,4 @@ test_dockerFile
 worker_dockerFile
 alert_dockerFile
 config.json
+.env.test

@@ -22,8 +22,7 @@ const getChannel = async () => {
   }
   return channel;
 };
-
-exports.insertNewLogs = catchAsync(async (req, res, next) => {
+const insertNewLogs = catchAsync(async (req, res, next) => {
   const { accessToken } = req.body;
   // Check if the log data has necessary field
   const validateResult = schema.validate(req.body);
@@ -49,3 +48,5 @@ exports.insertNewLogs = catchAsync(async (req, res, next) => {
 
   return res.status(200).json({ message: 'OK' });
 });
+
+module.exports = { insertNewLogs };

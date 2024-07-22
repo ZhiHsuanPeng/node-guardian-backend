@@ -1,5 +1,5 @@
 const express = require('express');
-const viewController = require('../controllers/viewController');
+const view = require('../controllers/viewController');
 const authenticate = require('../middlewares/authenticate');
 const fetchProjectsInfo = require('../middlewares/fetchProjectsInfo');
 const validateUser = require('../middlewares/validateUser');
@@ -7,42 +7,40 @@ const validateProject = require('../middlewares/validateProject');
 
 const router = express.Router();
 
-router.route('/home').get(viewController.renderHomePage);
-router.route('/signup').get(viewController.renderSignUpForm);
-router.route('/signup/:token').get(viewController.renderSpecialSignUpForm);
-router.route('/signin').get(viewController.renderSignInForm);
+router.route('/home').get(view.renderHomePage);
+router.route('/signup').get(view.renderSignUpForm);
+router.route('/signup/:token').get(view.renderSpecialSignUpForm);
+router.route('/signin').get(view.renderSignInForm);
 
 router.use('/a/*', authenticate, fetchProjectsInfo);
 
 // middleware to check url value
 
 router.use('/a/:accountName*', validateUser);
-router.route('/a/:accountName/profile').get(viewController.renderProfilePage);
-router.route('/a/:accountName').get(viewController.renderOverViewPage);
+router.route('/a/:accountName/profile').get(view.renderProfilePage);
+router.route('/a/:accountName').get(view.renderOverViewPage);
 
 router.use('/a/:accountName/prj/:prjName*', validateProject);
-router
-  .route('/a/:accountName/prj/:prjName')
-  .get(viewController.renderBasicProjectPage);
+router.route('/a/:accountName/prj/:prjName').get(view.renderBasicProjectPage);
 router
   .route('/a/:accountName/prj/:prjName/err/:err')
-  .get(viewController.renderErrorDetailPage);
+  .get(view.renderErrorDetailPage);
 
 router.use('/a/:accountName/:prjName*', validateProject);
 router
   .route('/a/:accountName/:prjName/settings/members')
-  .get(viewController.renderSettingMemeberPage);
+  .get(view.renderSettingMemeberPage);
 router
   .route('/a/:accountName/:prjName/settings/notifications')
-  .get(viewController.renderSettingNotificationPage);
+  .get(view.renderSettingNotificationPage);
 router
   .route('/a/:accountName/:prjName/settings/notifications/emails')
-  .get(viewController.renderSettingNotificationEmailsPage);
+  .get(view.renderSettingNotificationEmailsPage);
 router
   .route('/a/:accountName/:prjName/settings/general')
-  .get(viewController.renderSettingGeneralPage);
+  .get(view.renderSettingGeneralPage);
 router
   .route('/a/:accountName/:prjName/settings/token')
-  .get(viewController.renderSettingTokenPage);
+  .get(view.renderSettingTokenPage);
 
 module.exports = router;

@@ -17,7 +17,11 @@ const transformUNIXtoDiff = (unix) => {
   let formattedResult = '';
   if (timeStampDifference < 3600 * 1000) {
     const minutes = Math.floor(timeStampDifference / 60000);
-    formattedResult = `${minutes} minutes`;
+    if (minutes === 1) {
+      formattedResult = `${minutes} minute`;
+    } else {
+      formattedResult = `${minutes} minutes`;
+    }
   } else if (timeStampDifference < 86400 * 1000) {
     const hours = Math.floor(timeStampDifference / 3600000);
     if (hours === 1) {
@@ -138,7 +142,7 @@ const countDevicePercentage = (docs) => {
 
   return { browserPercentage, osPercentage };
 };
-exports.renderSpecialSignUpForm = catchAsync(async (req, res) => {
+const renderSpecialSignUpForm = catchAsync(async (req, res) => {
   const { token } = req.params;
   const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
   const data = await redis.get(hashedToken);
@@ -154,19 +158,19 @@ exports.renderSpecialSignUpForm = catchAsync(async (req, res) => {
   return res.status(200).render('specialSignUp', { token });
 });
 
-exports.renderHomePage = catchAsync(async (req, res) => {
+const renderHomePage = catchAsync(async (req, res) => {
   return res.status(200).render('home');
 });
 
-exports.renderSignUpForm = catchAsync(async (req, res) => {
+const renderSignUpForm = catchAsync(async (req, res) => {
   return res.status(200).render('signUp');
 });
 
-exports.renderSignInForm = catchAsync(async (req, res) => {
+const renderSignInForm = catchAsync(async (req, res) => {
   return res.status(200).render('signIn');
 });
 
-exports.renderProfilePage = catchAsync(async (req, res) => {
+const renderProfilePage = catchAsync(async (req, res) => {
   const { accountName } = req.params;
   const userId = res.locals.userId;
   const projectsArr = res.locals.project;
@@ -177,7 +181,7 @@ exports.renderProfilePage = catchAsync(async (req, res) => {
     .render('profile', { projectsArr, accountName, userInfo });
 });
 
-exports.renderSettingTokenPage = catchAsync(async (req, res) => {
+const renderSettingTokenPage = catchAsync(async (req, res) => {
   const { accountName, prjName } = req.params;
   const userId = res.locals.userId;
   const projectsArr = res.locals.project;
@@ -192,7 +196,7 @@ exports.renderSettingTokenPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderSettingGeneralPage = catchAsync(async (req, res) => {
+const renderSettingGeneralPage = catchAsync(async (req, res) => {
   const { accountName, prjName } = req.params;
   const userId = res.locals.userId;
   const projectsArr = res.locals.project;
@@ -210,7 +214,7 @@ exports.renderSettingGeneralPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderSettingNotificationEmailsPage = catchAsync(async (req, res) => {
+const renderSettingNotificationEmailsPage = catchAsync(async (req, res) => {
   const { accountName, prjName } = req.params;
   const userId = res.locals.userId;
   const projectsArr = res.locals.project;
@@ -227,7 +231,7 @@ exports.renderSettingNotificationEmailsPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderSettingNotificationPage = catchAsync(async (req, res) => {
+const renderSettingNotificationPage = catchAsync(async (req, res) => {
   const { accountName, prjName } = req.params;
   const userId = res.locals.userId;
   const projectsArr = res.locals.project;
@@ -240,7 +244,7 @@ exports.renderSettingNotificationPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderSettingMemeberPage = catchAsync(async (req, res) => {
+const renderSettingMemeberPage = catchAsync(async (req, res) => {
   const { accountName, prjName } = req.params;
   const userId = res.locals.userId;
   const projectsArr = res.locals.project;
@@ -258,7 +262,7 @@ exports.renderSettingMemeberPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderOverViewPage = catchAsync(async (req, res) => {
+const renderOverViewPage = catchAsync(async (req, res) => {
   const { accountName } = req.params;
   const projectsArr = res.locals.project;
 
@@ -314,7 +318,7 @@ exports.renderOverViewPage = catchAsync(async (req, res) => {
     .render('overview', { projectsArr, accountName, timeStamp, past1dayErr });
 });
 
-exports.renderBasicProjectPage = catchAsync(async (req, res) => {
+const renderBasicProjectPage = catchAsync(async (req, res) => {
   const { accountName, prjName } = req.params;
   const projectsArr = res.locals.project;
   const projectToken = projectsArr.filter((project) => {
@@ -383,7 +387,7 @@ exports.renderBasicProjectPage = catchAsync(async (req, res) => {
   });
 });
 
-exports.renderErrorDetailPage = catchAsync(async (req, res) => {
+const renderErrorDetailPage = catchAsync(async (req, res) => {
   const { err, accountName, prjName } = req.params;
   const projectsArr = res.locals.project;
 
@@ -392,7 +396,6 @@ exports.renderErrorDetailPage = catchAsync(async (req, res) => {
   })[0][1];
   const { latest, first, errTitle, all, timeStamp, latestErr } =
     await errorLog.getAllErrors(projectToken, err);
-
   // Get time related data
   const latestToTimeDiff = transformUNIXtoDiff(latest);
   const firstToTimeDiff = transformUNIXtoDiff(first);
@@ -437,3 +440,20 @@ exports.renderErrorDetailPage = catchAsync(async (req, res) => {
     osPercentage,
   });
 });
+
+module.exports = {
+  renderSpecialSignUpForm,
+  renderHomePage,
+  renderSignUpForm,
+  renderSignInForm,
+  renderProfilePage,
+  renderBasicProjectPage,
+  renderSettingNotificationPage,
+  renderSettingGeneralPage,
+  renderSettingTokenPage,
+  renderOverViewPage,
+  renderSettingMemeberPage,
+  renderErrorDetailPage,
+  renderSettingNotificationEmailsPage,
+  transformUNIXtoDiff,
+};
