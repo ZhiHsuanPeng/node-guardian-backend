@@ -34,6 +34,6 @@ jobs:
           git pull origin main &&
           npm install &&
           npm install -g pm2 &&
-          pm2 stop ./app.js &&
-          pm2 start ./app.js
+          sudo pm2 stop ./app.js &&
+          sudo pm2 start ./app.js
           '
