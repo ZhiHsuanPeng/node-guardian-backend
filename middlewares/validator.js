@@ -5,7 +5,7 @@ exports.handleResult = (req, res, next) => {
 
   const result = validationResult(req).formatWith(errorFormatter);
   if (!result.isEmpty()) {
-    return res.status(400).json({ errors: result.array() });
+    return res.status(400).json({ message: result.array() });
   }
   return next();
 };
