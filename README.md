@@ -68,6 +68,11 @@ of money.) I am using t2.micro, its on demand hourly rate is $0.0146.
 ![image](https://github.com/user-attachments/assets/3a0bc359-7e36-4bf4-b089-20627e4d783a)
 ![image](https://github.com/user-attachments/assets/807f35e4-c6ac-444d-b767-bd7b481bf2ae)
 
+### Conclusion
+Implementing auto scaling group can save a significant amount of time, and it is not at all expensive. The system right now can process and send notification emails **within 1 minute** at a rate of **12,000 data points per second**. If the message counts exceed 12000 and I want to process the messages in less than a minute, then I will create another EC2 instance with AMI from worker and add that instance ID to the auto-scaling script. Please note that the real throughput may be drastically different from this test's hypothetical value and that close monitoring of worker's status is crucial in deciding the scale out strategy.
+
+
+
 
 
 
