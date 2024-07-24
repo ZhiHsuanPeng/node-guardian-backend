@@ -32,7 +32,7 @@ It is also capable of sending notification emails when an anomaly occurs, making
 ## Setup instructions
 1. Sign up for a NodeGuardian account, or you can use this account to sign in, email: guest@gmail.com, password: guest.
 2. Sign in to your account and create a project, when creating projects, you will get an access token which will be used to initialize the SDK.
-3. Install [this](https://www.npmjs.com/package/node-guardian) NPM package, the package's README contains information about how to start the NodeGuardian Services.
+3. Install [this](https://www.npmjs.com/package/node-guardian) NPM package, the package's README contains information about how to start the NodeGuardian services.
 <img width="726" alt="image" src="https://github.com/user-attachments/assets/2d715666-74c3-4b7b-9614-7441f658b3e9">
 
 ## Tech/Framework Used
@@ -47,7 +47,8 @@ It is also capable of sending notification emails when an anomaly occurs, making
   - Elasticache
   - RDS (MySQL)
 ## Architecture
-![Final drawio](https://github.com/user-attachments/assets/679c2246-7cd9-44d2-b074-7cb33b35aa31)
+![Finish2 drawio](https://github.com/user-attachments/assets/4363e308-6f77-4715-83e9-c8a951d22207)
+
 
 
 
