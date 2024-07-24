@@ -55,7 +55,8 @@ The system's bottleneck seems to occur during the processing of error log data, 
 ### Data & Graph Comparison
 <img width="900" src="https://github.com/user-attachments/assets/c1a11a20-7625-4f74-958b-ee436f0d1040">
 
-![image](https://github.com/user-attachments/assets/ea3be2bd-8ef6-41a3-bce3-54e5cf8bf465)
+![image](https://github.com/user-attachments/assets/7fa8469f-8f94-4e8e-a066-c6c3f904cf96)
+
 
 #### Summary
 As stats above, it is clear that an auto-scaling group can save a significant amount of time. Implementing extra instances will cost an additional amount of money, which is why the following section will calculate that and evaluate the overall cost-effectiveness of this approach.
@@ -65,8 +66,9 @@ The section below summarize the extra amount of money required to use the auto s
 scaling group is needed will happen once per day. (This number is only hypothetical, its mere purpose is to let me estimate the extra cost 
 of money.) I am using t2.micro, its on demand hourly rate is $0.0146.
 
-![image](https://github.com/user-attachments/assets/3a0bc359-7e36-4bf4-b089-20627e4d783a)
-![image](https://github.com/user-attachments/assets/807f35e4-c6ac-444d-b767-bd7b481bf2ae)
+![image](https://github.com/user-attachments/assets/0cb74e55-177a-4220-a352-35aacd15c7a9)
+![image](https://github.com/user-attachments/assets/42fc4c99-3cff-4ed4-b716-0f2e270cbfe4)
+
 
 ### Conclusion
 Implementing auto scaling group can save a significant amount of time, and it is not at all expensive. The system right now can process and send notification emails **within 1 minute** at a rate of **12,000 data points per second**. Please note that the real throughput may be different from this test's hypothetical value and that close monitoring of worker's status is crucial in deciding the scale out strategy.
