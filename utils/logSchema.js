@@ -16,7 +16,7 @@ const schema = Joi.object({
     requestIp: Joi.string(),
     host: Joi.string().required(),
     originalUrl: Joi.string().required(),
-    port: Joi.string().required(),
+    port: Joi.string(),
     fullUrl: Joi.string().required(),
   }).required(),
   code: Joi.string().required(),
