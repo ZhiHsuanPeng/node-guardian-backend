@@ -20,7 +20,7 @@ It is also capable of sending notification emails when an anomaly occurs, making
 - Shows numbers of affected IP
   
 ![image](https://github.com/user-attachments/assets/21bfa254-a05d-41b2-b996-c202c0ffa1d6)
-### Error deatils
+### Error eatils
 - Shows stack traces
 - Shows some important params
 
@@ -29,7 +29,7 @@ It is also capable of sending notification emails when an anomaly occurs, making
 
 
 
-## Setup instructions
+## Setup Instructions
 1. Sign up for a NodeGuardian account, or you can use this account to sign in, email: guest@gmail.com, password: guest.
 2. Sign in to your account and create a project, when creating projects, you will get an access token which will be used to initialize the SDK.
 3. Install [this](https://www.npmjs.com/package/node-guardian) NPM package, the package's README contains information about how to start the NodeGuardian services.
@@ -49,6 +49,24 @@ It is also capable of sending notification emails when an anomaly occurs, making
 ## Architecture
 ![Finish2 drawio](https://github.com/user-attachments/assets/4363e308-6f77-4715-83e9-c8a951d22207)
 
+## Stress Test
+The system's bottleneck seems to occur during the processing of error log data, which is why this stress test aims to explore the effectiveness of workers that are capable of auto scale compared to a single worker.
+
+### Data & Graph Comparison
+<img width="900" src="https://github.com/user-attachments/assets/c1a11a20-7625-4f74-958b-ee436f0d1040">
+
+![image](https://github.com/user-attachments/assets/ea3be2bd-8ef6-41a3-bce3-54e5cf8bf465)
+
+#### Summary
+As stats above, it is clear that an auto-scaling group can save a significant amount of time. Implementing extra instances will cost an additional amount of money, which is why the following section will calculate that and evaluate the overall cost-effectiveness of this approach.
+
+### Extra Cost
+The section below summarize the extra amount of money required to use the auto scaling group, I hypothesize that the situation where the 
+scaling group is needed will happen once per day. (This number is only hypothetical, its mere purpose is to let me estimate the extra cost 
+of money.) I am using t2.micro, its on demand hourly rate is $0.0146.
+
+![image](https://github.com/user-attachments/assets/3a0bc359-7e36-4bf4-b089-20627e4d783a)
+![image](https://github.com/user-attachments/assets/807f35e4-c6ac-444d-b767-bd7b481bf2ae)
 
 
 
