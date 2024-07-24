@@ -20,7 +20,7 @@ It is also capable of sending notification emails when an anomaly occurs, making
 - Shows numbers of affected IP
   
 ![image](https://github.com/user-attachments/assets/21bfa254-a05d-41b2-b996-c202c0ffa1d6)
-### Error eatils
+### Error Details
 - Shows stack traces
 - Shows some important params
 
