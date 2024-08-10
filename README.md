@@ -80,9 +80,10 @@ The structure above is not the most optimized design, as it introduces a single 
 AWS Lambda is particularly suitable in this scenario due to its ability to scale automatically without any additional configuration. Furthermore, it eliminates the need to worry about infrastructure or unexpected machine failures. Further testing may be needed to determine if this implementation can handle large throughput.
 ![lambda drawio](https://github.com/user-attachments/assets/26cc8769-73af-4514-8264-acf982df4e50)
 
-### Elastic Container Service
-AWS ECS is also another great option, it provides robust container management with automatic scaling and the ability to restart containers in the event of a failure. 
-![ECS2 drawio](https://github.com/user-attachments/assets/23e64204-1710-45fa-8353-fd3f37330e44)
+### Elastic Container Service - Fargate
+AWS ECS is another excellent option for container management. It offers robust features such as automatic scaling and the capability to restart containers in the event of a failure. ECS operates containers within clusters, which can be managed using either AWS Fargate or EC2 instances. Due to the serverless nature of AWS Fargate, it scales rapidly in response to traffic surges, making it a strong choice for my application.
+![far drawio](https://github.com/user-attachments/assets/58734c47-2039-4364-ace0-a7db13b15bfc)
+
 
 
 
