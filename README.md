@@ -82,7 +82,8 @@ AWS Lambda is particularly suitable in this scenario due to its ability to scale
 
 ### Elastic Container Service - Fargate
 AWS ECS is another excellent option for container management. It offers robust features such as automatic scaling and the capability to restart containers in the event of a failure. ECS operates containers within clusters, which can be managed using either AWS Fargate or EC2 instances. Due to the serverless nature of AWS Fargate, it scales rapidly in response to traffic surges, making it a strong choice for my application.
-![far drawio](https://github.com/user-attachments/assets/58734c47-2039-4364-ace0-a7db13b15bfc)
+![Far drawio (1)](https://github.com/user-attachments/assets/aabf6fdc-8237-4b69-b934-a43f6049600c)
+
 
 
 
