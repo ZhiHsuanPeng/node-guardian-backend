@@ -21,7 +21,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Run Tests
+        run: npm test
+
       - name: Deploy to EC2
+        if: success() 
         env:
           REMOTE_HOST: ${{ secrets.SERVER_IP }}
           REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
