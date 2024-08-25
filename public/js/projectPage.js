@@ -34,7 +34,6 @@ async function handleSearch() {
 function displayResults(results) {
   // Clear previous results
   resultsContainer.innerHTML = '';
-  console.log('displaying');
   if (results.length === 0) {
     resultsContainer.style.display = 'none';
     return;
