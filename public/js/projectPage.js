@@ -39,7 +39,6 @@ function displayResults(results) {
     resultsContainer.style.display = 'none';
     return;
   }
-  console.log(results);
 
   results.message.forEach((result) => {
     const li = document.createElement('li');
