@@ -53,6 +53,7 @@ const insertNewLogs = catchAsync(async (req, res, next) => {
 const searchLogs = catchAsync(async (req, res, next) => {
   const { projectToken, text } = req.body;
   const searchResult = await errorLog.search(projectToken, text);
+  return res.status(200).json({ message: searchResult });
 });
 
 module.exports = { insertNewLogs, searchLogs };

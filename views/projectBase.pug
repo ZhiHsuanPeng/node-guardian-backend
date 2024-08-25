@@ -5,8 +5,13 @@ block content
         main.main 
             .errTitle(data-error= `${errorMessageArr}`)
             .projectToken(data-token = `${projectToken}`)
+            .accName(data-name = `${accountName}`)
+            .prjName(data-prj = `${prjName}`)
             .errorLogsContainer
                 .project_base_title_container
+                    .search_container
+                        input(type = 'text' id = 'search' placeholder='Search logs...')
+                        ul(id="search-results" class="dropdown")
                     .project_base_title= `Items for ${prjName}`
                 .containerBar
                     .title Error Message
@@ -39,7 +44,7 @@ block content
                             if error.resolve === true
                                 input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}` checked)
                             else  
-                                input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}`)
+                                input(type='checkbox' class="reactivate" data-error=`mute_${error.err}_${error.muteTime}`)                        
         script(src='/js/projectPage.js' type="module")
         script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js' integrity='sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe' crossorigin='anonymous')
         script(src='/js/sidebar.js' type="module")

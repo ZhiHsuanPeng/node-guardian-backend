@@ -6,6 +6,52 @@ document.querySelectorAll('.timeStampStat').forEach((element) => {
 const errorTitle = document.querySelector('.errTitle').dataset.error;
 const dropdowns = document.querySelectorAll('.mutedropdown');
 const reactivate = document.querySelectorAll('.reactivate');
+const prjName = document.querySelector('.prjName').dataset.prj;
+const accountName = document.querySelector('.accName').dataset.name;
+const search = document.querySelector('#search');
+const resultsContainer = document.querySelector('#search-results');
+
+search.addEventListener('input', handleSearch);
+
+async function handleSearch() {
+  const input = document.getElementById('search').value;
+  const token = document.querySelector('.projectToken').dataset.token;
+  clearTimeout(window.searchTimeout);
+  window.searchTimeout = setTimeout(async () => {
+    const response = await fetch('/api/v1/logs/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ projectToken: token, text: input }),
+    });
+
+    const results = await response.json();
+    displayResults(results);
+  }, 200);
+}
+
+function displayResults(results) {
+  // Clear previous results
+  resultsContainer.innerHTML = '';
+  console.log('displaying');
+  if (results.length === 0) {
+    resultsContainer.style.display = 'none';
+    return;
+  }
+  console.log(results);
+
+  results.message.forEach((result) => {
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.textContent = result.errMessage;
+    link.href = `/a/${accountName}/prj/${prjName}/err/${result.errMessage}`;
+    li.appendChild(link);
+    resultsContainer.appendChild(li);
+  });
+
+  resultsContainer.style.display = 'block';
+}
 
 reactivate.forEach(function (re) {
   re.addEventListener('change', async function (e) {
