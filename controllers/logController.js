@@ -1,6 +1,7 @@
 const amqplib = require('amqplib');
 const schema = require('../utils/logSchema');
 const projectModel = require('../models_RDS/project');
+const errorLog = require('../models_Search/errorLog');
 const { ValidationError } = require('../utils/errorHandler');
 const catchAsync = require('../utils/catchAsync');
 
@@ -49,4 +50,9 @@ const insertNewLogs = catchAsync(async (req, res, next) => {
   return res.status(200).json({ message: 'OK' });
 });
 
-module.exports = { insertNewLogs };
+const searchLogs = catchAsync(async (req, res, next) => {
+  const { projectToken, text } = req.body;
+  const searchResult = await errorLog.search(projectToken, text);
+});
+
+module.exports = { insertNewLogs, searchLogs };

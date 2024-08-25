@@ -141,3 +141,38 @@ exports.getAllProjectTimeStamp = async (token) => {
   });
   return timeStamp;
 };
+
+exports.search = async (token, text) => {
+  const response = await elasticSearchClient.search({
+    index: token,
+    body: {
+      query: {
+        match: {
+          errMessage: text,
+        },
+      },
+      aggs: {
+        errors: {
+          terms: {
+            field: 'errMessage.keyword',
+            size: 10000,
+          },
+          aggs: {
+            top_logs: {
+              top_hits: {
+                size: 1,
+                _source: ['timestamp', 'additionalInfo'],
+                sort: [{ timestamp: { order: 'desc' } }],
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  const result = response.aggregations.errors.buckets.map((bucket) => ({
+    errMessage: bucket.key,
+  }));
+
+  return result;
+};
