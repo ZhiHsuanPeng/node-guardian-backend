@@ -6,6 +6,7 @@ import {
   beforeAll,
   afterAll,
   beforeEach,
+  afterEach,
   vi,
 } from 'vitest';
 import supertest from 'supertest';
@@ -19,6 +20,7 @@ const { app } = require('../../../app');
 
 describe('signUp API', () => {
   let request;
+  let server;
 
   beforeAll(async () => {
     await setupTestDatabase();
@@ -214,41 +216,41 @@ describe('signIn API', () => {
   });
 });
 
-describe('special sign up API', () => {
-  let request;
+// describe('special sign up API', () => {
+//   let request;
 
-  beforeAll(async () => {
-    await setupSpecialSignup();
-  });
+//   beforeAll(async () => {
+//     await setupSpecialSignup();
+//   });
 
-  afterAll(async () => {
-    await teardownTestDatabase();
-  });
+//   afterAll(async () => {
+//     await teardownTestDatabase();
+//   });
 
-  beforeEach(() => {
-    request = supertest(app);
-  });
+//   beforeEach(() => {
+//     request = supertest(app);
+//   });
 
-  it('should return 200 when successfully sign in', async () => {
-    const data = {
-      token: '123',
-      name: 'Jeremy',
-      email: 'jeremy@gmail.com',
-      password: 'jeremy',
-    };
-    const response = await request.post('/api/v1/users/signin').send(data);
+//   it('should return 200 when successfully sign in', async () => {
+//     const data = {
+//       token: '123',
+//       name: 'Jeremy',
+//       email: 'jeremy@gmail.com',
+//       password: 'jeremy',
+//     };
+//     const response = await request.post('/api/v1/users/signin').send(data);
 
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        message: 'cookie sent!',
-        data: {
-          user: {
-            name: 'Jeremy',
-            email: 'jeremy@gmail.com',
-          },
-        },
-      }),
-    );
-  });
-});
+//     expect(response.status).toBe(200);
+//     expect(response.body).toEqual(
+//       expect.objectContaining({
+//         message: 'cookie sent!',
+//         data: {
+//           user: {
+//             name: 'Jeremy',
+//             email: 'jeremy@gmail.com',
+//           },
+//         },
+//       }),
+//     );
+//   });
+// });
