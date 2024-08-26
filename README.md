@@ -73,8 +73,7 @@ of money.) I am using t2.micro, its on demand hourly rate is $0.0146.
 ### Conclusion
 Implementing auto scaling group can save a significant amount of time, and it is not at all expensive. The system right now can process and send notification emails **within 1 minute** at a rate of **12,000 data points per second**. Please note that the real throughput may be different from this test's hypothetical value and that close monitoring of worker's status is crucial in deciding the scale out strategy.
 
-# Better design in terms of availability of worker groups
-The structure above is not the most optimized design, as it introduces a single point of failure in the worker group, which could potentially make the services unavailable. As a result, the following section proposes two AWS services that are capable of mitigating this problem.
+# Other Tech Options 
 
 ### Lambda Function
 AWS Lambda is particularly suitable in this scenario due to its ability to scale automatically without any additional configuration. Furthermore, it eliminates the need to worry about infrastructure or unexpected machine failures. Further testing may be needed to determine if this implementation can handle large throughput.
